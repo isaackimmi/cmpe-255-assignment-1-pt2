@@ -37,6 +37,8 @@ Then open the corresponding path:
 
 Each UI includes metric cards, visualizations or artifact previews, explanatory CRISP-DM context, responsive styling, and clear labeling for browser interactions that are illustrative rather than direct Python inference.
 
+Rendered UI screenshots are stored in [`ui_screenshots/`](ui_screenshots/). They were captured from the public GitHub Pages deployment after loading each project dashboard.
+
 | Directory | Focus |
 |---|---|
 | `00_dynamic_todo_workspace` | Agent-oriented task workspace |

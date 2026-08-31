@@ -6,6 +6,8 @@ The portfolio is a faithful lightweight reproduction of the reference project th
 
 All 14 projects now have a browser-facing presentation layer. The dashboards read checked-in outputs and provide project-specific metric cards, charts, phase context, and interactions. Controls that do not call the Python runtime are explicitly labeled illustrative; the underlying experiments remain the source of truth.
 
+Rendered evidence for each dashboard is checked into `ui_screenshots/project-00.png` through `project-13.png` and was captured from the public GitHub Pages deployment.
+
 | Project | Reference intent | Implemented comparison | Result/artifact |
 |---|---|---|---|
 | 00 | Dynamic todo app | Local-first dependency-free task/workspace UI | HTML app; 4/4 tests |
