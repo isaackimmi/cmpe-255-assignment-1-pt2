@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fieldnote — Agent Workspace</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">✦</span><span>fieldnote</span></div>
+      <p class="eyebrow">Workspace</p>
+      <nav aria-label="Workspace navigation">
+        <button class="nav-item active" type="button"><span>▦</span>Overview</button>
+        <button class="nav-item" type="button"><span>◌</span>Agent runs <span class="nav-count">3</span></button>
+        <button class="nav-item" type="button"><span>⌁</span>Datasets</button>
+      </nav>
+      <div class="sidebar-projects">
+        <p class="eyebrow">Projects</p>
+        <button class="project-link selected" type="button"><i class="dot coral"></i>Retail demand forecast</button>
+        <button class="project-link" type="button"><i class="dot blue"></i>Churn signals</button>
+        <button class="project-link" type="button"><i class="dot gold"></i>Customer segments</button>
+      </div>
+      <div class="sidebar-footer"><div class="avatar">AK</div><div><strong>Alex Kim</strong><small>Data scientist</small></div><span class="more">···</span></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><div class="crumb">Projects <span>/</span> Retail demand forecast</div><div class="top-actions"><button class="icon-button" aria-label="Notifications">♢</button><button class="icon-button" aria-label="Help">?</button></div></header>
+      <section class="page-heading"><div><p class="eyebrow coral-text">Active workspace <span class="pulse"></span></p><h1>Retail demand forecast</h1><p class="subtitle">A practical plan for turning store-level signals into a reliable weekly forecast.</p></div><button class="primary-button" id="runAgentButton" type="button"><span>✦</span> Run agent check</button></section>
+
+      <section class="context-grid">
+        <article class="context-card brief-card"><div class="card-top"><span class="card-label">Project brief</span><span class="status-chip green">On track</span></div><h2>Forecast next 12 weeks of demand</h2><p>Reduce stock-outs while keeping recommendations explainable to the merchandising team.</p><div class="owner-row"><div class="avatar small">AK</div><span>Alex Kim <small>· Updated 12 min ago</small></span></div></article>
+        <article class="context-card dataset-card"><div class="card-top"><span class="card-label">Dataset</span><span class="dataset-size">2.4M rows</span></div><div class="dataset-name"><span class="table-icon">▤</span><strong>retail_orders.parquet</strong></div><div class="dataset-meta"><span>38 columns</span><span>Jan 2021 — Dec 2024</span></div><div class="quality"><span>Data quality</span><div class="quality-bar"><i></i></div><strong>94%</strong></div></article>
+      </section>
+
+      <section class="stats-row"><div class="stat"><span class="stat-label">Tasks complete</span><strong id="completedStat">0 / 0</strong><span class="trend">↑ 12% this week</span></div><div class="stat"><span class="stat-label">Agent confidence</span><strong>87<span class="unit">%</span></strong><span class="trend neutral">Based on 6 checks</span></div><div class="stat"><span class="stat-label">Next milestone</span><strong class="date">Fri, Sep 12</strong><span class="trend neutral">Model review</span></div><div class="stat"><span class="stat-label">Time saved</span><strong>4.5<span class="unit">h</span></strong><span class="trend">↑ 35% vs. last run</span></div></section>
+
+      <section class="work-grid">
+        <article class="panel tasks-panel"><div class="panel-header"><div><h2>Work queue</h2><p>Keep the next useful action obvious.</p></div><button class="secondary-button" id="addTaskButton" type="button">＋ Add task</button></div><div class="toolbar"><div class="filters" role="group" aria-label="Task filters"><button class="filter active" data-status="all" type="button">All <b id="allCount">0</b></button><button class="filter" data-status="todo" type="button">To do <b id="todoCount">0</b></button><button class="filter" data-status="done" type="button">Done <b id="doneCount">0</b></button></div><label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search tasks"></label></div><div id="taskList" class="task-list" aria-live="polite"></div><form id="taskForm" class="task-form hidden"><input id="taskTitle" required maxlength="100" placeholder="e.g. Check holiday seasonality"><select id="taskPriority" aria-label="Priority"><option value="high">High priority</option><option value="medium" selected>Medium priority</option><option value="low">Low priority</option></select><button class="primary-button" type="submit">Add</button></form></article>
+        <article class="panel workflow-panel"><div class="panel-header"><div><h2>Agent workflow</h2><p>CRISP-DM stages in motion.</p></div><span class="mini-status">Live</span></div><div class="progress-summary"><div class="ring"><span>68<small>%</small></span></div><div><strong>Modeling phase</strong><p>4 of 6 stages complete</p></div></div><div class="stage-list"><div class="stage complete"><span>✓</span><div><strong>Business understanding</strong><small>Goal and constraints captured</small></div></div><div class="stage complete"><span>✓</span><div><strong>Data understanding</strong><small>Schema and quality reviewed</small></div></div><div class="stage complete"><span>✓</span><div><strong>Data preparation</strong><small>Features are ready</small></div></div><div class="stage current"><span>4</span><div><strong>Modeling</strong><small>Agent is comparing baselines</small></div></div><div class="stage"><span>5</span><div><strong>Evaluation</strong><small>Waiting on model review</small></div></div></div></article>
+        <article class="panel activity-panel"><div class="panel-header"><div><h2>Agent activity</h2><p>Latest useful signals.</p></div><button class="text-button" id="clearActivity" type="button">Clear</button></div><div id="activityList" class="activity-list"></div></article>
+      </section>
+      <footer class="footer-note"><span class="pulse"></span> Local workspace · changes are saved automatically <span class="shortcut">⌘ K</span></footer>
+    </main>
+  </div>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

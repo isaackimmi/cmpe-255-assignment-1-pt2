@@ -39,3 +39,8 @@ Each project README contains its own setup and execution instructions. Projects 
 ## Video
 
 YouTube walkthrough: _To be added after recording._
+## Integration status
+
+All 14 projects have a real README, runnable entry point, test or validation command, documented prompt alignment, results/artifacts, and explicit deviations. The final local verification is summarized in [REPRODUCTION_LOG.md](REPRODUCTION_LOG.md): all 14 project checks passed, with Project 11 intentionally returning a CONDITIONAL release recommendation because its fixture contains four governance defects.
+
+The portfolio is intentionally offline-friendly. Synthetic or built-in datasets replace external Kaggle/TLC downloads where needed, AutoGluon and PyTorch remain optional, and hosted dashboards/browser tours are not claimed unless present in the project README.

@@ -1,0 +1,104 @@
+{
+  "business_understanding": {
+    "objective": "Classify Iris flowers from four measured attributes.",
+    "success_criteria": "Holdout accuracy >= 0.90 and a documented evaluation.",
+    "stakeholders": [
+      "student analyst",
+      "course reviewer"
+    ],
+    "assumptions": [
+      "The labeled sample is representative of the intended use."
+    ]
+  },
+  "data_understanding": {
+    "dataset": "sklearn.datasets.load_iris",
+    "rows": 150,
+    "features": [
+      "sepal length (cm)",
+      "sepal width (cm)",
+      "petal length (cm)",
+      "petal width (cm)"
+    ],
+    "classes": [
+      "setosa",
+      "versicolor",
+      "virginica"
+    ],
+    "missing_values": 0,
+    "class_counts": {
+      "setosa": 50,
+      "versicolor": 50,
+      "virginica": 50
+    }
+  },
+  "data_preparation": {
+    "train_rows": 120,
+    "test_rows": 30,
+    "split": "80/20 stratified holdout",
+    "preprocessing": "StandardScaler fit inside a pipeline on training data only"
+  },
+  "modeling": {
+    "algorithm": "StandardScaler + multinomial LogisticRegression"
+  },
+  "evaluation": {
+    "accuracy": 0.9333333333333333,
+    "confusion_matrix": [
+      [
+        10,
+        0,
+        0
+      ],
+      [
+        0,
+        9,
+        1
+      ],
+      [
+        0,
+        1,
+        9
+      ]
+    ],
+    "classification_report": {
+      "setosa": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 10.0
+      },
+      "versicolor": {
+        "precision": 0.9,
+        "recall": 0.9,
+        "f1-score": 0.9,
+        "support": 10.0
+      },
+      "virginica": {
+        "precision": 0.9,
+        "recall": 0.9,
+        "f1-score": 0.9,
+        "support": 10.0
+      },
+      "accuracy": 0.9333333333333333,
+      "macro avg": {
+        "precision": 0.9333333333333332,
+        "recall": 0.9333333333333332,
+        "f1-score": 0.9333333333333332,
+        "support": 30.0
+      },
+      "weighted avg": {
+        "precision": 0.9333333333333333,
+        "recall": 0.9333333333333333,
+        "f1-score": 0.9333333333333333,
+        "support": 30.0
+      }
+    }
+  },
+  "deployment": {
+    "next_step": "Package the fitted pipeline behind a prediction API after external validation.",
+    "monitoring": [
+      "input ranges",
+      "class distribution",
+      "accuracy on reviewed labels"
+    ]
+  }
+}

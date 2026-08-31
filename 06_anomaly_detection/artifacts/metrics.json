@@ -1,0 +1,56 @@
+{
+  "isolation_forest": {
+    "roc_auc": 0.8585125,
+    "average_precision": 0.5332564297850156,
+    "precision": 0.48,
+    "recall": 0.48,
+    "f1": 0.48,
+    "flagged": 100
+  },
+  "local_outlier_factor": {
+    "roc_auc": 0.5450375,
+    "average_precision": 0.3936099129022609,
+    "precision": 0.36,
+    "recall": 0.36,
+    "f1": 0.36,
+    "flagged": 100
+  },
+  "elliptic_envelope": {
+    "roc_auc": 0.880775,
+    "average_precision": 0.6883335685973978,
+    "precision": 0.64,
+    "recall": 0.64,
+    "f1": 0.64,
+    "flagged": 100
+  },
+  "rank_ensemble": {
+    "roc_auc": 0.788575,
+    "average_precision": 0.4613078741780097,
+    "precision": 0.37,
+    "recall": 0.37,
+    "f1": 0.37,
+    "flagged": 100
+  },
+  "category_recall": {
+    "isolation_forest": {
+      "global": 0.8857142857142857,
+      "local": 0.03333333333333333,
+      "cluster": 0.45714285714285713
+    },
+    "local_outlier_factor": {
+      "global": 0.9142857142857143,
+      "local": 0.06666666666666667,
+      "cluster": 0.05714285714285714
+    },
+    "elliptic_envelope": {
+      "global": 0.8285714285714286,
+      "local": 0.0,
+      "cluster": 1.0
+    },
+    "rank_ensemble": {
+      "global": 0.8857142857142857,
+      "local": 0.03333333333333333,
+      "cluster": 0.14285714285714285
+    }
+  }
+}

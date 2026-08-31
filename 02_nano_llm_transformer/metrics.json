@@ -1,0 +1,9 @@
+{
+  "backend": "stdlib_char_ngram",
+  "seed": 255,
+  "train_chars": 288,
+  "test_chars": 72,
+  "loss": 3.0991,
+  "perplexity": 22.1789,
+  "sample": "user: explain a transformer\nassistant: A transformer\nassistant: A transformer\nassistant: A transformer\nassistant: A tr"
+}

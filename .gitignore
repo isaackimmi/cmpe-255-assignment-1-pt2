@@ -1,0 +1,11 @@
+# Local environments and generated Python state
+**/.venv/
+**/venv/
+**/__pycache__/
+**/.pytest_cache/
+*.py[cod]
+
+# Local OS/editor state
+.DS_Store
+.idea/
+.vscode/

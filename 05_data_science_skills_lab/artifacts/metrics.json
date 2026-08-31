@@ -1,0 +1,59 @@
+{
+  "data_quality": {
+    "raw_rows": 24,
+    "clean_rows": 23,
+    "duplicates_removed": 1,
+    "missing_values_imputed": 1
+  },
+  "eda": {
+    "usage_mean": 53.02173913043478,
+    "usage_renewal_correlation": 0.6512660342771502,
+    "usage_ticket_correlation": -0.9031219505283399
+  },
+  "regression": {
+    "feature": "tenure_months",
+    "target": "monthly_usage",
+    "train_rows": 16,
+    "test_rows": 7,
+    "mae": 4.380432873825621,
+    "rmse": 7.870662856507256
+  },
+  "classification": {
+    "rule": "usage >= 45 and support_tickets <= 2",
+    "threshold": 45,
+    "accuracy": 0.8260869565217391,
+    "precision": 1.0,
+    "recall": 0.7777777777777778,
+    "confusion_matrix": [
+      [
+        5,
+        0
+      ],
+      [
+        4,
+        14
+      ]
+    ]
+  },
+  "clustering": {
+    "k": 2,
+    "features": [
+      "monthly_usage",
+      "support_tickets"
+    ],
+    "cluster_sizes": [
+      9,
+      14
+    ],
+    "centers": [
+      [
+        33.666666666666664,
+        3.2222222222222223
+      ],
+      [
+        65.46428571428571,
+        0.5
+      ]
+    ]
+  }
+}

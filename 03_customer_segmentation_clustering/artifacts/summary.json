@@ -1,0 +1,15 @@
+{
+  "seed": 255,
+  "n_customers": 120,
+  "selected_k": 3,
+  "silhouette": 0.669557016704384,
+  "calinski_harabasz": 452.3425810380299,
+  "davies_bouldin": 0.46718882952008317,
+  "features": [
+    "annual_income_k",
+    "spend_score",
+    "purchase_frequency",
+    "avg_order_value"
+  ],
+  "preprocessing": "log1p income/AOV then StandardScaler"
+}

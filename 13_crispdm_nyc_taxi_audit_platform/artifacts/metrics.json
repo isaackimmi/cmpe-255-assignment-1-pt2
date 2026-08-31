@@ -1,0 +1,9 @@
+{
+  "train_rows": 955,
+  "test_rows": 239,
+  "mae_minutes": 2.794,
+  "rmse_minutes": 3.622,
+  "r2": 0.892,
+  "within_5_minutes_rate": 0.845,
+  "split": "chronological 80/20"
+}

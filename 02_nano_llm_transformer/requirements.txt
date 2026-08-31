@@ -1,0 +1,2 @@
+# Optional GPU/Transformer backend. The default experiment needs no packages.
+torch>=2.0

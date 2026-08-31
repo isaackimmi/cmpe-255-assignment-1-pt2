@@ -1,0 +1,69 @@
+{
+  "dataset": "/Users/isaackim/Desktop/MSSE DS/Fall 2026/CMPE 255/HW/cmpe-255-assignment-1-pt2/11_enterprise_ds_audit/artifacts/sample_customers.csv",
+  "generated_at_utc": "2026-08-31T05:35:35Z",
+  "checks": [
+    {
+      "name": "schema",
+      "status": "FAIL",
+      "severity": "high",
+      "detail": "41 rows; missing=[]; extra=[]; parse_errors=['row 8 monthly_spend']"
+    },
+    {
+      "name": "missingness",
+      "status": "FAIL",
+      "severity": "medium",
+      "detail": "null_rates={'customer_id': 0.0, 'snapshot_date': 0.0, 'tenure_months': 0.0, 'monthly_spend': 0.0244, 'support_tickets_90d': 0.0, 'plan': 0.0, 'churned': 0.0, 'churn_confirmed_at': 0.7561, 'internal_note': 0.9756}; threshold=0.05"
+    },
+    {
+      "name": "duplicate_identifiers",
+      "status": "FAIL",
+      "severity": "high",
+      "detail": "duplicate_customer_ids=['C0001']"
+    },
+    {
+      "name": "leakage_risk",
+      "status": "FAIL",
+      "severity": "high",
+      "detail": "churn_confirmed_at is populated from the outcome window and must not be available at prediction time; internal_note may contain outcome/cancellation language and requires review"
+    },
+    {
+      "name": "reproducibility",
+      "status": "PASS",
+      "severity": "low",
+      "detail": "{\"input_sha256\": \"7372a7fd43364c9e5d2b6120b3cf2d42da5de65918e2128ad18e226dbd951a04\", \"python\": \"3.14.7\", \"seed\": 255, \"split\": \"first 70% train / final 30% holdout by snapshot_date\"}"
+    },
+    {
+      "name": "model_quality",
+      "status": "PASS",
+      "severity": "medium",
+      "detail": "{\"majority_baseline\": {\"accuracy\": 0.6667, \"balanced_accuracy\": 0.5, \"f1\": 0, \"precision\": 0, \"recall\": 0.0}, \"model\": {\"accuracy\": 0.6667, \"balanced_accuracy\": 0.75, \"f1\": 0.6667, \"precision\": 0.5, \"recall\": 1.0}, \"test_rows\": 12, \"ticket_threshold\": 2, \"train_rows\": 26}"
+    }
+  ],
+  "reproducibility": {
+    "seed": 255,
+    "input_sha256": "7372a7fd43364c9e5d2b6120b3cf2d42da5de65918e2128ad18e226dbd951a04",
+    "python": "3.14.7",
+    "split": "first 70% train / final 30% holdout by snapshot_date"
+  },
+  "model_quality": {
+    "train_rows": 26,
+    "test_rows": 12,
+    "ticket_threshold": 2,
+    "model": {
+      "accuracy": 0.6667,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "balanced_accuracy": 0.75
+    },
+    "majority_baseline": {
+      "accuracy": 0.6667,
+      "precision": 0,
+      "recall": 0.0,
+      "f1": 0,
+      "balanced_accuracy": 0.5
+    }
+  },
+  "release_recommendation": "CONDITIONAL",
+  "summary": "4 fail(s), 0 warning(s); release recommendation: CONDITIONAL"
+}

@@ -1,0 +1,12 @@
+{
+  "backend": "sklearn_fallback",
+  "autogluon_note": "AutoGluon disabled by caller",
+  "random_seed": 255,
+  "ranking_metric": "roc_auc",
+  "models": [
+    "logistic_regression",
+    "extra_trees",
+    "hist_gradient_boosting",
+    "random_forest"
+  ]
+}

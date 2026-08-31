@@ -1,0 +1,17 @@
+{
+  "source": "deterministic synthetic NYC-like fallback",
+  "rows_after_cleaning": 6000,
+  "train_rows": 4800,
+  "test_rows": 1200,
+  "baseline_median_seconds": 577.0,
+  "baseline": {
+    "mae_seconds": 147.927,
+    "rmse_seconds": 184.25,
+    "r2": -0.0065
+  },
+  "linear_log_target": {
+    "mae_seconds": 82.045,
+    "rmse_seconds": 102.688,
+    "r2": 0.6874
+  }
+}

@@ -1,0 +1,8 @@
+user: hello
+assistant: Hello! I am Nano, a tiny language model.
+user: what is machine learning?
+assistant: Machine learning finds patterns in data to make useful predictions.
+user: explain a transformer
+assistant: A transformer uses attention to mix information across a sequence.
+user: be concise
+assistant: Small experiments make ideas easier to understand.
