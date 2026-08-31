@@ -1,6 +1,6 @@
 {
-  "schema_version": 2,
-  "run_id": "20260831T063550Z",
+  "schema_version": 3,
+  "run_id": "20260831T071349Z",
   "command": [
     "/private/tmp/cmpe255-project07-venv/bin/python",
     "src/run_experiment.py",
@@ -21,6 +21,7 @@
     "autogluon": null
   },
   "autogluon_note": "AutoGluon disabled by caller",
+  "autogluon_audit": [],
   "random_seed": 255,
   "ranking_metric": "cv_roc_auc_mean",
   "selection_scope": "development_cv",
@@ -32,7 +33,23 @@
     "random_forest"
   ],
   "selected_model": "logistic_regression",
+  "selected_decision_threshold": 0.425242,
   "final_metrics_artifact": "final_metrics.json",
+  "cv_scores_artifact": "cv_scores.json",
+  "positive_class": {
+    "label": 0,
+    "name": "malignant"
+  },
+  "negative_class": {
+    "label": 1,
+    "name": "benign"
+  },
+  "metric_semantics": {
+    "ranking": "Development-CV ROC-AUC; higher is better.",
+    "operating_point": "Malignant-positive thresholded metrics; threshold selected on development OOF predictions only.",
+    "uncertainty": "Mean \u00b1 sample SD and normal-approximation 95% CI across the 10 development CV fold/repeat scores.",
+    "practical_tie_tolerance": 0.005
+  },
   "cv_splits": 5,
   "cv_repeats": 2,
   "autogluon_settings": {
@@ -152,6 +169,6 @@
       "scikit_learn": "1.9.0",
       "autogluon_tabular": null
     },
-    "fit_time_note": "Wall-clock training time is environment-specific; CV values are means across folds."
+    "fit_time_note": "Wall-clock training time is environment-specific. sklearn values measure estimator fit; AutoGluon values include search and ensemble work, so fit time is not a cross-backend efficiency ranking."
   }
 }

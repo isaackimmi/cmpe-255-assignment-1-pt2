@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Customer intelligence dashboard for a reproducible synthetic clustering experiment." />
-    <title>Customer intelligence | Project 03</title>
+    <meta name="description" content="Browser-native explorer for a reproducible synthetic customer segmentation experiment." />
+    <title>Customer segmentation lab | Project 03</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="topbar">
-      <a class="brand" href="#overview" aria-label="Customer intelligence home">
+      <a class="brand" href="#overview" aria-label="Customer segmentation lab home">
         <span class="brand-mark">03</span>
         <span>
-          <strong>Customer intelligence</strong>
+          <strong>Customer segmentation lab</strong>
           <small>Project 03 / clustering lab</small>
         </span>
       </a>
       <nav class="topnav" aria-label="Dashboard sections">
         <a href="#profiles">Segments</a>
+        <a href="#explorer">Explorer</a>
         <a href="#evaluation">Evaluation</a>
         <a href="#method">Method</a>
       </nav>
@@ -78,6 +79,31 @@
         <div id="profile-grid" class="profile-grid" aria-live="polite">
           <div class="loading-card">Loading segment profiles…</div>
         </div>
+      </section>
+
+      <section class="section shell explorer-section" id="explorer">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">Inspect the evidence</p>
+            <h2>Explore customers, not just averages.</h2>
+          </div>
+          <p class="section-aside">Every point is backed by <code>explorer_points.csv</code>. Select a raw feature pair or the exported PCA view, then click a point for its record.</p>
+        </div>
+        <div class="explorer-toolbar panel">
+          <div class="controls"><label class="control-label" for="projection-select">Map view</label><select id="projection-select" class="select-control"><option value="features">Raw feature pair</option><option value="pca">PCA projection</option></select></div>
+          <div class="controls feature-only-control"><label class="control-label" for="x-feature">X axis</label><select id="x-feature" class="select-control"><option value="spend_score">Spend score</option><option value="annual_income_k">Annual income</option><option value="purchase_frequency">Purchase frequency</option><option value="avg_order_value">Average order value</option></select></div>
+          <div class="controls feature-only-control"><label class="control-label" for="y-feature">Y axis</label><select id="y-feature" class="select-control"><option value="annual_income_k">Annual income</option><option value="spend_score">Spend score</option><option value="purchase_frequency">Purchase frequency</option><option value="avg_order_value">Average order value</option></select></div>
+          <div class="explorer-count" id="explorer-count">Loading points…</div>
+        </div>
+        <div class="explorer-grid">
+          <div class="panel explorer-panel">
+            <div class="panel-heading"><div><h3>Customer map</h3><p id="projection-note">Raw feature view · points are placed on the selected original features</p></div><span class="mini-badge">selected run</span></div>
+            <div id="explorer-canvas" class="explorer-canvas" aria-live="polite"><div class="loading-card">Loading point diagnostics…</div></div>
+            <div class="explorer-legend"><span><i class="legend-dot clear-dot"></i>clear geometry</span><span><i class="legend-dot moderate-dot"></i>moderate</span><span><i class="legend-dot ambiguous-dot"></i>ambiguous</span><span class="legend-copy">Opacity indicates assignment uncertainty proxy</span></div>
+          </div>
+          <aside class="panel customer-detail" id="customer-detail" aria-live="polite"><p class="detail-empty">Select a point to inspect one customer record.</p></aside>
+        </div>
+        <p class="explorer-footnote"><strong>Read carefully:</strong> PCA is a visualization-only projection. Distance, margin, and confidence are geometry diagnostics in fitted scaled space; they are not calibrated probabilities, outcome predictions, or evidence that a customer belongs to a real-world persona.</p>
       </section>
 
       <section class="section evidence-section shell" id="evaluation">

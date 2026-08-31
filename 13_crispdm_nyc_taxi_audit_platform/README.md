@@ -8,15 +8,15 @@ A small, CPU-safe capstone reproduction for NYC taxi trip-duration prediction. I
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python run_platform.py --output artifacts
-python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2 --passengers 2
+python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2 --passengers 2 --pickup-zone 1 --dropoff-zone 2
 pytest -q
 ```
 
-The default run creates `artifacts/metrics.json`, `artifacts/audit_report.json`, `artifacts/run_manifest.json`, `artifacts/eda.png`, `artifacts/actual_vs_predicted.png`, `artifacts/crispdm_report.md`, and a fitted `artifacts/model.joblib`. The data is generated deterministically and is intentionally not a download of the full NYC TLC corpus. Metrics are synthetic smoke-test metrics and are not evidence of real NYC taxi generalization.
+The default run creates `artifacts/metrics.json`, `artifacts/audit_report.json`, `artifacts/run_manifest.json`, `artifacts/prediction_errors.json`, `artifacts/eda.png`, `artifacts/actual_vs_predicted.png`, `artifacts/crispdm_report.md`, and a fitted `artifacts/model.joblib`. The data is generated deterministically and is intentionally not a download of the full NYC TLC corpus. Metrics are synthetic smoke-test metrics and are not evidence of real NYC taxi generalization.
 
 ## Dashboard UI
 
-The project includes a dependency-free responsive dashboard in `dashboard/`. It reads the generated JSON/Markdown artifacts and displays the KPI scorecard, EDA and prediction plots, CRISP-DM timeline, audit findings, report notes, and a clearly labeled local/illustrative inference lab.
+The project includes a dependency-free responsive dashboard in `dashboard/`. It reads the generated JSON/Markdown artifacts and displays the synthetic smoke-test scorecard, run identity, static evidence snapshots, row-level severity-filterable audit findings, holdout error/slice exploration, report notes, and a clearly labeled local/illustrative inference lab.
 
 After generating the artifacts, serve the project root and open <http://localhost:8000/dashboard/>:
 
@@ -27,7 +27,7 @@ python -m http.server 8000
 The dashboard's browser estimate is intentionally a separate toy calculator because the saved scikit-learn `model.joblib` is used by the Python CLI, not loaded into the browser. It omits zone inputs and must not be compared with the scorecard. Run the evaluated saved-model inference with:
 
 ```bash
-python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2 --passengers 2
+python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2 --passengers 2 --pickup-zone 1 --dropoff-zone 2
 ```
 
 Stop the local server with `Ctrl-C` when finished.
@@ -38,8 +38,8 @@ Stop the local server with `Ctrl-C` when finished.
 - **Data understanding/preparation:** deterministic NYC-like records with pickup/dropoff zones, time, passenger count, distance, and duration; derived temporal and route features.
 - **Audit:** schema, nulls, duplicate IDs, typed target-quality rules, field-specific validity checks, and IQR outlier observations are reported before modeling with row IDs, actions, and statuses.
 - **Modeling:** a scikit-learn histogram gradient-boosting regressor with a chronological 80/20 split; imputation statistics are fitted only on training rows and serialized with the model.
-- **Evaluation:** MAE, RMSE, R², and a duration-within-5-minutes rate; plots make data shape and prediction quality inspectable. The scorecard explicitly labels this as a synthetic smoke test.
-- **Reproducibility:** `run_manifest.json` records the command, seed, row argument, source/data hashes, git revision, runtime versions, feature contract, target policy, split rule, and population counts.
+- **Evaluation:** MAE, RMSE, R², a duration-within-5-minutes rate, and simple global-mean/distance-only baselines on one chronological holdout; row-level errors and slice metrics are saved as JSON. The scorecard explicitly labels this as a synthetic smoke test.
+- **Reproducibility:** `run_manifest.json` records a run identity, command, seed, row argument, source/data hashes, git revision, runtime versions, feature contract, target policy, model parameters, split rule, population/time ranges, and artifact hashes.
 - **Deployment:** `--infer` loads the saved model and returns a prediction for one trip as JSON.
 
 ## Explicit deviations

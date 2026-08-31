@@ -48,6 +48,8 @@ def test_inference_is_json_serializable(tmp_path: Path):
     run_pipeline(tmp_path, rows=100, seed=3)
     result = infer_duration(tmp_path, 17, 4, 3.2, 2, 1, 2)
     assert result["predicted_duration_minutes"] > 0
+    assert result["run_id"]
+    assert result["manifest_version"] == 1
     json.dumps(result)
 
 
@@ -55,6 +57,24 @@ def test_bad_inference_input_is_rejected(tmp_path: Path):
     run_pipeline(tmp_path, rows=100, seed=3)
     with pytest.raises(ValueError):
         infer_duration(tmp_path, 25, 4, 3.2, 2, 1, 2)
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"distance_miles": 100.1},
+        {"passengers": 7},
+        {"passengers": 2.5},
+        {"pickup_zone": 8},
+        {"dropoff_zone": "2"},
+    ],
+)
+def test_inference_enforces_training_feature_contract(tmp_path: Path, kwargs: dict):
+    run_pipeline(tmp_path, rows=100, seed=3)
+    inputs = {"pickup_hour": 17, "weekday": 4, "distance_miles": 3.2, "passengers": 2, "pickup_zone": 1, "dropoff_zone": 2}
+    inputs.update(kwargs)
+    with pytest.raises(ValueError, match="invalid inference input"):
+        infer_duration(tmp_path, **inputs)
 
 
 def test_audit_has_row_level_target_policy_and_all_categories():
@@ -85,6 +105,19 @@ def test_audit_has_row_level_target_policy_and_all_categories():
     assert "iqr_outlier_passenger_count" in categories
     assert "invalid_distance_non_positive" in categories
     assert "target_non_numeric" in categories
+    duplicate = next(item for item in audit["findings"] if item["category"] == "duplicate_trip_id")
+    assert duplicate["status"] == "excluded"
+    assert duplicate["action"] == "exclude_duplicate_keep_first"
+    assert next(item for item in audit["findings"] if item["category"] == "invalid_distance_non_positive")["action"] == "coerce_to_missing_and_impute"
+
+
+def test_feature_timestamp_is_canonical_before_temporal_ordering():
+    data = make_sample_data(60, 11)
+    data.loc[data.index[0], "pickup_datetime"] = "2024-03-01T00:00:00"
+    data.loc[data.index[1], "pickup_datetime"] = "2023-12-31T23:00:00"
+    prepared = _features(data)
+    assert str(prepared.loc[data.index[0], "pickup_datetime"]) == "2024-03-01 00:00:00"
+    assert prepared.loc[data.index[1], "pickup_datetime"] < prepared.loc[data.index[0], "pickup_datetime"]
 
 
 def test_train_only_imputation_statistics_do_not_depend_on_holdout_values():
@@ -115,3 +148,21 @@ def test_malformed_required_schema_is_reported_as_blocking():
     finding = next(item for item in audit["findings"] if item["category"] == "missing_required_column")
     assert finding["action"] == "fail_before_modeling"
     assert finding["status"] == "blocking"
+
+
+def test_manifest_hashes_and_error_artifact_reconcile(tmp_path: Path):
+    run_pipeline(tmp_path, rows=120, seed=12)
+    manifest = json.loads((tmp_path / "run_manifest.json").read_text())
+    metrics = json.loads((tmp_path / "metrics.json").read_text())
+    errors = json.loads((tmp_path / "prediction_errors.json").read_text())
+    assert set(manifest["artifact_hashes_sha256"]) == {
+        "audit_report.json", "metrics.json", "model.joblib", "prediction_errors.json",
+        "eda.png", "actual_vs_predicted.png", "crispdm_report.md",
+    }
+    for name, digest in manifest["artifact_hashes_sha256"].items():
+        import hashlib
+        assert hashlib.sha256((tmp_path / name).read_bytes()).hexdigest() == digest
+    assert len(errors["rows"]) == metrics["test_rows"]
+    assert metrics["raw_rows"] == metrics["retained_rows"] + metrics["excluded_rows"]
+    assert metrics["train_rows"] + metrics["test_rows"] == metrics["retained_rows"]
+    assert metrics["baselines"]["global_mean"]["rows"] == metrics["test_rows"]

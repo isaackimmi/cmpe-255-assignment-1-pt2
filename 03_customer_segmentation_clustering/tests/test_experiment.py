@@ -3,7 +3,7 @@ import pandas as pd
 from src.experiment import (CANDIDATE_K_VALUES, FEATURES, SEED, evaluate_k,
                             evaluate_validation, fit_segmenter, make_dataset,
                             run, score_customers, validate_artifacts,
-                            validate_dataset, _transform)
+                            validate_dataset, feature_audit, _transform, EXPLORER_COLUMNS)
 
 
 def test_dataset_is_reproducible_and_valid():
@@ -11,6 +11,9 @@ def test_dataset_is_reproducible_and_valid():
     assert left.equals(right)
     assert left.shape == (120, len(FEATURES))
     assert np.isfinite(left.to_numpy()).all()
+    audit = feature_audit(left)
+    assert audit["features"][FEATURES[0]]["iqr_outliers"] >= 0
+    assert set(audit["correlation"]) == set(FEATURES)
 
 
 def test_k_selection_is_deterministic_and_has_expected_signal():
@@ -41,9 +44,27 @@ def test_data_contract_and_scoring_path():
 def test_run_writes_audit_artifacts(tmp_path):
     result = run(tmp_path)
     assert result["selected_k"] == 3
-    for name in ["customer_segments.csv", "baseline_scores.csv", "log1p_scores.csv", "validation_scores.csv", "segmentation.png", "summary.json", "manifest.json"]:
+    for name in ["customer_segments.csv", "explorer_points.csv", "baseline_scores.csv", "log1p_scores.csv", "validation_scores.csv", "segmentation.png", "summary.json", "manifest.json"]:
         assert (tmp_path / name).exists()
     assignments = pd.read_csv(tmp_path / "customer_segments.csv")
     assert assignments.shape == (120, len(FEATURES) + 1)
     assert assignments.cluster.nunique() == result["selected_k"]
+    explorer = pd.read_csv(tmp_path / "explorer_points.csv")
+    assert explorer.columns.tolist() == EXPLORER_COLUMNS
+    assert explorer.shape[0] == len(assignments)
+    assert explorer.customer_id.iloc[0] == "C001"
+    assert set(explorer.uncertainty_label).issubset({"clear", "moderate", "ambiguous"})
+    assert explorer.assignment_confidence.between(0, 1).all()
+    summary = pd.read_json(tmp_path / "summary.json", typ="series")
+    assert "feature_audit" in summary["data_quality"]
     assert validate_artifacts(tmp_path)["valid"]
+
+
+def test_artifact_manifest_rejects_stale_or_incomplete_hashes(tmp_path):
+    run(tmp_path)
+    manifest_path = tmp_path / "manifest.json"
+    manifest = manifest_path.read_text()
+    manifest_path.write_text(manifest.replace('"explorer_points.csv":', '"stale.csv":', 1))
+    result = validate_artifacts(tmp_path)
+    assert not result["valid"]
+    assert any("manifest" in error for error in result["errors"])

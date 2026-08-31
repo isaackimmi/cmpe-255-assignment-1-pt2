@@ -29,6 +29,11 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 
+try:
+    from .inference import fitted_model_fingerprint, model_configuration_fingerprint
+except ImportError:  # Running this file directly from the src directory.
+    from inference import fitted_model_fingerprint, model_configuration_fingerprint
+
 
 RANDOM_STATE = 42
 CV_SPLITS = 5
@@ -203,10 +208,30 @@ def wilson_interval(correct: int, total: int, z: float = 1.96) -> list[float]:
     return [float(max(0.0, centre - margin)), float(min(1.0, centre + margin))]
 
 
-def evaluate(model, x_test, y_test, target_names, baseline=None) -> dict[str, Any]:
+def evaluate(model, x_test, y_test, target_names, baseline=None, row_indices=None, feature_names=None) -> dict[str, Any]:
+    if row_indices is None:
+        row_indices = np.arange(len(y_test))
+    if feature_names is None:
+        feature_names = [f"feature_{index}" for index in range(x_test.shape[1])]
+    if len(row_indices) != len(y_test) or len(feature_names) != x_test.shape[1]:
+        raise ValueError("Evaluation row indices and feature names must align with the holdout matrix")
     predictions = model.predict(x_test)
+    probabilities = model.predict_proba(x_test) if hasattr(model, "predict_proba") else None
     report = classification_report(y_test, predictions, target_names=target_names, output_dict=True, zero_division=0)
     correct = int(np.sum(predictions == y_test))
+    holdout_cases = []
+    for holdout_number, (actual, predicted, row_index, features) in enumerate(zip(y_test, predictions, row_indices, x_test)):
+        case = {
+            "row_number_in_holdout": int(holdout_number),
+            "dataset_row_index": int(row_index),
+            "actual_class": str(target_names[actual]),
+            "predicted_class": str(target_names[predicted]),
+            "correct": bool(actual == predicted),
+            "features": {str(name): float(value) for name, value in zip(feature_names, features)},
+        }
+        if probabilities is not None:
+            case["predicted_probability"] = float(probabilities[holdout_number][predicted])
+        holdout_cases.append(case)
     result = {
         "accuracy": float(accuracy_score(y_test, predictions)),
         "correct": correct,
@@ -214,10 +239,8 @@ def evaluate(model, x_test, y_test, target_names, baseline=None) -> dict[str, An
         "accuracy_95_wilson_interval": wilson_interval(correct, len(y_test)),
         "confusion_matrix": confusion_matrix(y_test, predictions).tolist(),
         "classification_report": report,
-        "failure_cases": [
-            {"row_number_in_holdout": int(index), "actual_class": str(target_names[actual]), "predicted_class": str(target_names[predicted])}
-            for index, (actual, predicted) in enumerate(zip(y_test, predictions)) if actual != predicted
-        ],
+        "holdout_cases": holdout_cases,
+        "failure_cases": [case for case in holdout_cases if not case["correct"]],
     }
     if baseline is not None:
         baseline_predictions = baseline.predict(x_test)
@@ -260,23 +283,34 @@ def run(output_dir: Path) -> dict[str, Any]:
     baseline = candidate_models()["majority_class"]
     baseline.fit(x_train, y_train)
     model.fit(x_train, y_train)
-    evaluation = evaluate(model, x_test, y_test, data.target_names, baseline=baseline)
+    evaluation = evaluate(
+        model,
+        x_test,
+        y_test,
+        data.target_names,
+        baseline=baseline,
+        row_indices=test_indices,
+        feature_names=data.feature_names,
+    )
 
     snapshot_path = output_dir / "iris_snapshot.csv"
     model_path = output_dir / "model.joblib"
     write_csv(snapshot_path, data)
-    # Nested estimators are not JSON-native; their stable repr records the
-    # fitted model configuration without serializing learned coefficients.
-    model_fingerprint = _sha256_bytes(json.dumps(model.get_params(deep=True), default=repr, sort_keys=True).encode("utf-8"))
+    model_configuration = model_configuration_fingerprint(model)
+    fitted_fingerprint = fitted_model_fingerprint(model)
     cv_means = {result["name"]: result["cv_accuracy_mean"] for result in selection_results}
     model_bundle = {
-        "bundle_schema_version": "1.0",
+        "bundle_schema_version": "1.1",
         "model": model,
         "model_name": selected_name,
-        "model_fingerprint": model_fingerprint,
+        "model_fingerprint": fitted_fingerprint,
+        "model_configuration_fingerprint": model_configuration,
+        "fitted_model_fingerprint": fitted_fingerprint,
         "feature_contract": feature_contract(data.feature_names),
         "target_names": [str(name) for name in data.target_names],
         "dataset_sha256": data_report["content_sha256"],
+        "dataset_snapshot": snapshot_path.name,
+        "dataset_snapshot_sha256": _sha256_file(snapshot_path),
         "random_state": RANDOM_STATE,
     }
     joblib.dump(model_bundle, model_path)
@@ -298,11 +332,14 @@ def run(output_dir: Path) -> dict[str, Any]:
         "modeling": {
             "selection_protocol": f"{CV_REPEATS} repeats of {CV_SPLITS}-fold stratified CV on training rows only",
             "selection_metric": "accuracy",
+            "available_metrics": ["accuracy"],
             "tie_breaking": "Candidate declaration order after mean CV accuracy",
             "candidates": selection_results,
             "selected_model": selected_name,
             "algorithm": "StandardScaler + multinomial LogisticRegression" if selected_name == "logistic_regression" else selected_name,
-            "model_fingerprint": model_fingerprint,
+            "model_fingerprint": fitted_fingerprint,
+            "model_configuration_fingerprint": model_configuration,
+            "fitted_model_fingerprint": fitted_fingerprint,
             "baseline_cv_accuracy": cv_means["majority_class"],
             "selected_cv_accuracy": cv_means[selected_name],
             "beats_baseline_in_cv": bool(cv_means[selected_name] > cv_means["majority_class"]),
@@ -311,6 +348,7 @@ def run(output_dir: Path) -> dict[str, Any]:
         "deployment": {
             "status": "Local inference artifact produced; not production approved.",
             "model_artifact": model_path.name,
+            "bundle_schema_version": "1.1",
             "inference_command": "python3 src/inference.py --model-path artifacts/model.joblib --features 5.1 3.5 1.4 0.2",
             "input_contract": feature_contract(data.feature_names),
             "monitoring_plan": [
@@ -320,6 +358,11 @@ def run(output_dir: Path) -> dict[str, Any]:
             ],
             "rollback": "Keep the previous model bundle and restore it if a reviewed evaluation or contract check fails.",
             "claim_boundary": "This artifact supports local, schema-validated inference on Iris-like measurements only; it does not establish external or production performance.",
+            "validation_semantics": {
+                "success_gate": "Pass only when modeling.beats_baseline_in_cv is true: the selected candidate's mean repeated-CV accuracy on training rows is strictly greater than the majority baseline.",
+                "holdout_readout": "The fixed stratified 30-row holdout is locked before fitting and used once for a descriptive readout; its accuracy and baseline delta do not decide the curriculum pass badge.",
+                "production_readiness": "No production or external-generalization claim is supported without representative external validation, a validated cost matrix, and operational monitoring.",
+            },
         },
         "artifacts": {
             "iris_snapshot.csv": {"sha256": _sha256_file(snapshot_path)},

@@ -6,5 +6,6 @@ outputs/*
 !outputs/synthetic_monthly_series.csv
 !outputs/forecast_predictions.csv
 !outputs/forecast_horizon_*.png
+!outputs/artifact_manifest.json
 __pycache__/
 .pytest_cache/

@@ -129,6 +129,30 @@ class CharNGram:
     def _encode(self, text):
         return [ch if ch in self.vocab else UNK_TOKEN for ch in text]
 
+    def _distribution(self, context):
+        """Return the normalized next-token distribution for ``context``."""
+        encoded_context = self._encode(context)
+        key = tuple(encoded_context[-self.order:]) if self.order else ()
+        counts = self.counts.get(key, Counter())
+        total = sum(counts.values()) + self.alpha * len(self.vocab)
+        return [
+            {
+                "token": token,
+                "probability": round((counts[token] + self.alpha) / total, 8),
+                "count": counts[token],
+            }
+            for token in self.vocab
+        ]
+
+    def next_distribution(self, context):
+        """Return all next-token probabilities, highest probability first."""
+        if not self.vocab:
+            raise RuntimeError("fit the model before inspecting probabilities")
+        return sorted(
+            self._distribution(context),
+            key=lambda item: (-item["probability"], item["token"]),
+        )
+
     def fit(self, text):
         if not text:
             raise ValueError("cannot fit an empty corpus")
@@ -142,10 +166,8 @@ class CharNGram:
             raise RuntimeError("fit the model before generating")
         if not math.isfinite(temperature) or temperature < 0:
             raise ValueError("temperature must be a non-negative finite number")
-        encoded_context = self._encode(context)
-        key = tuple(encoded_context[-self.order:]) if self.order else ()
-        counts = self.counts.get(key, Counter())
-        weights = [counts[c] + self.alpha for c in self.vocab]
+        probabilities = self._distribution(context)
+        weights = [item["probability"] for item in probabilities]
         if temperature == 0:
             return self.vocab[max(range(len(weights)), key=weights.__getitem__)]
         weights = [math.exp(math.log(weight) / temperature) for weight in weights]
@@ -158,6 +180,32 @@ class CharNGram:
         for _ in range(max_new_tokens):
             out += self.next_char(out, temperature)
         return out
+
+    def replay(self, prompt, max_new_tokens=80, temperature=0.0, top_k=8):
+        """Generate with an auditable per-step trace for the browser console."""
+        if max_new_tokens < 0:
+            raise ValueError("max_new_tokens must be non-negative")
+        out = prompt
+        trace = []
+        for step in range(1, max_new_tokens + 1):
+            distribution = self.next_distribution(out)
+            selected = self.next_char(out, temperature)
+            trace.append({
+                "step": step,
+                "context": out[-self.order:] if self.order else "",
+                "candidates": distribution[:top_k],
+                "selected": selected,
+            })
+            out += selected
+        return {
+            "prompt": prompt,
+            "generated": out[len(prompt):],
+            "text": out,
+            "context_order": self.order,
+            "temperature": temperature,
+            "deterministic": temperature == 0,
+            "trace": trace,
+        }
 
     def evaluate(self, text, context=""):
         """Score ``text`` conditioned on ``context`` and prior test characters."""
@@ -191,11 +239,20 @@ class CharNGram:
 
 
 def _base_metadata(args, text, train, validation, test):
+    corpus_path = Path(args.corpus).name if args.corpus else "inline_corpus"
+    lines = text.splitlines()
     return {
         "seed": args.seed,
         "corpus_sha256": _hash_text(text),
         "vocabulary_policy": "fit_on_train_only_with_explicit_<UNK>",
         "split": _split_metadata(train, validation, test, args.train_fraction, args.validation_fraction),
+        "dataset": {
+            "name": corpus_path,
+            "characters": len(text),
+            "lines": len(lines),
+            "dialogue_pairs": sum(line.startswith("user:") for line in lines),
+            "synthetic": True,
+        },
         "python_version": platform.python_version(),
         "platform": platform.platform(),
         "config": vars(args).copy(),
@@ -234,7 +291,29 @@ def run_ngram(args):
         "loss": test_metrics["loss"],
         "perplexity": test_metrics["perplexity"],
     }
-    metrics["sample"] = model.generate(args.prompt, args.max_new_tokens, args.temperature)
+    behavior = {
+        "kind": "deterministic_replay",
+        "backend": "stdlib_char_ngram",
+        "order": model.order,
+        "alpha": model.alpha,
+        "temperature": args.temperature,
+        "prompt": args.prompt,
+        "max_new_tokens": args.max_new_tokens,
+        "deterministic": args.temperature == 0,
+        "vocabulary": model.vocab,
+        "default_distribution": model._distribution(""),
+        "unseen_context_distribution": [
+            {"token": token, "probability": round(1 / len(model.vocab), 8), "count": 0}
+            for token in model.vocab
+        ],
+        "contexts": {
+            json.dumps(list(context), ensure_ascii=False, separators=(",", ":")): model._distribution("".join(context))
+            for context in model.counts
+        },
+    }
+    behavior.update(model.replay(args.prompt, args.max_new_tokens, args.temperature))
+    metrics["behavior"] = behavior
+    metrics["sample"] = behavior["text"]
     return metrics
 
 
@@ -382,13 +461,33 @@ def run_torch(args):
 
     ids = enc(args.prompt).to(device)
     prompt_length = len(ids)
+    replay_ids = ids.clone()
+    replay_text = args.prompt
+    replay_trace = []
     with torch.no_grad():
         for _ in range(args.max_new_tokens):
-            if len(ids) == 0:
-                ids = tr[-1:].to(device)
-            inputs = ids[-args.block_size:].unsqueeze(0)
+            scoring_ids = replay_ids if len(replay_ids) else tr[-1:].to(device)
+            inputs = scoring_ids[-args.block_size:].unsqueeze(0)
             logits, _ = model(inputs)
-            ids = torch.cat((ids, logits[0, -1].argmax().view(1)))
+            probabilities = torch.softmax(logits[0, -1], dim=-1)
+            top_count = min(8, len(chars))
+            top_values, top_indices = torch.topk(probabilities, top_count)
+            selected_index = int(probabilities.argmax())
+            replay_trace.append({
+                "step": len(replay_trace) + 1,
+                "context": replay_text[-args.block_size:],
+                "candidates": [
+                    {
+                        "token": itos[int(index)],
+                        "probability": round(float(value), 8),
+                    }
+                    for value, index in zip(top_values, top_indices)
+                ],
+                "selected": itos[selected_index],
+            })
+            next_id = torch.tensor([selected_index], device=device)
+            replay_ids = torch.cat((replay_ids, next_id))
+            replay_text += itos[selected_index]
 
     oov_counts = {
         "train": 0,
@@ -415,9 +514,19 @@ def run_torch(args):
         "loss": test_metrics["loss"],
         "perplexity": test_metrics["perplexity"],
         "test_evaluations": 1,
-        "sample": args.prompt + "".join(
-            itos[int(index)] for index in ids[prompt_length:].detach().cpu()
-        ),
+        "behavior": {
+            "kind": "serialized_generation_trace",
+            "backend": "torch_transformer",
+            "order": args.block_size,
+            "temperature": args.temperature,
+            "prompt": args.prompt,
+            "max_new_tokens": args.max_new_tokens,
+            "deterministic": True,
+            "trace": replay_trace,
+            "generated": replay_text[len(args.prompt):],
+            "text": replay_text,
+        },
+        "sample": replay_text,
     }
 
 

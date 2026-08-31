@@ -4,9 +4,13 @@ The portfolio is a faithful lightweight reproduction of the reference project th
 
 ## UI coverage
 
-All 14 projects now have a browser-facing presentation layer. The dashboards read checked-in outputs and provide project-specific metric cards, charts, phase context, and interactions. Controls that do not call the Python runtime are explicitly labeled illustrative; the underlying experiments remain the source of truth.
+All 14 projects now have a browser-facing presentation layer. The dashboards read checked-in outputs and provide project-specific metric cards, charts, phase context, and analytical interactions. Controls that do not call the Python runtime are explicitly labeled artifact-backed or illustrative; the underlying experiments remain the source of truth.
 
-Rendered evidence for each dashboard is checked into `ui_screenshots/project-00.png` through `project-13.png` and was captured from the public GitHub Pages deployment.
+Rendered evidence for each dashboard is checked into `ui_screenshots/project-00.png` through `project-13.png` and was refreshed during a sequential localhost smoke-review pass.
+
+## Final polish review
+
+The final pass reviewed every project twice: first for analytical soundness, then for UI usefulness. The highest-value upgrades added explicit evaluation populations, baselines, fold/holdout boundaries, uncertainty, provenance, artifact-backed explorers, synthetic-data framing, and functional filters/threshold/sort/detail controls. Project-level evidence and limitations are recorded in each `FINAL_POLISH_REVIEW.md`.
 
 | Project | Reference intent | Implemented comparison | Result/artifact |
 |---|---|---|---|

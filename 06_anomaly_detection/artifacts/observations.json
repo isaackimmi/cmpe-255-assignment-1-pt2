@@ -1,0 +1,4202 @@
+[
+  {
+    "id": "holdout-001",
+    "split": "holdout",
+    "feature_1": 6.893906164838079,
+    "feature_2": 1.1495651035864127,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6256591749008943,
+      "local_outlier_factor": 1.8640023970208597,
+      "elliptic_envelope": 14.293891329374897,
+      "rank_ensemble": 0.9866666666666667
+    }
+  },
+  {
+    "id": "holdout-002",
+    "split": "holdout",
+    "feature_1": 2.9904955118943266,
+    "feature_2": -0.1390287405623079,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5791068908959187,
+      "local_outlier_factor": 1.6865023414446312,
+      "elliptic_envelope": 4.824848113724933,
+      "rank_ensemble": 0.9455555555555556
+    }
+  },
+  {
+    "id": "holdout-003",
+    "split": "holdout",
+    "feature_1": 7.565028203442453,
+    "feature_2": 3.6952208723584423,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.6086017498369425,
+      "local_outlier_factor": 1.383152484471386,
+      "elliptic_envelope": 5.496737826272267,
+      "rank_ensemble": 0.9416666666666668
+    }
+  },
+  {
+    "id": "holdout-004",
+    "split": "holdout",
+    "feature_1": 2.8241321915009463,
+    "feature_2": 3.6797034283991352,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5370840190901145,
+      "local_outlier_factor": 1.564958967768616,
+      "elliptic_envelope": 2.1170555706432923,
+      "rank_ensemble": 0.8322222222222222
+    }
+  },
+  {
+    "id": "holdout-005",
+    "split": "holdout",
+    "feature_1": 2.7482641169781683,
+    "feature_2": -0.7814026337119512,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5934143584795384,
+      "local_outlier_factor": 2.089407868817184,
+      "elliptic_envelope": 6.93133811736198,
+      "rank_ensemble": 0.9705555555555555
+    }
+  },
+  {
+    "id": "holdout-006",
+    "split": "holdout",
+    "feature_1": -0.004899684701883802,
+    "feature_2": -0.602776064571276,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4385501172077253,
+      "local_outlier_factor": 0.9804308485139788,
+      "elliptic_envelope": 1.2828608870354166,
+      "rank_ensemble": 0.24888888888888885
+    }
+  },
+  {
+    "id": "holdout-007",
+    "split": "holdout",
+    "feature_1": 0.5761733678427312,
+    "feature_2": 1.7913547431429184,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5637154705689078,
+      "local_outlier_factor": 1.7841598335004385,
+      "elliptic_envelope": 1.6666617713447685,
+      "rank_ensemble": 0.8138888888888888
+    }
+  },
+  {
+    "id": "holdout-008",
+    "split": "holdout",
+    "feature_1": 3.3228595166879256,
+    "feature_2": 0.3401751584160955,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.564956523931157,
+      "local_outlier_factor": 1.7035004270477285,
+      "elliptic_envelope": 3.910093127544799,
+      "rank_ensemble": 0.9288888888888889
+    }
+  },
+  {
+    "id": "holdout-009",
+    "split": "holdout",
+    "feature_1": 5.776541685915728,
+    "feature_2": 1.8470045033281153,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.550666728143643,
+      "local_outlier_factor": 1.3615528069232459,
+      "elliptic_envelope": 5.764778734708401,
+      "rank_ensemble": 0.9199999999999999
+    }
+  },
+  {
+    "id": "holdout-010",
+    "split": "holdout",
+    "feature_1": 4.647381252397444,
+    "feature_2": 3.7760955869253396,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43015534123087495,
+      "local_outlier_factor": 1.007166725564584,
+      "elliptic_envelope": 0.7495832728265188,
+      "rank_ensemble": 0.2172222222222222
+    }
+  },
+  {
+    "id": "holdout-011",
+    "split": "holdout",
+    "feature_1": -2.0552454247269343,
+    "feature_2": -2.689673114187958,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.7089355435594634,
+      "local_outlier_factor": 2.152854962301341,
+      "elliptic_envelope": 4.399558726711871,
+      "rank_ensemble": 0.9633333333333334
+    }
+  },
+  {
+    "id": "holdout-012",
+    "split": "holdout",
+    "feature_1": 3.4157610335668482,
+    "feature_2": 0.04793444942187602,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5691070054107481,
+      "local_outlier_factor": 1.8659624846803373,
+      "elliptic_envelope": 5.323137609872489,
+      "rank_ensemble": 0.9522222222222222
+    }
+  },
+  {
+    "id": "holdout-013",
+    "split": "holdout",
+    "feature_1": 2.00578240904468,
+    "feature_2": 1.69247241937702,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5560129312614783,
+      "local_outlier_factor": 1.5467474481334609,
+      "elliptic_envelope": 0.03926436637630917,
+      "rank_ensemble": 0.6222222222222222
+    }
+  },
+  {
+    "id": "holdout-014",
+    "split": "holdout",
+    "feature_1": 4.362082912352926,
+    "feature_2": 4.0930744728152355,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43526572548291487,
+      "local_outlier_factor": 1.0130614310715265,
+      "elliptic_envelope": 1.2010047126608578,
+      "rank_ensemble": 0.32666666666666666
+    }
+  },
+  {
+    "id": "holdout-015",
+    "split": "holdout",
+    "feature_1": -4.621925793107567,
+    "feature_2": -1.3725140979659343,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6774761823266209,
+      "local_outlier_factor": 3.5946741404555023,
+      "elliptic_envelope": 8.223951103673855,
+      "rank_ensemble": 0.9888888888888889
+    }
+  },
+  {
+    "id": "holdout-016",
+    "split": "holdout",
+    "feature_1": 6.953750737211988,
+    "feature_2": 1.378514528480333,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6267945866499479,
+      "local_outlier_factor": 1.710452900089242,
+      "elliptic_envelope": 13.189315893115822,
+      "rank_ensemble": 0.9822222222222222
+    }
+  },
+  {
+    "id": "holdout-017",
+    "split": "holdout",
+    "feature_1": 7.3472574612056505,
+    "feature_2": 1.4261499603625136,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6557481025085339,
+      "local_outlier_factor": 1.8146688679243517,
+      "elliptic_envelope": 15.011209966294386,
+      "rank_ensemble": 0.9933333333333333
+    }
+  },
+  {
+    "id": "holdout-018",
+    "split": "holdout",
+    "feature_1": 1.378055982836516,
+    "feature_2": -1.174079449022801,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5725021117995811,
+      "local_outlier_factor": 1.6165053450100002,
+      "elliptic_envelope": 4.695666692649142,
+      "rank_ensemble": 0.9383333333333334
+    }
+  },
+  {
+    "id": "holdout-019",
+    "split": "holdout",
+    "feature_1": -0.08114174703943988,
+    "feature_2": -2.833493389363734,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6512006261775338,
+      "local_outlier_factor": 2.2884979312164173,
+      "elliptic_envelope": 8.369817070398874,
+      "rank_ensemble": 0.9872222222222223
+    }
+  },
+  {
+    "id": "holdout-020",
+    "split": "holdout",
+    "feature_1": 0.286766672584819,
+    "feature_2": -1.348902611851395,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5376572283165313,
+      "local_outlier_factor": 1.2938269700092988,
+      "elliptic_envelope": 3.169629024062011,
+      "rank_ensemble": 0.8688888888888888
+    }
+  },
+  {
+    "id": "holdout-021",
+    "split": "holdout",
+    "feature_1": 0.9323810705932626,
+    "feature_2": 0.5883786338333906,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44759471874648665,
+      "local_outlier_factor": 1.0120961232240822,
+      "elliptic_envelope": 0.3318797561160732,
+      "rank_ensemble": 0.2783333333333334
+    }
+  },
+  {
+    "id": "holdout-022",
+    "split": "holdout",
+    "feature_1": 3.0739408586327785,
+    "feature_2": 0.23374328513906212,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5645479541638159,
+      "local_outlier_factor": 1.5694557382523977,
+      "elliptic_envelope": 3.642138776680193,
+      "rank_ensemble": 0.918888888888889
+    }
+  },
+  {
+    "id": "holdout-023",
+    "split": "holdout",
+    "feature_1": 6.957101584193294,
+    "feature_2": 0.37243389439665253,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6200061760823351,
+      "local_outlier_factor": 2.453702348070415,
+      "elliptic_envelope": 20.16556287030727,
+      "rank_ensemble": 0.9899999999999999
+    }
+  },
+  {
+    "id": "holdout-024",
+    "split": "holdout",
+    "feature_1": 2.4190033596167937,
+    "feature_2": -2.3888052922685885,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.675982900917006,
+      "local_outlier_factor": 3.8808039770036764,
+      "elliptic_envelope": 15.297393856050583,
+      "rank_ensemble": 0.9983333333333334
+    }
+  },
+  {
+    "id": "holdout-025",
+    "split": "holdout",
+    "feature_1": 5.571489411548175,
+    "feature_2": 4.2963233653466055,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44839059195849656,
+      "local_outlier_factor": 1.0397551697912677,
+      "elliptic_envelope": 1.2854496615016133,
+      "rank_ensemble": 0.4472222222222222
+    }
+  },
+  {
+    "id": "holdout-026",
+    "split": "holdout",
+    "feature_1": 7.757481936651266,
+    "feature_2": 1.551227411935909,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.657990720893963,
+      "local_outlier_factor": 1.9156946797971108,
+      "elliptic_envelope": 16.529190486089416,
+      "rank_ensemble": 0.9944444444444445
+    }
+  },
+  {
+    "id": "holdout-027",
+    "split": "holdout",
+    "feature_1": 1.5447473656083857,
+    "feature_2": 0.8678329796625346,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4781085416705604,
+      "local_outlier_factor": 1.1087024972517896,
+      "elliptic_envelope": 0.22232312012885164,
+      "rank_ensemble": 0.46166666666666667
+    }
+  },
+  {
+    "id": "holdout-028",
+    "split": "holdout",
+    "feature_1": 4.6619496611240105,
+    "feature_2": 3.944979286469193,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4264178392754292,
+      "local_outlier_factor": 0.9901937197419096,
+      "elliptic_envelope": 0.8951493712183448,
+      "rank_ensemble": 0.16277777777777777
+    }
+  },
+  {
+    "id": "holdout-029",
+    "split": "holdout",
+    "feature_1": -3.639473508650471,
+    "feature_2": 1.5075165671578659,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6832805570790684,
+      "local_outlier_factor": 3.539585871483602,
+      "elliptic_envelope": 16.75645108373467,
+      "rank_ensemble": 0.9983333333333334
+    }
+  },
+  {
+    "id": "holdout-030",
+    "split": "holdout",
+    "feature_1": -1.4230033442638619,
+    "feature_2": 5.712441344936344,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.642791121865786,
+      "local_outlier_factor": 4.139513131925457,
+      "elliptic_envelope": 37.76637733659283,
+      "rank_ensemble": 0.9966666666666667
+    }
+  },
+  {
+    "id": "holdout-031",
+    "split": "holdout",
+    "feature_1": 5.283402164860305,
+    "feature_2": 2.8239480698592527,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.47288436863594435,
+      "local_outlier_factor": 1.002962383557098,
+      "elliptic_envelope": 1.771247465112703,
+      "rank_ensemble": 0.505
+    }
+  },
+  {
+    "id": "holdout-032",
+    "split": "holdout",
+    "feature_1": 6.9117084513001235,
+    "feature_2": 3.4364715257071112,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5277472171448118,
+      "local_outlier_factor": 1.1153104394706832,
+      "elliptic_envelope": 4.242449567851626,
+      "rank_ensemble": 0.8205555555555555
+    }
+  },
+  {
+    "id": "holdout-033",
+    "split": "holdout",
+    "feature_1": 6.743792916509216,
+    "feature_2": 0.9990053325902234,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6178298975358366,
+      "local_outlier_factor": 1.9314940264078737,
+      "elliptic_envelope": 14.445726684993192,
+      "rank_ensemble": 0.985
+    }
+  },
+  {
+    "id": "holdout-034",
+    "split": "holdout",
+    "feature_1": 4.196641284912093,
+    "feature_2": -3.8163784648012884,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6777505141069095,
+      "local_outlier_factor": 6.666042513778202,
+      "elliptic_envelope": 40.66114264015235,
+      "rank_ensemble": 0.9994444444444444
+    }
+  },
+  {
+    "id": "holdout-035",
+    "split": "holdout",
+    "feature_1": -0.17504939782693674,
+    "feature_2": -0.3158412078817667,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4328637611052693,
+      "local_outlier_factor": 0.9971888334114586,
+      "elliptic_envelope": 0.9778319405882339,
+      "rank_ensemble": 0.22722222222222221
+    }
+  },
+  {
+    "id": "holdout-036",
+    "split": "holdout",
+    "feature_1": 7.200769925401499,
+    "feature_2": 1.0758877039819672,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6401174292658101,
+      "local_outlier_factor": 2.00635328048868,
+      "elliptic_envelope": 16.504279919323096,
+      "rank_ensemble": 0.9927777777777776
+    }
+  },
+  {
+    "id": "holdout-037",
+    "split": "holdout",
+    "feature_1": 3.0158220375255156,
+    "feature_2": 0.1403241267906608,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5675334961855222,
+      "local_outlier_factor": 1.5876533797986498,
+      "elliptic_envelope": 3.825563470818478,
+      "rank_ensemble": 0.9238888888888889
+    }
+  },
+  {
+    "id": "holdout-038",
+    "split": "holdout",
+    "feature_1": 6.967432114685599,
+    "feature_2": 1.5020984969854503,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6216370784419403,
+      "local_outlier_factor": 1.6294599990881107,
+      "elliptic_envelope": 12.523903242315214,
+      "rank_ensemble": 0.976111111111111
+    }
+  },
+  {
+    "id": "holdout-039",
+    "split": "holdout",
+    "feature_1": 5.136437506178879,
+    "feature_2": 3.0001665789593828,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.45899326946043983,
+      "local_outlier_factor": 1.0052648915331601,
+      "elliptic_envelope": 1.2847284538082733,
+      "rank_ensemble": 0.4138888888888889
+    }
+  },
+  {
+    "id": "holdout-040",
+    "split": "holdout",
+    "feature_1": 2.8604957953653707,
+    "feature_2": 0.5474084636217118,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5615508469113696,
+      "local_outlier_factor": 1.396759839709904,
+      "elliptic_envelope": 2.1867888187875826,
+      "rank_ensemble": 0.8494444444444444
+    }
+  },
+  {
+    "id": "holdout-041",
+    "split": "holdout",
+    "feature_1": 4.375790336672136,
+    "feature_2": 4.388282934477036,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4308510728578235,
+      "local_outlier_factor": 0.9680933500385679,
+      "elliptic_envelope": 1.7359097186007264,
+      "rank_ensemble": 0.2383333333333333
+    }
+  },
+  {
+    "id": "holdout-042",
+    "split": "holdout",
+    "feature_1": 4.800919361378635,
+    "feature_2": 5.666106266029457,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5241555169693178,
+      "local_outlier_factor": 1.3545264653600975,
+      "elliptic_envelope": 4.868536479198463,
+      "rank_ensemble": 0.8894444444444444
+    }
+  },
+  {
+    "id": "holdout-043",
+    "split": "holdout",
+    "feature_1": 0.9750552149077766,
+    "feature_2": -0.3557801271259465,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.45360447083327093,
+      "local_outlier_factor": 1.0341327068329018,
+      "elliptic_envelope": 1.5303804912126504,
+      "rank_ensemble": 0.4905555555555556
+    }
+  },
+  {
+    "id": "holdout-044",
+    "split": "holdout",
+    "feature_1": 7.3640717864244785,
+    "feature_2": 3.0489644043636455,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5949305014826514,
+      "local_outlier_factor": 1.347385910571563,
+      "elliptic_envelope": 6.897533962672701,
+      "rank_ensemble": 0.9466666666666667
+    }
+  },
+  {
+    "id": "holdout-045",
+    "split": "holdout",
+    "feature_1": 6.052170887777622,
+    "feature_2": 4.361892001498841,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4721865322300754,
+      "local_outlier_factor": 1.038460855249785,
+      "elliptic_envelope": 1.597843093378665,
+      "rank_ensemble": 0.5577777777777778
+    }
+  },
+  {
+    "id": "holdout-046",
+    "split": "holdout",
+    "feature_1": 7.0811194013855125,
+    "feature_2": 0.9878676346753289,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6332551415245926,
+      "local_outlier_factor": 2.0371047155230233,
+      "elliptic_envelope": 16.41369696156044,
+      "rank_ensemble": 0.9922222222222222
+    }
+  },
+  {
+    "id": "holdout-047",
+    "split": "holdout",
+    "feature_1": 3.0783357429424223,
+    "feature_2": 0.12970010991626812,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5692574994081159,
+      "local_outlier_factor": 1.6318567063983422,
+      "elliptic_envelope": 4.028034664534754,
+      "rank_ensemble": 0.9288888888888889
+    }
+  },
+  {
+    "id": "holdout-048",
+    "split": "holdout",
+    "feature_1": -0.4450835005142097,
+    "feature_2": -1.6191661430751916,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5574272013424997,
+      "local_outlier_factor": 1.393164246045102,
+      "elliptic_envelope": 2.993294800807715,
+      "rank_ensemble": 0.8861111111111111
+    }
+  },
+  {
+    "id": "holdout-049",
+    "split": "holdout",
+    "feature_1": 0.7783272147185468,
+    "feature_2": 0.19971169632156874,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43784058046595214,
+      "local_outlier_factor": 1.0191329386623265,
+      "elliptic_envelope": 0.5790995211806224,
+      "rank_ensemble": 0.2594444444444444
+    }
+  },
+  {
+    "id": "holdout-050",
+    "split": "holdout",
+    "feature_1": 8.95158278875186,
+    "feature_2": 2.531368917202199,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6249306822114168,
+      "local_outlier_factor": 2.38490375202176,
+      "elliptic_envelope": 17.145321024354136,
+      "rank_ensemble": 0.9899999999999999
+    }
+  },
+  {
+    "id": "holdout-051",
+    "split": "holdout",
+    "feature_1": 6.65010248707593,
+    "feature_2": 0.8410870500241479,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6127984470198344,
+      "local_outlier_factor": 2.0282767956051178,
+      "elliptic_envelope": 14.965152919546002,
+      "rank_ensemble": 0.9855555555555555
+    }
+  },
+  {
+    "id": "holdout-052",
+    "split": "holdout",
+    "feature_1": -2.424748808313321,
+    "feature_2": 0.5745027480890285,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.6245112602401437,
+      "local_outlier_factor": 1.9859475613690432,
+      "elliptic_envelope": 6.4062153931454375,
+      "rank_ensemble": 0.9744444444444444
+    }
+  },
+  {
+    "id": "holdout-053",
+    "split": "holdout",
+    "feature_1": 3.355753610157394,
+    "feature_2": 0.322512330890364,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5659782194896381,
+      "local_outlier_factor": 1.7272781463460387,
+      "elliptic_envelope": 4.063127488164399,
+      "rank_ensemble": 0.9344444444444444
+    }
+  },
+  {
+    "id": "holdout-054",
+    "split": "holdout",
+    "feature_1": -0.1294128661189948,
+    "feature_2": -0.08790385313110757,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.42834845079277384,
+      "local_outlier_factor": 1.0029624604654814,
+      "elliptic_envelope": 0.8485232289462211,
+      "rank_ensemble": 0.20555555555555557
+    }
+  },
+  {
+    "id": "holdout-055",
+    "split": "holdout",
+    "feature_1": 6.228611025395059,
+    "feature_2": 3.9692175491462813,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.47101702142043134,
+      "local_outlier_factor": 1.027184348960982,
+      "elliptic_envelope": 1.9302311400136654,
+      "rank_ensemble": 0.5744444444444444
+    }
+  },
+  {
+    "id": "holdout-056",
+    "split": "holdout",
+    "feature_1": 3.5695947612796566,
+    "feature_2": 4.036948963382453,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4865973014968799,
+      "local_outlier_factor": 1.2549510746013575,
+      "elliptic_envelope": 1.8755600440845086,
+      "rank_ensemble": 0.726111111111111
+    }
+  },
+  {
+    "id": "holdout-057",
+    "split": "holdout",
+    "feature_1": 0.0958395106389932,
+    "feature_2": 0.027785542295040624,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.42301408383237016,
+      "local_outlier_factor": 0.9885166102882637,
+      "elliptic_envelope": 0.726069427945266,
+      "rank_ensemble": 0.12666666666666668
+    }
+  },
+  {
+    "id": "holdout-058",
+    "split": "holdout",
+    "feature_1": 1.379880332726586,
+    "feature_2": 0.1134946529011897,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.459827370859549,
+      "local_outlier_factor": 0.9861453489337761,
+      "elliptic_envelope": 1.0314497173792398,
+      "rank_ensemble": 0.31722222222222224
+    }
+  },
+  {
+    "id": "holdout-059",
+    "split": "holdout",
+    "feature_1": 0.012000179580793987,
+    "feature_2": -1.119735518976961,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.49763018837058004,
+      "local_outlier_factor": 1.1185399820218187,
+      "elliptic_envelope": 2.2334937892798834,
+      "rank_ensemble": 0.7294444444444445
+    }
+  },
+  {
+    "id": "holdout-060",
+    "split": "holdout",
+    "feature_1": 1.010276255151342,
+    "feature_2": 0.9242841858653748,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4612521508310637,
+      "local_outlier_factor": 1.1461722008069906,
+      "elliptic_envelope": 0.25482365440947014,
+      "rank_ensemble": 0.4366666666666666
+    }
+  },
+  {
+    "id": "holdout-061",
+    "split": "holdout",
+    "feature_1": 4.222761091185193,
+    "feature_2": 3.789387295785728,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4468455255064838,
+      "local_outlier_factor": 1.0850241431885876,
+      "elliptic_envelope": 0.8398906093322519,
+      "rank_ensemble": 0.41500000000000004
+    }
+  },
+  {
+    "id": "holdout-062",
+    "split": "holdout",
+    "feature_1": 0.002348176539999209,
+    "feature_2": 1.0944359673864186,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4707765526907275,
+      "local_outlier_factor": 1.0907986690703297,
+      "elliptic_envelope": 1.4182202602702285,
+      "rank_ensemble": 0.5777777777777778
+    }
+  },
+  {
+    "id": "holdout-063",
+    "split": "holdout",
+    "feature_1": 5.501091409644239,
+    "feature_2": 3.953463787518243,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44600080932706876,
+      "local_outlier_factor": 0.9958571289182878,
+      "elliptic_envelope": 1.1450126502816051,
+      "rank_ensemble": 0.31722222222222224
+    }
+  },
+  {
+    "id": "holdout-064",
+    "split": "holdout",
+    "feature_1": 8.915026036813323,
+    "feature_2": -0.5605343883235987,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6613846797672541,
+      "local_outlier_factor": 4.131075078190856,
+      "elliptic_envelope": 44.76002937238228,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-065",
+    "split": "holdout",
+    "feature_1": 4.68776095987632,
+    "feature_2": 4.149956142725492,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.425520081506611,
+      "local_outlier_factor": 0.9774058926497751,
+      "elliptic_envelope": 1.12718190101299,
+      "rank_ensemble": 0.14833333333333332
+    }
+  },
+  {
+    "id": "holdout-066",
+    "split": "holdout",
+    "feature_1": -1.0128588008740147,
+    "feature_2": 2.552830785339162,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6054913844864869,
+      "local_outlier_factor": 2.7128206130333807,
+      "elliptic_envelope": 9.38541168422878,
+      "rank_ensemble": 0.9794444444444445
+    }
+  },
+  {
+    "id": "holdout-067",
+    "split": "holdout",
+    "feature_1": 6.525602456266426,
+    "feature_2": 1.5278084977187771,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.6071138384093026,
+      "local_outlier_factor": 1.5956362319728832,
+      "elliptic_envelope": 10.243231180950474,
+      "rank_ensemble": 0.9688888888888889
+    }
+  },
+  {
+    "id": "holdout-068",
+    "split": "holdout",
+    "feature_1": 7.1566376802119445,
+    "feature_2": 1.4193035139373376,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6388367410472005,
+      "local_outlier_factor": 1.7475651220127562,
+      "elliptic_envelope": 14.012517328277346,
+      "rank_ensemble": 0.9883333333333333
+    }
+  },
+  {
+    "id": "holdout-069",
+    "split": "holdout",
+    "feature_1": 3.7566821320609103,
+    "feature_2": 5.508554545258043,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5133563101221162,
+      "local_outlier_factor": 1.091879996188223,
+      "elliptic_envelope": 6.743354648290431,
+      "rank_ensemble": 0.8194444444444443
+    }
+  },
+  {
+    "id": "holdout-070",
+    "split": "holdout",
+    "feature_1": 0.358831230099922,
+    "feature_2": 0.07600747524533866,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4251217222067494,
+      "local_outlier_factor": 1.0153584232675072,
+      "elliptic_envelope": 0.6497563310225632,
+      "rank_ensemble": 0.19722222222222222
+    }
+  },
+  {
+    "id": "holdout-071",
+    "split": "holdout",
+    "feature_1": -0.35663598622458814,
+    "feature_2": -0.5330891776054993,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44176884169218095,
+      "local_outlier_factor": 0.9884669779454913,
+      "elliptic_envelope": 1.1700694371005655,
+      "rank_ensemble": 0.27777777777777773
+    }
+  },
+  {
+    "id": "holdout-072",
+    "split": "holdout",
+    "feature_1": 3.8974109307678044,
+    "feature_2": 3.5459152888280894,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.48572436629503773,
+      "local_outlier_factor": 1.2688139904663542,
+      "elliptic_envelope": 0.6830812805760896,
+      "rank_ensemble": 0.5705555555555555
+    }
+  },
+  {
+    "id": "holdout-073",
+    "split": "holdout",
+    "feature_1": 2.8793378894363753,
+    "feature_2": 0.32949604675925015,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5599344431579922,
+      "local_outlier_factor": 1.462035689345482,
+      "elliptic_envelope": 2.8624756776366693,
+      "rank_ensemble": 0.8866666666666667
+    }
+  },
+  {
+    "id": "holdout-074",
+    "split": "holdout",
+    "feature_1": 5.224683289860253,
+    "feature_2": 3.683163696992187,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4419730261216462,
+      "local_outlier_factor": 0.9959228945766767,
+      "elliptic_envelope": 0.9495744620004811,
+      "rank_ensemble": 0.2672222222222222
+    }
+  },
+  {
+    "id": "holdout-075",
+    "split": "holdout",
+    "feature_1": 1.7727949433532888,
+    "feature_2": 0.12315369123089535,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4911968056109325,
+      "local_outlier_factor": 1.0532655663027877,
+      "elliptic_envelope": 1.4525246230090998,
+      "rank_ensemble": 0.5977777777777779
+    }
+  },
+  {
+    "id": "holdout-076",
+    "split": "holdout",
+    "feature_1": 3.365109247194936,
+    "feature_2": 2.29111081281809,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5500008491046898,
+      "local_outlier_factor": 1.6734955650634864,
+      "elliptic_envelope": 0.13402746226296183,
+      "rank_ensemble": 0.6227777777777778
+    }
+  },
+  {
+    "id": "holdout-077",
+    "split": "holdout",
+    "feature_1": 2.1969775413273003,
+    "feature_2": 8.71459469524374,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.679826575468099,
+      "local_outlier_factor": 3.7866752804831183,
+      "elliptic_envelope": 42.26448912039912,
+      "rank_ensemble": 0.9994444444444444
+    }
+  },
+  {
+    "id": "holdout-078",
+    "split": "holdout",
+    "feature_1": 5.805941176112031,
+    "feature_2": 3.797325519078388,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.45027345220011245,
+      "local_outlier_factor": 0.9869041110501332,
+      "elliptic_envelope": 1.4822204591191404,
+      "rank_ensemble": 0.3544444444444444
+    }
+  },
+  {
+    "id": "holdout-079",
+    "split": "holdout",
+    "feature_1": 0.4209164798466008,
+    "feature_2": 0.5078154749034568,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4328090563111851,
+      "local_outlier_factor": 0.9923648634091564,
+      "elliptic_envelope": 0.5043790472039178,
+      "rank_ensemble": 0.15
+    }
+  },
+  {
+    "id": "holdout-080",
+    "split": "holdout",
+    "feature_1": 7.2171442955278255,
+    "feature_2": 3.0795919268225513,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5726119582541842,
+      "local_outlier_factor": 1.2575001913675339,
+      "elliptic_envelope": 6.259550914860205,
+      "rank_ensemble": 0.9233333333333333
+    }
+  },
+  {
+    "id": "holdout-081",
+    "split": "holdout",
+    "feature_1": 6.98729959120445,
+    "feature_2": 0.7819325468819545,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.623194101720913,
+      "local_outlier_factor": 2.140220553718401,
+      "elliptic_envelope": 17.302881237760513,
+      "rank_ensemble": 0.9894444444444445
+    }
+  },
+  {
+    "id": "holdout-082",
+    "split": "holdout",
+    "feature_1": -1.8142063597547773,
+    "feature_2": -1.971943474171905,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.6580272779921821,
+      "local_outlier_factor": 1.590358729200111,
+      "elliptic_envelope": 2.9852330845538373,
+      "rank_ensemble": 0.9216666666666665
+    }
+  },
+  {
+    "id": "holdout-083",
+    "split": "holdout",
+    "feature_1": -0.021354473291089478,
+    "feature_2": -0.6649149096831704,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44414557145674954,
+      "local_outlier_factor": 0.9866601554344697,
+      "elliptic_envelope": 1.3646576746848478,
+      "rank_ensemble": 0.3055555555555556
+    }
+  },
+  {
+    "id": "holdout-084",
+    "split": "holdout",
+    "feature_1": -0.36597189793978024,
+    "feature_2": 0.7655039667766695,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4492708482359769,
+      "local_outlier_factor": 1.0219675547773215,
+      "elliptic_envelope": 1.5400298920354933,
+      "rank_ensemble": 0.4527777777777778
+    }
+  },
+  {
+    "id": "holdout-085",
+    "split": "holdout",
+    "feature_1": 6.678822419058008,
+    "feature_2": 4.893473668483372,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5725522130895444,
+      "local_outlier_factor": 1.233188451835994,
+      "elliptic_envelope": 2.22109575990409,
+      "rank_ensemble": 0.8333333333333334
+    }
+  },
+  {
+    "id": "holdout-086",
+    "split": "holdout",
+    "feature_1": 3.103614600622363,
+    "feature_2": -0.08153944094371905,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5746327746764234,
+      "local_outlier_factor": 1.7424662033469438,
+      "elliptic_envelope": 4.9196214972021055,
+      "rank_ensemble": 0.9500000000000001
+    }
+  },
+  {
+    "id": "holdout-087",
+    "split": "holdout",
+    "feature_1": 5.4692716187796275,
+    "feature_2": 5.234651357785319,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5150400011988278,
+      "local_outlier_factor": 1.2803376017446129,
+      "elliptic_envelope": 2.629189882352742,
+      "rank_ensemble": 0.8244444444444445
+    }
+  },
+  {
+    "id": "holdout-088",
+    "split": "holdout",
+    "feature_1": 5.536050402092197,
+    "feature_2": 2.94466860276958,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4660743983816163,
+      "local_outlier_factor": 1.0218004517125079,
+      "elliptic_envelope": 2.0400441284685313,
+      "rank_ensemble": 0.5633333333333334
+    }
+  },
+  {
+    "id": "holdout-089",
+    "split": "holdout",
+    "feature_1": 3.2360394694472303,
+    "feature_2": 0.2968430324207122,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5629466481285904,
+      "local_outlier_factor": 1.6400066205008395,
+      "elliptic_envelope": 3.8363981518999934,
+      "rank_ensemble": 0.9216666666666665
+    }
+  },
+  {
+    "id": "holdout-090",
+    "split": "holdout",
+    "feature_1": 6.944566711008881,
+    "feature_2": 1.2213365332764672,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6295641125256608,
+      "local_outlier_factor": 1.8228895261532756,
+      "elliptic_envelope": 14.112179488303713,
+      "rank_ensemble": 0.9861111111111112
+    }
+  },
+  {
+    "id": "holdout-091",
+    "split": "holdout",
+    "feature_1": 6.98653671070134,
+    "feature_2": 1.0092607976462649,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6263774502317836,
+      "local_outlier_factor": 1.995401792183556,
+      "elliptic_envelope": 15.726048541218095,
+      "rank_ensemble": 0.9883333333333333
+    }
+  },
+  {
+    "id": "holdout-092",
+    "split": "holdout",
+    "feature_1": 5.198193301575281,
+    "feature_2": 4.284080277137538,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4327799300152613,
+      "local_outlier_factor": 0.9887108654472999,
+      "elliptic_envelope": 1.1978764183460828,
+      "rank_ensemble": 0.23777777777777778
+    }
+  },
+  {
+    "id": "holdout-093",
+    "split": "holdout",
+    "feature_1": -4.406596874147123,
+    "feature_2": -2.5927572608268585,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.7396713775384095,
+      "local_outlier_factor": 3.7145933118961625,
+      "elliptic_envelope": 5.797958642536844,
+      "rank_ensemble": 0.9794444444444445
+    }
+  },
+  {
+    "id": "holdout-094",
+    "split": "holdout",
+    "feature_1": 7.651049572855692,
+    "feature_2": 3.3406533112431185,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.6021147890824436,
+      "local_outlier_factor": 1.419881468571618,
+      "elliptic_envelope": 6.905850491867584,
+      "rank_ensemble": 0.9527777777777778
+    }
+  },
+  {
+    "id": "holdout-095",
+    "split": "holdout",
+    "feature_1": 5.762938956840003,
+    "feature_2": 4.308357887243163,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4534435682571104,
+      "local_outlier_factor": 1.0491602137162952,
+      "elliptic_envelope": 1.3841288366391336,
+      "rank_ensemble": 0.4883333333333333
+    }
+  },
+  {
+    "id": "holdout-096",
+    "split": "holdout",
+    "feature_1": 6.407739173010119,
+    "feature_2": 3.655198649150795,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4900202375727516,
+      "local_outlier_factor": 0.993386875821819,
+      "elliptic_envelope": 2.600290921911723,
+      "rank_ensemble": 0.5822222222222222
+    }
+  },
+  {
+    "id": "holdout-097",
+    "split": "holdout",
+    "feature_1": -0.5442807204740182,
+    "feature_2": -0.14048156037969642,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43699788290556546,
+      "local_outlier_factor": 0.9887843712187204,
+      "elliptic_envelope": 1.0990257507636996,
+      "rank_ensemble": 0.2422222222222222
+    }
+  },
+  {
+    "id": "holdout-098",
+    "split": "holdout",
+    "feature_1": 5.307342546642944,
+    "feature_2": 2.9653866059366196,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.46264821159522185,
+      "local_outlier_factor": 1.0015183069946254,
+      "elliptic_envelope": 1.5962576880886867,
+      "rank_ensemble": 0.45166666666666666
+    }
+  },
+  {
+    "id": "holdout-099",
+    "split": "holdout",
+    "feature_1": 7.512316435657111,
+    "feature_2": 0.8895892119933526,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6587782159302905,
+      "local_outlier_factor": 2.2481472116785146,
+      "elliptic_envelope": 19.74078414427183,
+      "rank_ensemble": 0.9972222222222222
+    }
+  },
+  {
+    "id": "holdout-100",
+    "split": "holdout",
+    "feature_1": 3.8410533841565035,
+    "feature_2": 5.137677266922831,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4881668332305964,
+      "local_outlier_factor": 1.0893309556698332,
+      "elliptic_envelope": 4.903623428643916,
+      "rank_ensemble": 0.775
+    }
+  },
+  {
+    "id": "holdout-101",
+    "split": "holdout",
+    "feature_1": 0.13975444050460917,
+    "feature_2": -3.493268092014835,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6467330060703711,
+      "local_outlier_factor": 3.10991566066249,
+      "elliptic_envelope": 12.925245972141225,
+      "rank_ensemble": 0.9938888888888888
+    }
+  },
+  {
+    "id": "holdout-102",
+    "split": "holdout",
+    "feature_1": 3.644154605541895,
+    "feature_2": 0.27464206589273793,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5647088930612892,
+      "local_outlier_factor": 1.9765241093955663,
+      "elliptic_envelope": 5.084909202567434,
+      "rank_ensemble": 0.9505555555555555
+    }
+  },
+  {
+    "id": "holdout-103",
+    "split": "holdout",
+    "feature_1": -2.557151731359463,
+    "feature_2": 2.749174053886179,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6767629021826798,
+      "local_outlier_factor": 3.8518154478033977,
+      "elliptic_envelope": 18.786806710994295,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-104",
+    "split": "holdout",
+    "feature_1": 6.603157954962274,
+    "feature_2": 1.0861905445034403,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.609745984990607,
+      "local_outlier_factor": 1.8323522019967695,
+      "elliptic_envelope": 13.14953684790393,
+      "rank_ensemble": 0.9822222222222221
+    }
+  },
+  {
+    "id": "holdout-105",
+    "split": "holdout",
+    "feature_1": 1.5940180962181199,
+    "feature_2": 2.2683415798583737,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5770257002629342,
+      "local_outlier_factor": 1.7702389943653287,
+      "elliptic_envelope": 0.926514883543184,
+      "rank_ensemble": 0.7188888888888889
+    }
+  },
+  {
+    "id": "holdout-106",
+    "split": "holdout",
+    "feature_1": 7.074392552041777,
+    "feature_2": 1.0669327338365373,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6354615021245891,
+      "local_outlier_factor": 1.9750528411650168,
+      "elliptic_envelope": 15.837667035094945,
+      "rank_ensemble": 0.9922222222222222
+    }
+  },
+  {
+    "id": "holdout-107",
+    "split": "holdout",
+    "feature_1": 5.570938720331052,
+    "feature_2": 2.1310938519657725,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5315430299051799,
+      "local_outlier_factor": 1.181663772967192,
+      "elliptic_envelope": 4.110892158553077,
+      "rank_ensemble": 0.8477777777777779
+    }
+  },
+  {
+    "id": "holdout-108",
+    "split": "holdout",
+    "feature_1": 9.567027277034919,
+    "feature_2": -0.6351367159138044,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6624311474264263,
+      "local_outlier_factor": 4.52076298097505,
+      "elliptic_envelope": 52.0942906929484,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-109",
+    "split": "holdout",
+    "feature_1": 6.571471737211302,
+    "feature_2": 1.1545897345592504,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6131139204309305,
+      "local_outlier_factor": 1.7774044229520545,
+      "elliptic_envelope": 12.57189490117703,
+      "rank_ensemble": 0.98
+    }
+  },
+  {
+    "id": "holdout-110",
+    "split": "holdout",
+    "feature_1": 0.06733079140540696,
+    "feature_2": -0.1368785686403046,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.42957587232002925,
+      "local_outlier_factor": 1.0020308537497506,
+      "elliptic_envelope": 0.8193318785709822,
+      "rank_ensemble": 0.20777777777777776
+    }
+  },
+  {
+    "id": "holdout-111",
+    "split": "holdout",
+    "feature_1": 1.174623353398171,
+    "feature_2": 0.845973663943099,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.46261946187129566,
+      "local_outlier_factor": 1.1012240306164183,
+      "elliptic_envelope": 0.21775283826713565,
+      "rank_ensemble": 0.4177777777777778
+    }
+  },
+  {
+    "id": "holdout-112",
+    "split": "holdout",
+    "feature_1": 0.8949305778481179,
+    "feature_2": 0.6154178354659844,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44563653296094563,
+      "local_outlier_factor": 1.0314351302592912,
+      "elliptic_envelope": 0.32657876349235304,
+      "rank_ensemble": 0.29944444444444446
+    }
+  },
+  {
+    "id": "holdout-113",
+    "split": "holdout",
+    "feature_1": -0.7455674526152227,
+    "feature_2": 0.503480422456516,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.45245195807179156,
+      "local_outlier_factor": 1.0221683824234795,
+      "elliptic_envelope": 1.8133801342953941,
+      "rank_ensemble": 0.49833333333333335
+    }
+  },
+  {
+    "id": "holdout-114",
+    "split": "holdout",
+    "feature_1": 6.348180790847937,
+    "feature_2": 0.8877454359873717,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6019292802304831,
+      "local_outlier_factor": 1.9874226110084914,
+      "elliptic_envelope": 13.0549865187457,
+      "rank_ensemble": 0.9827777777777778
+    }
+  },
+  {
+    "id": "holdout-115",
+    "split": "holdout",
+    "feature_1": 3.4868717529595097,
+    "feature_2": 3.459800919273139,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5015073291480671,
+      "local_outlier_factor": 1.4636777295938217,
+      "elliptic_envelope": 0.8212075721742318,
+      "rank_ensemble": 0.6294444444444445
+    }
+  },
+  {
+    "id": "holdout-116",
+    "split": "holdout",
+    "feature_1": 4.74685061441243,
+    "feature_2": 4.598838490931856,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43247039421548117,
+      "local_outlier_factor": 0.976952286023462,
+      "elliptic_envelope": 1.84395898558851,
+      "rank_ensemble": 0.27666666666666667
+    }
+  },
+  {
+    "id": "holdout-117",
+    "split": "holdout",
+    "feature_1": 4.230088537104764,
+    "feature_2": 2.7213937410882845,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4913415179357078,
+      "local_outlier_factor": 1.157543367777776,
+      "elliptic_envelope": 0.49221108029021493,
+      "rank_ensemble": 0.5244444444444444
+    }
+  },
+  {
+    "id": "holdout-118",
+    "split": "holdout",
+    "feature_1": 4.635162812361887,
+    "feature_2": 3.176153880362709,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4516080346665428,
+      "local_outlier_factor": 1.0249208052128327,
+      "elliptic_envelope": 0.6108659957645725,
+      "rank_ensemble": 0.33944444444444444
+    }
+  },
+  {
+    "id": "holdout-119",
+    "split": "holdout",
+    "feature_1": 4.699597570666743,
+    "feature_2": 4.073459286947822,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4247488074520922,
+      "local_outlier_factor": 0.9799834907975515,
+      "elliptic_envelope": 1.0280105396066714,
+      "rank_ensemble": 0.13666666666666666
+    }
+  },
+  {
+    "id": "holdout-120",
+    "split": "holdout",
+    "feature_1": 5.48855935707379,
+    "feature_2": 3.061498041205394,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4601874071085815,
+      "local_outlier_factor": 1.008538681748831,
+      "elliptic_envelope": 1.7662357396202397,
+      "rank_ensemble": 0.4883333333333333
+    }
+  },
+  {
+    "id": "holdout-121",
+    "split": "holdout",
+    "feature_1": 1.342001257890773,
+    "feature_2": 0.5970446689111369,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.46338161658519667,
+      "local_outlier_factor": 1.0162485194257818,
+      "elliptic_envelope": 0.3737739008759044,
+      "rank_ensemble": 0.33944444444444444
+    }
+  },
+  {
+    "id": "holdout-122",
+    "split": "holdout",
+    "feature_1": -4.7565431548629284,
+    "feature_2": 1.8826031098169929,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6935159811792638,
+      "local_outlier_factor": 4.960218653508168,
+      "elliptic_envelope": 26.998850053768813,
+      "rank_ensemble": 0.9994444444444444
+    }
+  },
+  {
+    "id": "holdout-123",
+    "split": "holdout",
+    "feature_1": 3.204816813673273,
+    "feature_2": -2.0923379683005177,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6712224934535472,
+      "local_outlier_factor": 3.9535357679923155,
+      "elliptic_envelope": 17.1262444101521,
+      "rank_ensemble": 0.9977777777777778
+    }
+  },
+  {
+    "id": "holdout-124",
+    "split": "holdout",
+    "feature_1": 9.053609321964306,
+    "feature_2": 3.884917305303281,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.606984709227359,
+      "local_outlier_factor": 2.7063691492435695,
+      "elliptic_envelope": 10.504988259081696,
+      "rank_ensemble": 0.9822222222222222
+    }
+  },
+  {
+    "id": "holdout-125",
+    "split": "holdout",
+    "feature_1": -0.14386570758458495,
+    "feature_2": -0.3397413084350433,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43214733223161933,
+      "local_outlier_factor": 0.9936506130936027,
+      "elliptic_envelope": 0.9901232649867294,
+      "rank_ensemble": 0.22111111111111112
+    }
+  },
+  {
+    "id": "holdout-126",
+    "split": "holdout",
+    "feature_1": 0.9479917943135983,
+    "feature_2": 0.0052145464148882405,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43978189869624973,
+      "local_outlier_factor": 1.0003007451152208,
+      "elliptic_envelope": 0.8741499732582519,
+      "rank_ensemble": 0.2611111111111111
+    }
+  },
+  {
+    "id": "holdout-127",
+    "split": "holdout",
+    "feature_1": -0.8513542966539192,
+    "feature_2": -1.079910761352306,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4955003189492022,
+      "local_outlier_factor": 1.1469817954979677,
+      "elliptic_envelope": 1.7559870991528952,
+      "rank_ensemble": 0.6894444444444444
+    }
+  },
+  {
+    "id": "holdout-128",
+    "split": "holdout",
+    "feature_1": 0.7372390203522611,
+    "feature_2": -0.03637592788929678,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43548392811488773,
+      "local_outlier_factor": 1.0148197399240075,
+      "elliptic_envelope": 0.820929669523491,
+      "rank_ensemble": 0.27444444444444444
+    }
+  },
+  {
+    "id": "holdout-129",
+    "split": "holdout",
+    "feature_1": 6.863498717658227,
+    "feature_2": 1.4083746184470054,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.623306254356879,
+      "local_outlier_factor": 1.6634866267646806,
+      "elliptic_envelope": 12.54652411732931,
+      "rank_ensemble": 0.9766666666666667
+    }
+  },
+  {
+    "id": "holdout-130",
+    "split": "holdout",
+    "feature_1": 5.912759060370804,
+    "feature_2": 3.347505046795923,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.45829690575899656,
+      "local_outlier_factor": 0.9849211638019891,
+      "elliptic_envelope": 2.10737759047009,
+      "rank_ensemble": 0.44277777777777777
+    }
+  },
+  {
+    "id": "holdout-131",
+    "split": "holdout",
+    "feature_1": -0.7874884651971351,
+    "feature_2": -0.3639087405280914,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44409301928794914,
+      "local_outlier_factor": 0.9724378410354079,
+      "elliptic_envelope": 1.2847708313079922,
+      "rank_ensemble": 0.25222222222222224
+    }
+  },
+  {
+    "id": "holdout-132",
+    "split": "holdout",
+    "feature_1": 6.805200382183802,
+    "feature_2": 2.747878781503176,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5525738895028447,
+      "local_outlier_factor": 1.1922319004213653,
+      "elliptic_envelope": 5.9809207961264725,
+      "rank_ensemble": 0.8888888888888888
+    }
+  },
+  {
+    "id": "holdout-133",
+    "split": "holdout",
+    "feature_1": 2.6273056339160377,
+    "feature_2": 0.6430325047178879,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5498730088260969,
+      "local_outlier_factor": 1.2787598335497148,
+      "elliptic_envelope": 1.5339481851465773,
+      "rank_ensemble": 0.7555555555555555
+    }
+  },
+  {
+    "id": "holdout-134",
+    "split": "holdout",
+    "feature_1": -0.08194346330900033,
+    "feature_2": -0.014171983105115516,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.42410233151953614,
+      "local_outlier_factor": 0.9816872009672841,
+      "elliptic_envelope": 0.8061317960430253,
+      "rank_ensemble": 0.11388888888888889
+    }
+  },
+  {
+    "id": "holdout-135",
+    "split": "holdout",
+    "feature_1": 7.083184049980908,
+    "feature_2": 4.347711133157134,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5798016967999353,
+      "local_outlier_factor": 1.3355826057112574,
+      "elliptic_envelope": 3.0033420460658804,
+      "rank_ensemble": 0.8927777777777778
+    }
+  },
+  {
+    "id": "holdout-136",
+    "split": "holdout",
+    "feature_1": 1.0693316225273701,
+    "feature_2": 0.15092504289097025,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44260359950716077,
+      "local_outlier_factor": 0.9844214031792269,
+      "elliptic_envelope": 0.7439658814968991,
+      "rank_ensemble": 0.20722222222222222
+    }
+  },
+  {
+    "id": "holdout-137",
+    "split": "holdout",
+    "feature_1": -4.5339559989524005,
+    "feature_2": 1.0938902288306855,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6643292723653861,
+      "local_outlier_factor": 4.2169381954119,
+      "elliptic_envelope": 19.47005663613265,
+      "rank_ensemble": 0.9983333333333334
+    }
+  },
+  {
+    "id": "holdout-138",
+    "split": "holdout",
+    "feature_1": 4.571445191176569,
+    "feature_2": 5.021966334998153,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4598128911716736,
+      "local_outlier_factor": 1.1022315120342105,
+      "elliptic_envelope": 3.096669210659036,
+      "rank_ensemble": 0.6822222222222222
+    }
+  },
+  {
+    "id": "holdout-139",
+    "split": "holdout",
+    "feature_1": 7.8064059360062945,
+    "feature_2": 1.1596146887527974,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6634185645578485,
+      "local_outlier_factor": 2.1555428989286276,
+      "elliptic_envelope": 19.589103022419316,
+      "rank_ensemble": 0.9972222222222222
+    }
+  },
+  {
+    "id": "holdout-140",
+    "split": "holdout",
+    "feature_1": 6.367561308088327,
+    "feature_2": 5.233731759087398,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5742815780158841,
+      "local_outlier_factor": 1.2936634130887674,
+      "elliptic_envelope": 2.326700745208926,
+      "rank_ensemble": 0.8544444444444445
+    }
+  },
+  {
+    "id": "holdout-141",
+    "split": "holdout",
+    "feature_1": 4.62453680061383,
+    "feature_2": 4.108455617413997,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4250830825903216,
+      "local_outlier_factor": 0.9876504071819447,
+      "elliptic_envelope": 1.0947199427661989,
+      "rank_ensemble": 0.17777777777777778
+    }
+  },
+  {
+    "id": "holdout-142",
+    "split": "holdout",
+    "feature_1": 3.387276945155233,
+    "feature_2": 5.229560883640929,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.501573529942426,
+      "local_outlier_factor": 1.0456650187125105,
+      "elliptic_envelope": 6.507267310888065,
+      "rank_ensemble": 0.77
+    }
+  },
+  {
+    "id": "holdout-143",
+    "split": "holdout",
+    "feature_1": 4.877556981800803,
+    "feature_2": 3.8429287076108647,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4302976963814198,
+      "local_outlier_factor": 0.9759391729178943,
+      "elliptic_envelope": 0.8220708211002946,
+      "rank_ensemble": 0.1288888888888889
+    }
+  },
+  {
+    "id": "holdout-144",
+    "split": "holdout",
+    "feature_1": -0.3198176499674839,
+    "feature_2": 0.8232800904701483,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.45021050827378906,
+      "local_outlier_factor": 1.0145964099723603,
+      "elliptic_envelope": 1.5459748282104766,
+      "rank_ensemble": 0.44388888888888883
+    }
+  },
+  {
+    "id": "holdout-145",
+    "split": "holdout",
+    "feature_1": -0.1811803494016199,
+    "feature_2": 2.3101753400330507,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5811860636284362,
+      "local_outlier_factor": 2.3389399227130228,
+      "elliptic_envelope": 5.121673368622793,
+      "rank_ensemble": 0.9577777777777778
+    }
+  },
+  {
+    "id": "holdout-146",
+    "split": "holdout",
+    "feature_1": 4.672552644555366,
+    "feature_2": 5.395303903639279,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4954930090954672,
+      "local_outlier_factor": 1.2525373672259636,
+      "elliptic_envelope": 4.12942724238525,
+      "rank_ensemble": 0.8333333333333334
+    }
+  },
+  {
+    "id": "holdout-147",
+    "split": "holdout",
+    "feature_1": -0.6522231946661315,
+    "feature_2": -1.5902425555646393,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5492328691204752,
+      "local_outlier_factor": 1.3224563671245884,
+      "elliptic_envelope": 2.7306414161051733,
+      "rank_ensemble": 0.8655555555555555
+    }
+  },
+  {
+    "id": "holdout-148",
+    "split": "holdout",
+    "feature_1": 1.367602156682962,
+    "feature_2": 0.8202309375254542,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.46684596673302914,
+      "local_outlier_factor": 1.0970819201705804,
+      "elliptic_envelope": 0.22297633641055872,
+      "rank_ensemble": 0.43111111111111106
+    }
+  },
+  {
+    "id": "holdout-149",
+    "split": "holdout",
+    "feature_1": 7.368219350852075,
+    "feature_2": 0.8482022675670061,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6541535619680133,
+      "local_outlier_factor": 2.229502704286385,
+      "elliptic_envelope": 19.142396108913463,
+      "rank_ensemble": 0.9972222222222222
+    }
+  },
+  {
+    "id": "holdout-150",
+    "split": "holdout",
+    "feature_1": 4.566411561111151,
+    "feature_2": 5.566768689870371,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5025077188171644,
+      "local_outlier_factor": 1.2950914522923986,
+      "elliptic_envelope": 4.968862803746196,
+      "rank_ensemble": 0.8622222222222221
+    }
+  },
+  {
+    "id": "holdout-151",
+    "split": "holdout",
+    "feature_1": 0.7211676032528382,
+    "feature_2": 0.5039419472354153,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44066071267335355,
+      "local_outlier_factor": 1.0218325174499387,
+      "elliptic_envelope": 0.39445795297368325,
+      "rank_ensemble": 0.26166666666666666
+    }
+  },
+  {
+    "id": "holdout-152",
+    "split": "holdout",
+    "feature_1": -0.5957163139798044,
+    "feature_2": 0.6348773988942997,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44888697485030926,
+      "local_outlier_factor": 1.0108756935077339,
+      "elliptic_envelope": 1.7407935140510058,
+      "rank_ensemble": 0.45166666666666666
+    }
+  },
+  {
+    "id": "holdout-153",
+    "split": "holdout",
+    "feature_1": 5.287900027743472,
+    "feature_2": 4.6880703027923225,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4581686375177262,
+      "local_outlier_factor": 1.0571752452189853,
+      "elliptic_envelope": 1.6896477825265936,
+      "rank_ensemble": 0.5483333333333333
+    }
+  },
+  {
+    "id": "holdout-154",
+    "split": "holdout",
+    "feature_1": 6.474915092579565,
+    "feature_2": 3.344664923197827,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5000780650999549,
+      "local_outlier_factor": 1.0009970034001878,
+      "elliptic_envelope": 3.316133248007577,
+      "rank_ensemble": 0.645
+    }
+  },
+  {
+    "id": "holdout-155",
+    "split": "holdout",
+    "feature_1": 6.783225775543766,
+    "feature_2": 2.5420384253600647,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.56379155111205,
+      "local_outlier_factor": 1.2925385249805572,
+      "elliptic_envelope": 6.66368028634633,
+      "rank_ensemble": 0.9277777777777777
+    }
+  },
+  {
+    "id": "holdout-156",
+    "split": "holdout",
+    "feature_1": 2.960849365903511,
+    "feature_2": 8.694851863396893,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6527743790399837,
+      "local_outlier_factor": 3.6305159159812495,
+      "elliptic_envelope": 36.068990926067926,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-157",
+    "split": "holdout",
+    "feature_1": 0.80609229270187,
+    "feature_2": -0.9305465657365178,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5088326622480855,
+      "local_outlier_factor": 1.1355368208225092,
+      "elliptic_envelope": 2.733684939319105,
+      "rank_ensemble": 0.7816666666666666
+    }
+  },
+  {
+    "id": "holdout-158",
+    "split": "holdout",
+    "feature_1": -0.2096372371045634,
+    "feature_2": 1.0476115095685254,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.46884211120428443,
+      "local_outlier_factor": 1.0479731971278299,
+      "elliptic_envelope": 1.7073705752754897,
+      "rank_ensemble": 0.5772222222222222
+    }
+  },
+  {
+    "id": "holdout-159",
+    "split": "holdout",
+    "feature_1": 5.07225099259074,
+    "feature_2": 4.799736669390798,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.45231505784118703,
+      "local_outlier_factor": 1.071360020317261,
+      "elliptic_envelope": 2.000996301288502,
+      "rank_ensemble": 0.58
+    }
+  },
+  {
+    "id": "holdout-160",
+    "split": "holdout",
+    "feature_1": -0.4591239036046521,
+    "feature_2": -1.4602347059115854,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5367431782281687,
+      "local_outlier_factor": 1.3181607657724044,
+      "elliptic_envelope": 2.5904656951007916,
+      "rank_ensemble": 0.8505555555555556
+    }
+  },
+  {
+    "id": "holdout-161",
+    "split": "holdout",
+    "feature_1": 4.85106722901385,
+    "feature_2": 2.8047120780018058,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.47067672353075635,
+      "local_outlier_factor": 1.0308931443998686,
+      "elliptic_envelope": 1.1086426223999637,
+      "rank_ensemble": 0.47722222222222227
+    }
+  },
+  {
+    "id": "holdout-162",
+    "split": "holdout",
+    "feature_1": 0.7246989232132255,
+    "feature_2": -1.5866286781979961,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5802263738375033,
+      "local_outlier_factor": 1.749888526762703,
+      "elliptic_envelope": 4.799913346844891,
+      "rank_ensemble": 0.9483333333333333
+    }
+  },
+  {
+    "id": "holdout-163",
+    "split": "holdout",
+    "feature_1": 6.34974141124923,
+    "feature_2": 8.880526952164587,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6690477797035145,
+      "local_outlier_factor": 4.727168588083585,
+      "elliptic_envelope": 18.26209360739749,
+      "rank_ensemble": 0.9983333333333334
+    }
+  },
+  {
+    "id": "holdout-164",
+    "split": "holdout",
+    "feature_1": -0.189990217833826,
+    "feature_2": 0.642179324939535,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43902169924679335,
+      "local_outlier_factor": 1.0339401840047338,
+      "elliptic_envelope": 1.134093813745175,
+      "rank_ensemble": 0.3738888888888889
+    }
+  },
+  {
+    "id": "holdout-165",
+    "split": "holdout",
+    "feature_1": 7.195261800312219,
+    "feature_2": 1.406045256966157,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6437391435155687,
+      "local_outlier_factor": 1.7703003215493283,
+      "elliptic_envelope": 14.303946036254128,
+      "rank_ensemble": 0.9888888888888889
+    }
+  },
+  {
+    "id": "holdout-166",
+    "split": "holdout",
+    "feature_1": -0.7463400029632763,
+    "feature_2": -0.3121148798432097,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4424405542350235,
+      "local_outlier_factor": 0.9712222426161894,
+      "elliptic_envelope": 1.2516369918747763,
+      "rank_ensemble": 0.23777777777777778
+    }
+  },
+  {
+    "id": "holdout-167",
+    "split": "holdout",
+    "feature_1": -1.0860200336068355,
+    "feature_2": 0.42668728450547216,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4738960841132406,
+      "local_outlier_factor": 1.085557364493904,
+      "elliptic_envelope": 2.3284889398931847,
+      "rank_ensemble": 0.6738888888888889
+    }
+  },
+  {
+    "id": "holdout-168",
+    "split": "holdout",
+    "feature_1": 0.04428745641042564,
+    "feature_2": 8.839416820834003,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6746669461369362,
+      "local_outlier_factor": 4.702168755767248,
+      "elliptic_envelope": 64.17328556153254,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-169",
+    "split": "holdout",
+    "feature_1": 5.036385688885445,
+    "feature_2": 4.321298585877374,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4283945576846183,
+      "local_outlier_factor": 0.9746434410997155,
+      "elliptic_envelope": 1.2513730695958116,
+      "rank_ensemble": 0.1761111111111111
+    }
+  },
+  {
+    "id": "holdout-170",
+    "split": "holdout",
+    "feature_1": -1.1411466121826757,
+    "feature_2": 0.3633770088410695,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4756044407148853,
+      "local_outlier_factor": 1.1184592106797289,
+      "elliptic_envelope": 2.334425750974235,
+      "rank_ensemble": 0.6961111111111111
+    }
+  },
+  {
+    "id": "holdout-171",
+    "split": "holdout",
+    "feature_1": 1.841966426530333,
+    "feature_2": 0.7632057154307758,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.48879429287853526,
+      "local_outlier_factor": 1.1175196657296171,
+      "elliptic_envelope": 0.4457313849098681,
+      "rank_ensemble": 0.49833333333333335
+    }
+  },
+  {
+    "id": "holdout-172",
+    "split": "holdout",
+    "feature_1": 6.986439287686274,
+    "feature_2": 1.2507395943573854,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.631898619560948,
+      "local_outlier_factor": 1.812727411112056,
+      "elliptic_envelope": 14.152243897551982,
+      "rank_ensemble": 0.9883333333333333
+    }
+  },
+  {
+    "id": "holdout-173",
+    "split": "holdout",
+    "feature_1": -0.5666654825828071,
+    "feature_2": 1.2234649780939366,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5131107830769308,
+      "local_outlier_factor": 1.1129933167893455,
+      "elliptic_envelope": 2.8145852098469484,
+      "rank_ensemble": 0.7772222222222224
+    }
+  },
+  {
+    "id": "holdout-174",
+    "split": "holdout",
+    "feature_1": 0.40920696343989055,
+    "feature_2": 0.44461759284590535,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43365121257217687,
+      "local_outlier_factor": 0.9884551938632444,
+      "elliptic_envelope": 0.5105693706414974,
+      "rank_ensemble": 0.1461111111111111
+    }
+  },
+  {
+    "id": "holdout-175",
+    "split": "holdout",
+    "feature_1": 3.1026745202769446,
+    "feature_2": 0.1972794860630788,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5686448238505705,
+      "local_outlier_factor": 1.5941772752649979,
+      "elliptic_envelope": 3.8455912464079685,
+      "rank_ensemble": 0.9250000000000002
+    }
+  },
+  {
+    "id": "holdout-176",
+    "split": "holdout",
+    "feature_1": 0.43451090371118284,
+    "feature_2": 0.702989674635291,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43764672192499005,
+      "local_outlier_factor": 1.0187549842263397,
+      "elliptic_envelope": 0.5348556824094417,
+      "rank_ensemble": 0.2511111111111111
+    }
+  },
+  {
+    "id": "holdout-177",
+    "split": "holdout",
+    "feature_1": 7.639819325772942,
+    "feature_2": 0.2107164153507496,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6537123111816697,
+      "local_outlier_factor": 2.7870704957111014,
+      "elliptic_envelope": 26.17096128037619,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-178",
+    "split": "holdout",
+    "feature_1": -4.50785000753407,
+    "feature_2": -0.368387441481521,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6364610425192732,
+      "local_outlier_factor": 3.5410057840011024,
+      "elliptic_envelope": 11.24260476313788,
+      "rank_ensemble": 0.9911111111111112
+    }
+  },
+  {
+    "id": "holdout-179",
+    "split": "holdout",
+    "feature_1": 3.2624051767667748,
+    "feature_2": 0.7276178097607732,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5636818064627714,
+      "local_outlier_factor": 1.6664179513478492,
+      "elliptic_envelope": 2.506068280586956,
+      "rank_ensemble": 0.883888888888889
+    }
+  },
+  {
+    "id": "holdout-180",
+    "split": "holdout",
+    "feature_1": 6.059566734594089,
+    "feature_2": 3.9117343170124363,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4647552783201777,
+      "local_outlier_factor": 0.9939852679916615,
+      "elliptic_envelope": 1.7353496446704468,
+      "rank_ensemble": 0.4572222222222222
+    }
+  },
+  {
+    "id": "holdout-181",
+    "split": "holdout",
+    "feature_1": 4.592220126699796,
+    "feature_2": 3.6492092635515827,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43566290328892654,
+      "local_outlier_factor": 1.0268142619061438,
+      "elliptic_envelope": 0.6617236919358909,
+      "rank_ensemble": 0.27666666666666667
+    }
+  },
+  {
+    "id": "holdout-182",
+    "split": "holdout",
+    "feature_1": -0.554293197840137,
+    "feature_2": -0.411020481247156,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4374970093322283,
+      "local_outlier_factor": 0.9804644606420473,
+      "elliptic_envelope": 1.1523305061352556,
+      "rank_ensemble": 0.22444444444444445
+    }
+  },
+  {
+    "id": "holdout-183",
+    "split": "holdout",
+    "feature_1": 4.272812368543772,
+    "feature_2": 4.2509879433163835,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43180316544814423,
+      "local_outlier_factor": 1.0045078610795515,
+      "elliptic_envelope": 1.551157169648168,
+      "rank_ensemble": 0.325
+    }
+  },
+  {
+    "id": "holdout-184",
+    "split": "holdout",
+    "feature_1": -0.20896979545369665,
+    "feature_2": -0.11659971149776481,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43072706395472904,
+      "local_outlier_factor": 0.993964308713505,
+      "elliptic_envelope": 0.8915734459269649,
+      "rank_ensemble": 0.20222222222222222
+    }
+  },
+  {
+    "id": "holdout-185",
+    "split": "holdout",
+    "feature_1": 5.539412776801932,
+    "feature_2": 1.8631228856061326,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5511232187826648,
+      "local_outlier_factor": 1.3535082605144715,
+      "elliptic_envelope": 4.917702225174428,
+      "rank_ensemble": 0.9138888888888889
+    }
+  },
+  {
+    "id": "holdout-186",
+    "split": "holdout",
+    "feature_1": -0.6542729610494189,
+    "feature_2": 0.5016452959019848,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.45050316745460633,
+      "local_outlier_factor": 1.009251696420226,
+      "elliptic_envelope": 1.657892903598865,
+      "rank_ensemble": 0.445
+    }
+  },
+  {
+    "id": "holdout-187",
+    "split": "holdout",
+    "feature_1": -1.0840947747352176,
+    "feature_2": -0.5299851938236713,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.46436626000141235,
+      "local_outlier_factor": 0.9933062949553444,
+      "elliptic_envelope": 1.5304011018280186,
+      "rank_ensemble": 0.4283333333333333
+    }
+  },
+  {
+    "id": "holdout-188",
+    "split": "holdout",
+    "feature_1": 6.783126192901447,
+    "feature_2": 3.7751525302137736,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5349583612639691,
+      "local_outlier_factor": 1.0902690210846593,
+      "elliptic_envelope": 3.202649630277961,
+      "rank_ensemble": 0.7999999999999999
+    }
+  },
+  {
+    "id": "holdout-189",
+    "split": "holdout",
+    "feature_1": 5.664176910381598,
+    "feature_2": 4.240681858764389,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.447444542073847,
+      "local_outlier_factor": 1.0494188277186887,
+      "elliptic_envelope": 1.3047086735818623,
+      "rank_ensemble": 0.4566666666666667
+    }
+  },
+  {
+    "id": "holdout-190",
+    "split": "holdout",
+    "feature_1": 4.726499077426976,
+    "feature_2": 4.272918098011517,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4214898440908359,
+      "local_outlier_factor": 0.9646302661893864,
+      "elliptic_envelope": 1.28458431171149,
+      "rank_ensemble": 0.14
+    }
+  },
+  {
+    "id": "holdout-191",
+    "split": "holdout",
+    "feature_1": 0.818524420578526,
+    "feature_2": -0.02230978856928508,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4400037840775625,
+      "local_outlier_factor": 1.016187685710546,
+      "elliptic_envelope": 0.8407024501370879,
+      "rank_ensemble": 0.3027777777777778
+    }
+  },
+  {
+    "id": "holdout-192",
+    "split": "holdout",
+    "feature_1": 2.5681785955590577,
+    "feature_2": 7.173900293521228,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6700413375065654,
+      "local_outlier_factor": 2.168093246179949,
+      "elliptic_envelope": 23.449338197004206,
+      "rank_ensemble": 0.9977777777777778
+    }
+  },
+  {
+    "id": "holdout-193",
+    "split": "holdout",
+    "feature_1": 9.892119359056673,
+    "feature_2": 0.43999740862109726,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6569225756612265,
+      "local_outlier_factor": 3.913762239556294,
+      "elliptic_envelope": 42.589423816135316,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-194",
+    "split": "holdout",
+    "feature_1": 5.0144113639275645,
+    "feature_2": 4.120379198782228,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4298224884488211,
+      "local_outlier_factor": 0.965515265783914,
+      "elliptic_envelope": 1.0417241305971128,
+      "rank_ensemble": 0.135
+    }
+  },
+  {
+    "id": "holdout-195",
+    "split": "holdout",
+    "feature_1": 3.02394582628403,
+    "feature_2": 0.7827490743020212,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.557898300448671,
+      "local_outlier_factor": 1.4838592766356051,
+      "elliptic_envelope": 1.8808731269351895,
+      "rank_ensemble": 0.8205555555555555
+    }
+  },
+  {
+    "id": "holdout-196",
+    "split": "holdout",
+    "feature_1": 6.424668093520313,
+    "feature_2": 4.407878445974066,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5157331496490303,
+      "local_outlier_factor": 1.1033902513378988,
+      "elliptic_envelope": 1.959938833733501,
+      "rank_ensemble": 0.7166666666666668
+    }
+  },
+  {
+    "id": "holdout-197",
+    "split": "holdout",
+    "feature_1": -4.364808290019428,
+    "feature_2": 1.7841908933510808,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6932163505356979,
+      "local_outlier_factor": 4.45849323995152,
+      "elliptic_envelope": 23.378973779325484,
+      "rank_ensemble": 0.9994444444444444
+    }
+  },
+  {
+    "id": "holdout-198",
+    "split": "holdout",
+    "feature_1": 0.7968583895733656,
+    "feature_2": -0.8946623960145017,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5012304933596612,
+      "local_outlier_factor": 1.120428493580996,
+      "elliptic_envelope": 2.618045511302369,
+      "rank_ensemble": 0.7611111111111111
+    }
+  },
+  {
+    "id": "holdout-199",
+    "split": "holdout",
+    "feature_1": 5.099942457761166,
+    "feature_2": 3.4463536493446094,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4426306722010888,
+      "local_outlier_factor": 1.0292122304103755,
+      "elliptic_envelope": 0.901422468322612,
+      "rank_ensemble": 0.34722222222222215
+    }
+  },
+  {
+    "id": "holdout-200",
+    "split": "holdout",
+    "feature_1": 4.401505654379967,
+    "feature_2": 3.411979107315698,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4489826401360374,
+      "local_outlier_factor": 1.0606429416560887,
+      "elliptic_envelope": 0.5135329449334017,
+      "rank_ensemble": 0.3627777777777778
+    }
+  },
+  {
+    "id": "holdout-201",
+    "split": "holdout",
+    "feature_1": 5.0211766081641285,
+    "feature_2": 4.201909223060113,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4293077326026785,
+      "local_outlier_factor": 0.9662091234839907,
+      "elliptic_envelope": 1.1197742007665306,
+      "rank_ensemble": 0.14500000000000002
+    }
+  },
+  {
+    "id": "holdout-202",
+    "split": "holdout",
+    "feature_1": 4.273698494178333,
+    "feature_2": 4.997451842603647,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4546752331438533,
+      "local_outlier_factor": 1.0689172967990996,
+      "elliptic_envelope": 3.5026389458672815,
+      "rank_ensemble": 0.6594444444444445
+    }
+  },
+  {
+    "id": "holdout-203",
+    "split": "holdout",
+    "feature_1": -2.2801781185122145,
+    "feature_2": 4.772565781276306,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6634466563186046,
+      "local_outlier_factor": 5.300967891711795,
+      "elliptic_envelope": 34.803314200587195,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-204",
+    "split": "holdout",
+    "feature_1": 3.5334948578462213,
+    "feature_2": -0.15458423185003836,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5817855988909421,
+      "local_outlier_factor": 2.1415712969176464,
+      "elliptic_envelope": 6.6133325237101035,
+      "rank_ensemble": 0.9677777777777777
+    }
+  },
+  {
+    "id": "holdout-205",
+    "split": "holdout",
+    "feature_1": -3.038722799355221,
+    "feature_2": 6.490274916602464,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.7320104905954077,
+      "local_outlier_factor": 5.714166260377849,
+      "elliptic_envelope": 63.40355344347884,
+      "rank_ensemble": 1.0
+    }
+  },
+  {
+    "id": "holdout-206",
+    "split": "holdout",
+    "feature_1": 0.6870010109511733,
+    "feature_2": 0.008530281025703941,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4351703089865768,
+      "local_outlier_factor": 1.0188039473909714,
+      "elliptic_envelope": 0.7483327632673771,
+      "rank_ensemble": 0.2677777777777778
+    }
+  },
+  {
+    "id": "holdout-207",
+    "split": "holdout",
+    "feature_1": 2.946239612472165,
+    "feature_2": -0.5811742617507752,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.591829129523616,
+      "local_outlier_factor": 2.0392502013020604,
+      "elliptic_envelope": 6.6333267341637825,
+      "rank_ensemble": 0.9694444444444444
+    }
+  },
+  {
+    "id": "holdout-208",
+    "split": "holdout",
+    "feature_1": -0.4412638346909811,
+    "feature_2": 1.7893883157799015,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5701618122994667,
+      "local_outlier_factor": 1.6311496577906985,
+      "elliptic_envelope": 4.081788535681712,
+      "rank_ensemble": 0.93
+    }
+  },
+  {
+    "id": "holdout-209",
+    "split": "holdout",
+    "feature_1": 4.8050271853227216,
+    "feature_2": 2.536167141870565,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4953948797959744,
+      "local_outlier_factor": 1.1102923429467508,
+      "elliptic_envelope": 1.4075099527616117,
+      "rank_ensemble": 0.6327777777777778
+    }
+  },
+  {
+    "id": "holdout-210",
+    "split": "holdout",
+    "feature_1": 5.5519639169870505,
+    "feature_2": 3.8118740935980777,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4452961687955987,
+      "local_outlier_factor": 0.9950902202269838,
+      "elliptic_envelope": 1.202533394846354,
+      "rank_ensemble": 0.3211111111111111
+    }
+  },
+  {
+    "id": "holdout-211",
+    "split": "holdout",
+    "feature_1": -0.29132509618931035,
+    "feature_2": 0.2215162829789237,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43161238907561916,
+      "local_outlier_factor": 0.9847778186392092,
+      "elliptic_envelope": 0.9620217521071687,
+      "rank_ensemble": 0.18222222222222226
+    }
+  },
+  {
+    "id": "holdout-212",
+    "split": "holdout",
+    "feature_1": 2.8770484217408594,
+    "feature_2": 0.10447023547988323,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.562973046520263,
+      "local_outlier_factor": 1.5311341661908322,
+      "elliptic_envelope": 3.6017621548412424,
+      "rank_ensemble": 0.9122222222222223
+    }
+  },
+  {
+    "id": "holdout-213",
+    "split": "holdout",
+    "feature_1": 0.010648028250472511,
+    "feature_2": 0.07352658464165777,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4197615903410409,
+      "local_outlier_factor": 0.9753696692666588,
+      "elliptic_envelope": 0.7435388224949101,
+      "rank_ensemble": 0.07944444444444444
+    }
+  },
+  {
+    "id": "holdout-214",
+    "split": "holdout",
+    "feature_1": -0.8925542283261907,
+    "feature_2": -0.6461530516923408,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4576116580818874,
+      "local_outlier_factor": 1.0018574739580963,
+      "elliptic_envelope": 1.4179011729331361,
+      "rank_ensemble": 0.41611111111111115
+    }
+  },
+  {
+    "id": "holdout-215",
+    "split": "holdout",
+    "feature_1": 3.114546297588917,
+    "feature_2": 0.6319798665905343,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5665155415458514,
+      "local_outlier_factor": 1.5469485597423185,
+      "elliptic_envelope": 2.4658661296215154,
+      "rank_ensemble": 0.88
+    }
+  },
+  {
+    "id": "holdout-216",
+    "split": "holdout",
+    "feature_1": 3.818903379213004,
+    "feature_2": 4.104009571688009,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.47674996325364605,
+      "local_outlier_factor": 1.1156344841241579,
+      "elliptic_envelope": 1.7131959767818414,
+      "rank_ensemble": 0.6377777777777777
+    }
+  },
+  {
+    "id": "holdout-217",
+    "split": "holdout",
+    "feature_1": -0.920824721493538,
+    "feature_2": 1.112787154702947,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5048488071204121,
+      "local_outlier_factor": 1.1000763272578247,
+      "elliptic_envelope": 3.4186524788535295,
+      "rank_ensemble": 0.7827777777777779
+    }
+  },
+  {
+    "id": "holdout-218",
+    "split": "holdout",
+    "feature_1": 3.0037775317389155,
+    "feature_2": 0.3125243650198349,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5624284269212546,
+      "local_outlier_factor": 1.513668272808167,
+      "elliptic_envelope": 3.202380781477481,
+      "rank_ensemble": 0.9066666666666666
+    }
+  },
+  {
+    "id": "holdout-219",
+    "split": "holdout",
+    "feature_1": 0.12845945305953857,
+    "feature_2": 0.8394853275353429,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44354115242597514,
+      "local_outlier_factor": 1.0338097932070474,
+      "elliptic_envelope": 0.9224484497581393,
+      "rank_ensemble": 0.35777777777777775
+    }
+  },
+  {
+    "id": "holdout-220",
+    "split": "holdout",
+    "feature_1": 2.913416457993437,
+    "feature_2": -0.13865576263210685,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5767444266925441,
+      "local_outlier_factor": 1.6642463655396442,
+      "elliptic_envelope": 4.604532384273869,
+      "rank_ensemble": 0.9388888888888888
+    }
+  },
+  {
+    "id": "holdout-221",
+    "split": "holdout",
+    "feature_1": 3.003313903368231,
+    "feature_2": -0.6741241256258241,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5936812325438183,
+      "local_outlier_factor": 2.162243083558495,
+      "elliptic_envelope": 7.281494299700943,
+      "rank_ensemble": 0.971111111111111
+    }
+  },
+  {
+    "id": "holdout-222",
+    "split": "holdout",
+    "feature_1": 6.272436073806883,
+    "feature_2": 3.5366709600928914,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4761723070232022,
+      "local_outlier_factor": 0.9790403974317549,
+      "elliptic_envelope": 2.5123497837839506,
+      "rank_ensemble": 0.5
+    }
+  },
+  {
+    "id": "holdout-223",
+    "split": "holdout",
+    "feature_1": 4.1744456165118615,
+    "feature_2": 4.462495772042594,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43596322432381746,
+      "local_outlier_factor": 0.9835285059021635,
+      "elliptic_envelope": 2.1246701739490415,
+      "rank_ensemble": 0.34722222222222227
+    }
+  },
+  {
+    "id": "holdout-224",
+    "split": "holdout",
+    "feature_1": 2.9987471474756235,
+    "feature_2": -1.6871376521501218,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6524221227805206,
+      "local_outlier_factor": 3.237355097101051,
+      "elliptic_envelope": 13.1831561918041,
+      "rank_ensemble": 0.9966666666666666
+    }
+  },
+  {
+    "id": "holdout-225",
+    "split": "holdout",
+    "feature_1": 7.143454664890318,
+    "feature_2": 1.2800105004865612,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6376029438538277,
+      "local_outlier_factor": 1.839871350205912,
+      "elliptic_envelope": 14.822305447303131,
+      "rank_ensemble": 0.991111111111111
+    }
+  },
+  {
+    "id": "holdout-226",
+    "split": "holdout",
+    "feature_1": -0.6624929714723338,
+    "feature_2": 0.556245903431027,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4516584974695369,
+      "local_outlier_factor": 1.0080659241635384,
+      "elliptic_envelope": 1.744188490053519,
+      "rank_ensemble": 0.455
+    }
+  },
+  {
+    "id": "holdout-227",
+    "split": "holdout",
+    "feature_1": 3.1461456267698136,
+    "feature_2": -0.6277621195765383,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5938786256350704,
+      "local_outlier_factor": 2.234244887553197,
+      "elliptic_envelope": 7.557112651001407,
+      "rank_ensemble": 0.9722222222222223
+    }
+  },
+  {
+    "id": "holdout-228",
+    "split": "holdout",
+    "feature_1": 2.9235201954528827,
+    "feature_2": 0.11864258808248818,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5649580935351167,
+      "local_outlier_factor": 1.5318085307189981,
+      "elliptic_envelope": 3.667884659955064,
+      "rank_ensemble": 0.915
+    }
+  },
+  {
+    "id": "holdout-229",
+    "split": "holdout",
+    "feature_1": 1.282660447721167,
+    "feature_2": 1.5625111904276903,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5489957425319556,
+      "local_outlier_factor": 1.4348750698202986,
+      "elliptic_envelope": 0.37555776968163335,
+      "rank_ensemble": 0.6227777777777778
+    }
+  },
+  {
+    "id": "holdout-230",
+    "split": "holdout",
+    "feature_1": 5.788815164140064,
+    "feature_2": 3.354552770991081,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4543520196230204,
+      "local_outlier_factor": 0.9908137737655842,
+      "elliptic_envelope": 1.8767839584618475,
+      "rank_ensemble": 0.4277777777777778
+    }
+  },
+  {
+    "id": "holdout-231",
+    "split": "holdout",
+    "feature_1": 0.6714360594815629,
+    "feature_2": -0.9921899090504711,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5123776617723792,
+      "local_outlier_factor": 1.1416648127709519,
+      "elliptic_envelope": 2.7058114914878972,
+      "rank_ensemble": 0.7838888888888889
+    }
+  },
+  {
+    "id": "holdout-232",
+    "split": "holdout",
+    "feature_1": -1.792537680830033,
+    "feature_2": 7.701186615867874,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.7086986601516433,
+      "local_outlier_factor": 5.258916277829607,
+      "elliptic_envelope": 67.26217008467285,
+      "rank_ensemble": 0.9994444444444444
+    }
+  },
+  {
+    "id": "holdout-233",
+    "split": "holdout",
+    "feature_1": -0.1826332635397762,
+    "feature_2": 1.1653279400800682,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.48668933122891184,
+      "local_outlier_factor": 1.1259163051914127,
+      "elliptic_envelope": 1.8669934502552439,
+      "rank_ensemble": 0.6833333333333332
+    }
+  },
+  {
+    "id": "holdout-234",
+    "split": "holdout",
+    "feature_1": 5.998537832260724,
+    "feature_2": 4.42850802977226,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4718070354115758,
+      "local_outlier_factor": 1.026814622572359,
+      "elliptic_envelope": 1.5703119993606616,
+      "rank_ensemble": 0.5355555555555555
+    }
+  },
+  {
+    "id": "holdout-235",
+    "split": "holdout",
+    "feature_1": 6.954351082161184,
+    "feature_2": 3.4929534719703215,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5372241809471873,
+      "local_outlier_factor": 1.1391791292835765,
+      "elliptic_envelope": 4.221683878077563,
+      "rank_ensemble": 0.8416666666666667
+    }
+  },
+  {
+    "id": "holdout-236",
+    "split": "holdout",
+    "feature_1": 0.7302405360970343,
+    "feature_2": -0.824864889104808,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.48398751050177635,
+      "local_outlier_factor": 1.0788391401836925,
+      "elliptic_envelope": 2.3354045256088733,
+      "rank_ensemble": 0.6944444444444445
+    }
+  },
+  {
+    "id": "holdout-237",
+    "split": "holdout",
+    "feature_1": 3.0037832511501072,
+    "feature_2": 0.3651581598518255,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5631228747127897,
+      "local_outlier_factor": 1.5481877453580568,
+      "elliptic_envelope": 3.0315224844975295,
+      "rank_ensemble": 0.8988888888888887
+    }
+  },
+  {
+    "id": "holdout-238",
+    "split": "holdout",
+    "feature_1": 4.509785549072395,
+    "feature_2": 3.580677753899242,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4416925671682264,
+      "local_outlier_factor": 1.0501775177170416,
+      "elliptic_envelope": 0.6120113091149768,
+      "rank_ensemble": 0.3283333333333333
+    }
+  },
+  {
+    "id": "holdout-239",
+    "split": "holdout",
+    "feature_1": 5.12097205525658,
+    "feature_2": 3.4319783642233443,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44265253359091156,
+      "local_outlier_factor": 1.026821014459609,
+      "elliptic_envelope": 0.9261804285347444,
+      "rank_ensemble": 0.3438888888888889
+    }
+  },
+  {
+    "id": "holdout-240",
+    "split": "holdout",
+    "feature_1": 0.14346824888708312,
+    "feature_2": 0.8666769516629959,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44487582248626323,
+      "local_outlier_factor": 1.0422972576082117,
+      "elliptic_envelope": 0.9303151493004942,
+      "rank_ensemble": 0.3755555555555556
+    }
+  },
+  {
+    "id": "holdout-241",
+    "split": "holdout",
+    "feature_1": 3.2387013995643494,
+    "feature_2": 0.4184550857706692,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5689280094766683,
+      "local_outlier_factor": 1.6450784355476042,
+      "elliptic_envelope": 3.419341903282238,
+      "rank_ensemble": 0.9183333333333333
+    }
+  },
+  {
+    "id": "holdout-242",
+    "split": "holdout",
+    "feature_1": 6.642905695525396,
+    "feature_2": 1.100675906294597,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6122551675894566,
+      "local_outlier_factor": 1.8298575198593694,
+      "elliptic_envelope": 13.2670201517942,
+      "rank_ensemble": 0.9822222222222221
+    }
+  },
+  {
+    "id": "holdout-243",
+    "split": "holdout",
+    "feature_1": 3.0155093792778036,
+    "feature_2": 4.2122229982758395,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5189540314511562,
+      "local_outlier_factor": 1.220450755442957,
+      "elliptic_envelope": 3.357909801564009,
+      "rank_ensemble": 0.8361111111111111
+    }
+  },
+  {
+    "id": "holdout-244",
+    "split": "holdout",
+    "feature_1": 3.5560178503937876,
+    "feature_2": 3.6804252783680007,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5003056095026329,
+      "local_outlier_factor": 1.3104594052679068,
+      "elliptic_envelope": 1.1320288165536905,
+      "rank_ensemble": 0.6611111111111111
+    }
+  },
+  {
+    "id": "holdout-245",
+    "split": "holdout",
+    "feature_1": -1.0533024778180733,
+    "feature_2": -0.2833285905918741,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4574588497133344,
+      "local_outlier_factor": 0.9798646749769274,
+      "elliptic_envelope": 1.5500336055978452,
+      "rank_ensemble": 0.35777777777777775
+    }
+  },
+  {
+    "id": "holdout-246",
+    "split": "holdout",
+    "feature_1": -0.5539819689336102,
+    "feature_2": -0.2736773586298621,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4359637500150801,
+      "local_outlier_factor": 0.9791905107669173,
+      "elliptic_envelope": 1.1133534513627819,
+      "rank_ensemble": 0.2072222222222222
+    }
+  },
+  {
+    "id": "holdout-247",
+    "split": "holdout",
+    "feature_1": -1.9972485412271068,
+    "feature_2": 4.840454160302588,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6545274756234685,
+      "local_outlier_factor": 4.97379882224069,
+      "elliptic_envelope": 33.19925968669686,
+      "rank_ensemble": 0.9988888888888888
+    }
+  },
+  {
+    "id": "holdout-248",
+    "split": "holdout",
+    "feature_1": 0.3588563971998303,
+    "feature_2": 0.7529737613060917,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.439247389794059,
+      "local_outlier_factor": 1.015562816127696,
+      "elliptic_envelope": 0.6181030254526253,
+      "rank_ensemble": 0.2672222222222222
+    }
+  },
+  {
+    "id": "holdout-249",
+    "split": "holdout",
+    "feature_1": 1.0311162548597574,
+    "feature_2": 0.4599018102226594,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4463437097741516,
+      "local_outlier_factor": 1.0081108586456555,
+      "elliptic_envelope": 0.4101226055845481,
+      "rank_ensemble": 0.25666666666666665
+    }
+  },
+  {
+    "id": "holdout-250",
+    "split": "holdout",
+    "feature_1": 7.832130451268225,
+    "feature_2": 1.068563095343917,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6623642309807284,
+      "local_outlier_factor": 2.2276177611682555,
+      "elliptic_envelope": 20.437715178106085,
+      "rank_ensemble": 0.9972222222222222
+    }
+  },
+  {
+    "id": "holdout-251",
+    "split": "holdout",
+    "feature_1": 7.864071882385624,
+    "feature_2": 1.0936824720078717,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6618796343685411,
+      "local_outlier_factor": 2.225358588168935,
+      "elliptic_envelope": 20.45376207236698,
+      "rank_ensemble": 0.9972222222222222
+    }
+  },
+  {
+    "id": "holdout-252",
+    "split": "holdout",
+    "feature_1": 5.668283084046459,
+    "feature_2": 3.675372191765225,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.443541725276634,
+      "local_outlier_factor": 0.9911932161776759,
+      "elliptic_envelope": 1.388323923589737,
+      "rank_ensemble": 0.3244444444444445
+    }
+  },
+  {
+    "id": "holdout-253",
+    "split": "holdout",
+    "feature_1": 3.2827505113709994,
+    "feature_2": -0.25515556127669436,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5858727966224013,
+      "local_outlier_factor": 1.9585087317605485,
+      "elliptic_envelope": 6.231470559810422,
+      "rank_ensemble": 0.9633333333333334
+    }
+  },
+  {
+    "id": "holdout-254",
+    "split": "holdout",
+    "feature_1": 3.882532696026048,
+    "feature_2": 3.6194332997427416,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4883135530946849,
+      "local_outlier_factor": 1.2844728889706232,
+      "elliptic_envelope": 0.7846475721013717,
+      "rank_ensemble": 0.5916666666666667
+    }
+  },
+  {
+    "id": "holdout-255",
+    "split": "holdout",
+    "feature_1": 4.575617076457271,
+    "feature_2": 3.2437102148705805,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44954709492670375,
+      "local_outlier_factor": 1.0143084996966347,
+      "elliptic_envelope": 0.5587426488790471,
+      "rank_ensemble": 0.3061111111111111
+    }
+  },
+  {
+    "id": "holdout-256",
+    "split": "holdout",
+    "feature_1": 5.9989063465702595,
+    "feature_2": 3.920650440053438,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4606928948288121,
+      "local_outlier_factor": 0.9899793565978763,
+      "elliptic_envelope": 1.6502648898974324,
+      "rank_ensemble": 0.4183333333333333
+    }
+  },
+  {
+    "id": "holdout-257",
+    "split": "holdout",
+    "feature_1": 4.460101300113062,
+    "feature_2": 4.269461693530189,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.42674187047581585,
+      "local_outlier_factor": 0.9754173914649316,
+      "elliptic_envelope": 1.4348557275661924,
+      "rank_ensemble": 0.19166666666666665
+    }
+  },
+  {
+    "id": "holdout-258",
+    "split": "holdout",
+    "feature_1": 6.593152814522202,
+    "feature_2": 4.092750056344774,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5166586028757393,
+      "local_outlier_factor": 1.0966024020155616,
+      "elliptic_envelope": 2.3938097300797914,
+      "rank_ensemble": 0.7472222222222222
+    }
+  },
+  {
+    "id": "holdout-259",
+    "split": "holdout",
+    "feature_1": 5.552370996564831,
+    "feature_2": 4.627722799175817,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4611483754216411,
+      "local_outlier_factor": 1.0607954463416371,
+      "elliptic_envelope": 1.5609101952927713,
+      "rank_ensemble": 0.5477777777777778
+    }
+  },
+  {
+    "id": "holdout-260",
+    "split": "holdout",
+    "feature_1": 0.8211789874427926,
+    "feature_2": 1.1881323248205997,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4971183683154168,
+      "local_outlier_factor": 1.266219137883202,
+      "elliptic_envelope": 0.4848347420608914,
+      "rank_ensemble": 0.5644444444444444
+    }
+  },
+  {
+    "id": "holdout-261",
+    "split": "holdout",
+    "feature_1": 0.3931582201082375,
+    "feature_2": 0.28444859124788197,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4235140591500676,
+      "local_outlier_factor": 0.9781123506855384,
+      "elliptic_envelope": 0.5457101316753403,
+      "rank_ensemble": 0.065
+    }
+  },
+  {
+    "id": "holdout-262",
+    "split": "holdout",
+    "feature_1": 0.23290978069596235,
+    "feature_2": 5.317772752126922,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6091837547516221,
+      "local_outlier_factor": 2.7847165759975017,
+      "elliptic_envelope": 21.670381076861474,
+      "rank_ensemble": 0.9877777777777776
+    }
+  },
+  {
+    "id": "holdout-263",
+    "split": "holdout",
+    "feature_1": 2.787867474558797,
+    "feature_2": -0.14351455534028143,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5734911701741903,
+      "local_outlier_factor": 1.6316952057338314,
+      "elliptic_envelope": 4.279815962891211,
+      "rank_ensemble": 0.9333333333333332
+    }
+  },
+  {
+    "id": "holdout-264",
+    "split": "holdout",
+    "feature_1": -1.1501775272372494,
+    "feature_2": -0.3962386598918523,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.46489336015170907,
+      "local_outlier_factor": 1.004369054320428,
+      "elliptic_envelope": 1.6175377391522296,
+      "rank_ensemble": 0.4727777777777778
+    }
+  },
+  {
+    "id": "holdout-265",
+    "split": "holdout",
+    "feature_1": 5.441001599811363,
+    "feature_2": 2.6014938278084223,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.48712263459852967,
+      "local_outlier_factor": 1.059719598812292,
+      "elliptic_envelope": 2.5164058824175646,
+      "rank_ensemble": 0.6972222222222223
+    }
+  },
+  {
+    "id": "holdout-266",
+    "split": "holdout",
+    "feature_1": 1.2303805103989576,
+    "feature_2": 0.2729140838892963,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4449270147995872,
+      "local_outlier_factor": 0.9838611341216362,
+      "elliptic_envelope": 0.6759146220499809,
+      "rank_ensemble": 0.20388888888888887
+    }
+  },
+  {
+    "id": "holdout-267",
+    "split": "holdout",
+    "feature_1": 2.1231525471355583,
+    "feature_2": -2.2980229420955123,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.6629886549196541,
+      "local_outlier_factor": 3.522173213827301,
+      "elliptic_envelope": 13.274057648724579,
+      "rank_ensemble": 0.9966666666666666
+    }
+  },
+  {
+    "id": "holdout-268",
+    "split": "holdout",
+    "feature_1": 2.597591935382265,
+    "feature_2": 2.5618768093126443,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5590637621082531,
+      "local_outlier_factor": 1.7421152181091313,
+      "elliptic_envelope": 0.3129761914249966,
+      "rank_ensemble": 0.6422222222222222
+    }
+  },
+  {
+    "id": "holdout-269",
+    "split": "holdout",
+    "feature_1": 1.440062102611977,
+    "feature_2": 0.10191367917435595,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4641708953669121,
+      "local_outlier_factor": 0.990150685296872,
+      "elliptic_envelope": 1.1100120327641907,
+      "rank_ensemble": 0.3572222222222223
+    }
+  },
+  {
+    "id": "holdout-270",
+    "split": "holdout",
+    "feature_1": 4.612814368870057,
+    "feature_2": 3.708229338044014,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43280314174728873,
+      "local_outlier_factor": 1.0200981447780157,
+      "elliptic_envelope": 0.7003327728240433,
+      "rank_ensemble": 0.2511111111111111
+    }
+  },
+  {
+    "id": "holdout-271",
+    "split": "holdout",
+    "feature_1": 0.5042223494823052,
+    "feature_2": 1.5413045355373343,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5408290186520097,
+      "local_outlier_factor": 1.5078955811104122,
+      "elliptic_envelope": 1.3208224940638005,
+      "rank_ensemble": 0.7422222222222222
+    }
+  },
+  {
+    "id": "holdout-272",
+    "split": "holdout",
+    "feature_1": 4.071023023916034,
+    "feature_2": 3.254683857906519,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.47910290694412927,
+      "local_outlier_factor": 1.1681065181251549,
+      "elliptic_envelope": 0.39841373163454313,
+      "rank_ensemble": 0.4955555555555556
+    }
+  },
+  {
+    "id": "holdout-273",
+    "split": "holdout",
+    "feature_1": -4.224177625004134,
+    "feature_2": 8.29041544171933,
+    "label": 1,
+    "category": "global",
+    "scores": {
+      "isolation_forest": 0.7391890217653546,
+      "local_outlier_factor": 7.522226148232451,
+      "elliptic_envelope": 108.20733142746043,
+      "rank_ensemble": 1.0
+    }
+  },
+  {
+    "id": "holdout-274",
+    "split": "holdout",
+    "feature_1": 1.4806998411450678,
+    "feature_2": 0.3816005283338509,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4602372854445914,
+      "local_outlier_factor": 0.9916721836801382,
+      "elliptic_envelope": 0.6914465232204396,
+      "rank_ensemble": 0.29333333333333333
+    }
+  },
+  {
+    "id": "holdout-275",
+    "split": "holdout",
+    "feature_1": -1.253490911982887,
+    "feature_2": -0.1697266003364066,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.47254559663978074,
+      "local_outlier_factor": 1.0168175278816944,
+      "elliptic_envelope": 1.8793788283927177,
+      "rank_ensemble": 0.5516666666666666
+    }
+  },
+  {
+    "id": "holdout-276",
+    "split": "holdout",
+    "feature_1": 5.160572931847595,
+    "feature_2": 3.654105891547153,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43894760710957964,
+      "local_outlier_factor": 0.9946202124000634,
+      "elliptic_envelope": 0.9051192563415049,
+      "rank_ensemble": 0.24833333333333332
+    }
+  },
+  {
+    "id": "holdout-277",
+    "split": "holdout",
+    "feature_1": 0.04773495588586664,
+    "feature_2": 1.0819511782294915,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.47150969026587675,
+      "local_outlier_factor": 1.101459706749641,
+      "elliptic_envelope": 1.3266054616999374,
+      "rank_ensemble": 0.5727777777777778
+    }
+  },
+  {
+    "id": "holdout-278",
+    "split": "holdout",
+    "feature_1": 1.076233336244023,
+    "feature_2": -0.7410783744808139,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.49871363983305456,
+      "local_outlier_factor": 1.139142034122714,
+      "elliptic_envelope": 2.6158221163769277,
+      "rank_ensemble": 0.7661111111111111
+    }
+  },
+  {
+    "id": "holdout-279",
+    "split": "holdout",
+    "feature_1": 7.444705239800702,
+    "feature_2": 1.5856712510696676,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.65195356120392,
+      "local_outlier_factor": 1.7644941995689103,
+      "elliptic_envelope": 14.536492331798629,
+      "rank_ensemble": 0.9905555555555555
+    }
+  },
+  {
+    "id": "holdout-280",
+    "split": "holdout",
+    "feature_1": -0.3388532562138841,
+    "feature_2": -0.8570989176354654,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.46314107795324344,
+      "local_outlier_factor": 1.030686613205072,
+      "elliptic_envelope": 1.5362754984244076,
+      "rank_ensemble": 0.515
+    }
+  },
+  {
+    "id": "holdout-281",
+    "split": "holdout",
+    "feature_1": 0.3259248890853255,
+    "feature_2": 0.4076492839657546,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4320255273595808,
+      "local_outlier_factor": 0.9799891593015623,
+      "elliptic_envelope": 0.5523592343573839,
+      "rank_ensemble": 0.11
+    }
+  },
+  {
+    "id": "holdout-282",
+    "split": "holdout",
+    "feature_1": 5.633926849661612,
+    "feature_2": 1.7947840488487583,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5546576522089617,
+      "local_outlier_factor": 1.388879425811305,
+      "elliptic_envelope": 5.479684960953702,
+      "rank_ensemble": 0.9244444444444445
+    }
+  },
+  {
+    "id": "holdout-283",
+    "split": "holdout",
+    "feature_1": 7.066026182399044,
+    "feature_2": 0.9247861837155545,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6315436514599099,
+      "local_outlier_factor": 2.0816416854020177,
+      "elliptic_envelope": 16.761916802575158,
+      "rank_ensemble": 0.9916666666666667
+    }
+  },
+  {
+    "id": "holdout-284",
+    "split": "holdout",
+    "feature_1": 5.682406522425066,
+    "feature_2": 4.035914720016289,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.44472373458390524,
+      "local_outlier_factor": 1.0092335535173702,
+      "elliptic_envelope": 1.284636147226573,
+      "rank_ensemble": 0.36777777777777776
+    }
+  },
+  {
+    "id": "holdout-285",
+    "split": "holdout",
+    "feature_1": 0.42168100248186036,
+    "feature_2": -0.35734978305127046,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4321732534279262,
+      "local_outlier_factor": 0.988832888917322,
+      "elliptic_envelope": 1.1099695373373053,
+      "rank_ensemble": 0.21833333333333335
+    }
+  },
+  {
+    "id": "holdout-286",
+    "split": "holdout",
+    "feature_1": 8.076589483422115,
+    "feature_2": 1.526055386003871,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6596323718662958,
+      "local_outlier_factor": 2.0768927375533535,
+      "elliptic_envelope": 18.62330194303667,
+      "rank_ensemble": 0.9966666666666667
+    }
+  },
+  {
+    "id": "holdout-287",
+    "split": "holdout",
+    "feature_1": 0.34370478973685853,
+    "feature_2": -0.13499224017150105,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.43152721495489016,
+      "local_outlier_factor": 1.0153778104238111,
+      "elliptic_envelope": 0.8177252323704356,
+      "rank_ensemble": 0.25333333333333335
+    }
+  },
+  {
+    "id": "holdout-288",
+    "split": "holdout",
+    "feature_1": 5.471540592753387,
+    "feature_2": 4.351848682611928,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4490125372463005,
+      "local_outlier_factor": 1.025245467522058,
+      "elliptic_envelope": 1.2905651941610439,
+      "rank_ensemble": 0.4266666666666667
+    }
+  },
+  {
+    "id": "holdout-289",
+    "split": "holdout",
+    "feature_1": 3.0789814385501963,
+    "feature_2": 0.3871507580811766,
+    "label": 1,
+    "category": "local",
+    "scores": {
+      "isolation_forest": 0.5661808557094982,
+      "local_outlier_factor": 1.5630435574478703,
+      "elliptic_envelope": 3.1360430086911024,
+      "rank_ensemble": 0.9061111111111112
+    }
+  },
+  {
+    "id": "holdout-290",
+    "split": "holdout",
+    "feature_1": 1.5406634620803532,
+    "feature_2": 1.0471817612315029,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.48702165772229905,
+      "local_outlier_factor": 1.1692486558969475,
+      "elliptic_envelope": 0.13373999737938697,
+      "rank_ensemble": 0.5027777777777778
+    }
+  },
+  {
+    "id": "holdout-291",
+    "split": "holdout",
+    "feature_1": 6.841710264043805,
+    "feature_2": 1.1838884365867748,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6253679600775408,
+      "local_outlier_factor": 1.8355571892745681,
+      "elliptic_envelope": 13.797033055644647,
+      "rank_ensemble": 0.9866666666666667
+    }
+  },
+  {
+    "id": "holdout-292",
+    "split": "holdout",
+    "feature_1": 5.202513013985085,
+    "feature_2": 3.543977114407696,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4463636486723246,
+      "local_outlier_factor": 1.005077946409894,
+      "elliptic_envelope": 0.9600626800773254,
+      "rank_ensemble": 0.315
+    }
+  },
+  {
+    "id": "holdout-293",
+    "split": "holdout",
+    "feature_1": 7.278700380856378,
+    "feature_2": 1.1627087810782168,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6516372902462622,
+      "local_outlier_factor": 1.9690784340274288,
+      "elliptic_envelope": 16.363969979075605,
+      "rank_ensemble": 0.995
+    }
+  },
+  {
+    "id": "holdout-294",
+    "split": "holdout",
+    "feature_1": -0.09186738530627382,
+    "feature_2": 1.5993433732246922,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5513315784062858,
+      "local_outlier_factor": 1.450004192515734,
+      "elliptic_envelope": 2.6235992941736432,
+      "rank_ensemble": 0.8722222222222221
+    }
+  },
+  {
+    "id": "holdout-295",
+    "split": "holdout",
+    "feature_1": -0.07091703342007494,
+    "feature_2": -1.189507758027981,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.5071518080188808,
+      "local_outlier_factor": 1.135569885431527,
+      "elliptic_envelope": 2.3148130465470707,
+      "rank_ensemble": 0.7544444444444446
+    }
+  },
+  {
+    "id": "holdout-296",
+    "split": "holdout",
+    "feature_1": 6.34047152150346,
+    "feature_2": 1.218480415099547,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.603745084932057,
+      "local_outlier_factor": 1.7351452541358627,
+      "elliptic_envelope": 11.064983132939822,
+      "rank_ensemble": 0.9766666666666667
+    }
+  },
+  {
+    "id": "holdout-297",
+    "split": "holdout",
+    "feature_1": 4.6492830496178295,
+    "feature_2": 3.1427138276739974,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4511690472919607,
+      "local_outlier_factor": 1.0311751068624755,
+      "elliptic_envelope": 0.632233214771722,
+      "rank_ensemble": 0.35333333333333333
+    }
+  },
+  {
+    "id": "holdout-298",
+    "split": "holdout",
+    "feature_1": 7.458604449547787,
+    "feature_2": 0.9024227659547402,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.657175575335034,
+      "local_outlier_factor": 2.2197915805771995,
+      "elliptic_envelope": 19.30520395148304,
+      "rank_ensemble": 0.9972222222222222
+    }
+  },
+  {
+    "id": "holdout-299",
+    "split": "holdout",
+    "feature_1": 7.590630498956143,
+    "feature_2": 0.9147904776950305,
+    "label": 1,
+    "category": "cluster",
+    "scores": {
+      "isolation_forest": 0.6584217361542761,
+      "local_outlier_factor": 2.260079716883335,
+      "elliptic_envelope": 20.049864325109482,
+      "rank_ensemble": 0.9972222222222222
+    }
+  },
+  {
+    "id": "holdout-300",
+    "split": "holdout",
+    "feature_1": 1.1825503359137235,
+    "feature_2": 1.1015489285900357,
+    "label": 0,
+    "category": "normal",
+    "scores": {
+      "isolation_forest": 0.4833700678165104,
+      "local_outlier_factor": 1.167871283737071,
+      "elliptic_envelope": 0.20505177632899557,
+      "rank_ensemble": 0.4955555555555555
+    }
+  }
+]

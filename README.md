@@ -35,9 +35,9 @@ Then open the corresponding path:
 | 12 | `/12_timeseries_forecasting/` |
 | 13 | `/13_crispdm_nyc_taxi_audit_platform/dashboard/` |
 
-Each UI includes metric cards, visualizations or artifact previews, explanatory CRISP-DM context, responsive styling, and clear labeling for browser interactions that are illustrative rather than direct Python inference.
+Each UI includes metric cards, visualizations or artifact previews, explanatory CRISP-DM context, responsive styling, and project-specific analytical controls. Where the browser is reading checked-in artifacts rather than running Python, that boundary is labeled explicitly.
 
-Rendered UI screenshots are stored in [`ui_screenshots/`](ui_screenshots/). They were captured from the public GitHub Pages deployment after loading each project dashboard.
+Rendered UI screenshots are stored in [`ui_screenshots/`](ui_screenshots/). They were refreshed through one sequential localhost review pass, with only one static server and one project page loaded at a time.
 
 | Directory | Focus |
 |---|---|
@@ -66,6 +66,10 @@ Rendered UI screenshots are stored in [`ui_screenshots/`](ui_screenshots/). They
 ## Data-science robustness review
 
 Each project includes a reviewer-authored [`DS_REVIEW.md`](00_dynamic_todo_workspace/DS_REVIEW.md) with evidence-backed findings. The review pass was implemented on this same branch: leakage boundaries, held-out evaluation, input validation, reproducibility metadata, artifact contracts, and dashboard claims were strengthened where applicable. Review reports remain alongside each project so the reasoning and limitations are auditable.
+
+## Final polish
+
+The final polish pass added a second review record, [`FINAL_POLISH_REPORT.md`](FINAL_POLISH_REPORT.md), for all 14 projects. It prioritized data-science integrity—evaluation populations, baselines, leakage boundaries, uncertainty, provenance, and artifact contracts—before improving the dashboards. The resulting UIs are exploratory evidence viewers, not static marketing pages.
 
 ## Reproducibility
 

@@ -70,6 +70,33 @@ class NanoTests(unittest.TestCase):
         with_context = model.evaluate("b", context="a")
         self.assertNotEqual(without_context["loss"], with_context["loss"])
 
+    def test_ngram_replay_serializes_normalized_probabilities_and_trace(self):
+        model = CharNGram(order=2, alpha=.2)
+        model.fit("ababca")
+        distribution = model.next_distribution("ab")
+        self.assertAlmostEqual(sum(item["probability"] for item in distribution), 1.0, places=6)
+        replay = model.replay("ab", max_new_tokens=3)
+        self.assertTrue(replay["deterministic"])
+        self.assertEqual(len(replay["trace"]), 3)
+        self.assertEqual(replay["trace"][0]["selected"], replay["trace"][0]["candidates"][0]["token"])
+
+    def test_cli_artifact_contains_three_way_split_and_behavior_inspector(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "metrics.json"
+            subprocess.run(
+                [sys.executable, "nano_llm.py", "--output", str(output), "--max-new-tokens", "3"],
+                cwd=PROJECT_DIR,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            data = json.loads(output.read_text())
+            self.assertEqual(data["split"]["train_chars"] + data["split"]["validation_chars"] + data["split"]["test_chars"], 360)
+            self.assertEqual(data["oov_counts"]["validation"], data["validation"]["oov_count"])
+            self.assertEqual(data["behavior"]["kind"], "deterministic_replay")
+            self.assertIn("default_distribution", data["behavior"])
+            self.assertIn("trace", data["behavior"])
+
     def test_cli_writes_auditable_json(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "metrics.json"

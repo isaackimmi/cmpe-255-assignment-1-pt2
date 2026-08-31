@@ -2044,5 +2044,47 @@
       "action": "review_domain_validity",
       "status": "retained"
     }
-  ]
+  ],
+  "feature_policies": {
+    "pickup_datetime": {
+      "invalid": "fail_before_modeling_or_inference"
+    },
+    "passenger_count": {
+      "missing": "impute_in_train_pipeline",
+      "invalid": "coerce_to_missing_and_impute",
+      "range": [
+        1,
+        6
+      ],
+      "integer_only": true
+    },
+    "distance_miles": {
+      "missing": "impute_in_train_pipeline",
+      "invalid": "coerce_to_missing_and_impute",
+      "range": [
+        0,
+        100.0
+      ]
+    },
+    "pickup_zone": {
+      "missing": "impute_in_train_pipeline",
+      "invalid": "reject_before_inference",
+      "range": [
+        1,
+        7
+      ],
+      "integer_only": true
+    },
+    "dropoff_zone": {
+      "missing": "impute_in_train_pipeline",
+      "invalid": "reject_before_inference",
+      "range": [
+        1,
+        7
+      ],
+      "integer_only": true
+    }
+  },
+  "duplicate_policy": "keep_first_exclude_later_rows",
+  "blocking_finding_count": 0
 }

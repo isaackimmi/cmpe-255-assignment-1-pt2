@@ -22,6 +22,11 @@ def test_bayes_rejects_impossible_evidence_and_accepts_prior_endpoints():
     assert naive_bayes_posterior(1.0, 0.8, 0.2) == 1
 
 
+def test_bayes_long_feature_products_are_stable_in_log_space():
+    tiny_features = [1e-200] * 4
+    assert naive_bayes_posterior(0.5, tiny_features, tiny_features) == pytest.approx(0.5)
+
+
 def test_threshold_metrics_and_costs():
     result = threshold_metrics([1, 1, 0, 0], [0.9, 0.3, 0.8, 0.1], 0.5)
     assert (result.tp, result.fp, result.tn, result.fn) == (1, 1, 1, 1)
@@ -40,6 +45,17 @@ def test_threshold_metrics_validates_inputs_and_marks_undefined_ratios():
             threshold_metrics(labels, scores, 0.5)
     with pytest.raises(ValueError):
         threshold_metrics([0, 1], [0.2, 0.8], 0.5, false_negative_cost=-1)
+
+
+def test_threshold_endpoints_expose_all_positive_and_all_negative_states():
+    labels = [1, 1, 0, 0]
+    scores = [0.9, 0.3, 0.8, 0.1]
+    all_positive = threshold_metrics(labels, scores, 0)
+    all_negative = threshold_metrics(labels, scores, 1)
+    assert (all_positive.tp, all_positive.fp, all_positive.tn, all_positive.fn) == (2, 2, 0, 0)
+    assert all_positive.precision == pytest.approx(0.5)
+    assert all_negative.precision is None
+    assert (all_negative.tp, all_negative.fp, all_negative.tn, all_negative.fn) == (0, 0, 2, 2)
 
 
 def test_roc_points_include_endpoints_and_auc_is_ranking_area():
@@ -100,4 +116,8 @@ def test_dependency_free_artifacts_describe_each_concept(tmp_path, monkeypatch):
     assert "Cost matrix" in contents["evaluation.svg"]
     assert "f′(x)" in contents["gradient_descent.svg"]
     assert "w×x" in contents["backpropagation.svg"]
+    assert "+ b" in contents["backpropagation.svg"]
+    assert "dL/dw" in contents["backpropagation.svg"]
+    assert "dL/db" in contents["backpropagation.svg"]
+    assert "arrow-backward" in contents["backpropagation.svg"]
     assert "generated snapshot" not in "".join(contents.values())

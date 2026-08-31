@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="An interactive CRISP-DM teaching dashboard for the Iris classification walkthrough.">
-  <title>CRISP-DM Studio · Iris curriculum</title>
+  <title>CRISP-DM Studio · Iris walkthrough</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,10 +12,10 @@
     <aside class="sidebar">
       <a class="brand" href="#top" aria-label="CRISP-DM Studio home">
         <span class="brand-symbol" aria-hidden="true">✳</span>
-        <span><strong>CRISP-DM</strong><small>studio / 01</small></span>
+        <span><strong>CRISP-DM</strong><small>studio / IRIS</small></span>
       </a>
 
-      <div class="sidebar-label">Curriculum map</div>
+      <div class="sidebar-label">Six-phase walkthrough</div>
       <nav id="phase-nav" class="phase-nav" aria-label="CRISP-DM phases">
         <button class="phase-nav-item active" data-phase="business_understanding" type="button"><span>01</span>Business understanding</button>
         <button class="phase-nav-item" data-phase="data_understanding" type="button"><span>02</span>Data understanding</button>
@@ -35,7 +35,7 @@
 
     <main id="top" class="main-content">
       <header class="topbar">
-        <div class="breadcrumbs"><span>CURRICULUM</span><i>/</i> IRIS CLASSIFICATION</div>
+        <div class="breadcrumbs"><span>ONE SUPERVISED TASK</span><i>/</i> IRIS WALKTHROUGH</div>
         <div class="top-actions"><span id="report-status" class="report-status"><span class="status-dot"></span> Loading report</span><a class="text-link" href="artifacts/crispdm_report.json" target="_blank" rel="noreferrer">View JSON ↗</a></div>
       </header>
 
@@ -44,6 +44,7 @@
           <p class="kicker">A guided end-to-end walkthrough <span class="rule"></span></p>
           <h1 id="page-title">From question<br><em>to bounded</em> learning.</h1>
           <p class="hero-intro">A focused Iris CRISP-DM walkthrough for making the thinking, evidence, and claim boundaries behind a machine learning project visible and easy to teach.</p>
+          <p class="scope-note"><strong>Scope note:</strong> one supervised classification task, carried through all six CRISP-DM phases. The broader curriculum topics live in separate portfolio projects.</p>
           <div class="hero-meta"><span class="live-pill"><span class="status-dot"></span> Report connected</span><span>Last run: reproducible local pipeline</span></div>
         </div>
         <div class="hero-art" aria-hidden="true">
@@ -78,7 +79,47 @@
           <div class="accuracy-display"><div class="accuracy-ring"><span id="ring-value">—</span><small>accuracy</small></div><div><strong id="evaluation-headline">Model clears the bar.</strong><p>On an untouched, stratified holdout.</p></div></div>
           <div class="matrix-heading"><span>Confusion matrix</span><span class="matrix-legend"><i></i> correct &nbsp; <i class="error-key"></i> review</span></div>
           <div id="confusion-matrix" class="matrix-wrap"></div>
+          <div id="error-detail" class="error-detail" aria-live="polite"></div>
+          <div class="failure-heading">Failure cases <span>select to jump to their matrix cell</span></div>
+          <div id="failure-cases" class="failure-cases"></div>
           <div id="class-scores" class="class-scores"></div>
+          <p id="gate-explanation" class="gate-explanation"></p>
+        </article>
+      </section>
+
+      <section class="explorer-grid section-block" aria-label="Model and evaluation artifact explorer">
+        <article class="explorer-card panel-card">
+          <div class="card-heading"><div><p class="kicker">Artifact explorer</p><h2>Compare the candidates</h2></div><span class="iris-chip">CV / TRAINING ONLY</span></div>
+          <div class="control-row" aria-label="Artifact controls">
+            <label><span>Inspect model</span><select id="model-select"></select></label>
+            <label><span>Compare against</span><select id="baseline-select"></select></label>
+            <label><span>Metric</span><select id="metric-select"></select></label>
+          </div>
+          <div id="explorer-summary" class="explorer-summary"></div>
+          <div id="model-comparison" class="comparison-wrap"></div>
+        </article>
+        <article class="distribution-card panel-card">
+          <div class="card-heading"><div><p class="kicker">Selected artifact</p><h2>Score distribution</h2></div><span class="terminal-mark">15 FOLDS</span></div>
+          <div id="score-distribution" class="score-distribution"></div>
+          <p class="claim-note">The bars are repeated stratified-CV scores from training rows only. They describe model selection evidence, not performance on new populations.</p>
+        </article>
+      </section>
+
+      <section class="artifact-grid section-block" aria-label="Model identity and inference contract">
+        <article class="identity-card panel-card">
+          <div class="card-heading"><div><p class="kicker">Artifact identity</p><h2>What is checked in</h2></div><a class="text-link" href="artifacts/model.joblib" target="_blank" rel="noreferrer">Open bundle ↗</a></div>
+          <div id="model-identity" class="model-identity"></div>
+          <ul id="artifact-list" class="artifact-list"></ul>
+          <p class="claim-note">Configuration and fitted-state fingerprints are separate. Hashes identify the exact local evidence; they do not imply external validation.</p>
+        </article>
+        <article class="inference-card panel-card">
+          <div class="card-heading"><div><p class="kicker">Saved input contract</p><h2>Try named features</h2></div><span class="iris-chip">LOCAL ONLY</span></div>
+          <form id="inference-form" class="inference-form">
+            <div id="inference-fields" class="inference-fields"></div>
+            <button class="primary-button" type="submit">Check contract</button>
+          </form>
+          <p id="inference-contract-note" class="contract-note"></p>
+          <div id="inference-result" class="inference-result" role="status">Enter the named measurements to test the saved contract.</div>
         </article>
       </section>
 
@@ -87,7 +128,7 @@
         <article class="workflow-card panel-card"><div class="card-heading"><div><p class="kicker">Make it reproducible</p><h2>Run the studio</h2></div><span class="terminal-mark">⌘</span></div><div class="command-block"><span class="prompt">$</span><code>python3 src/crispdm_demo.py</code><button class="copy-button" id="copy-command" type="button" aria-label="Copy run command">Copy</button></div><div class="command-block secondary-command"><span class="prompt">$</span><code>pytest -q</code><button class="copy-button" data-copy="pytest -q" type="button" aria-label="Copy test command">Copy</button></div><div class="workflow-steps"><div><span>01</span><p>Generate the report, snapshot, and model bundle.</p></div><div><span>02</span><p>Run schema-validated local inference from the bundle.</p></div><div><span>03</span><p>Serve this folder to click through the evidence.</p></div></div><p class="serve-tip">Inference: <code>python3 src/inference.py --model-path artifacts/model.joblib --features 5.1 3.5 1.4 0.2</code></p></article>
       </section>
 
-      <footer class="footer"><span>CRISP-DM STUDIO</span><span>Built for the classroom · artifacts/crispdm_report.json is the source of truth</span></footer>
+      <footer class="footer"><span>IRIS CRISP-DM WALKTHROUGH</span><span>Built for the classroom · artifacts/crispdm_report.json is the source of truth</span></footer>
     </main>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>

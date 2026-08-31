@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 2,
   "n_customers": 120,
   "features": [
     "annual_income_k",
@@ -10,11 +10,12 @@
   "selected_k": 3,
   "selected_preprocessing": "standard",
   "hashes": {
-    "summary.json": "8d7698c2783cde774167d7445671102a7896c87dd1340c40f25c3b2f86933c99",
+    "summary.json": "f045323d545bd9ab793b8cdaac452eb7a4911f1e3ad7a2a58310f71c4a61affa",
     "baseline_scores.csv": "05c760985dcfdf93068bf61d49de95c5596bc0344cb066c597558b4b701043d0",
     "log1p_scores.csv": "5a1eacb73a46fbd0c69909710bc16dbaaddf2c481ad8642c6b5bfe060acf4ef5",
     "validation_scores.csv": "240f806c85238809924447aa809900928f7ba56ca7b95a3b6ad029f76f4007b6",
     "customer_segments.csv": "14a18bd17c79580a5d97bbb2b7d9f06ae379a95c6f18f9069f7ade163ed3220a",
-    "segmentation.png": "cbea269b7330b2d72b0880ac06791d603fa191a531ec710a4a5d2b3c9d64a4e6"
+    "explorer_points.csv": "7aa9ede9e73e5d6d99498354f99720d00c6eebdf76c82799fbb68a54af7151ad",
+    "segmentation.png": "9ea6d79f35e9bbfa181c181ac60fc3365b14871414a50dd7640de48555555349"
   }
 }

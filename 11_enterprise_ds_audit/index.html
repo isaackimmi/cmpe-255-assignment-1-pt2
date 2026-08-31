@@ -67,9 +67,9 @@
           </article>
           <div class="stat-grid">
             <article class="stat-card"><span class="stat-label">Checks evaluated</span><strong id="stat-checks">—</strong><span class="stat-trend neutral">audit scope</span></article>
-            <article class="stat-card"><span class="stat-label">Blocking failures</span><strong id="stat-fails">—</strong><span class="stat-trend danger">needs action</span></article>
-            <article class="stat-card"><span class="stat-label">Warnings</span><strong id="stat-warnings">—</strong><span class="stat-trend warning">monitor</span></article>
-            <article class="stat-card"><span class="stat-label">High severity</span><strong id="stat-high">—</strong><span class="stat-trend danger">priority queue</span></article>
+            <article class="stat-card"><span class="stat-label">Failures / inconclusive</span><strong id="stat-fails">—</strong><span class="stat-trend danger">release gate</span></article>
+            <article class="stat-card"><span class="stat-label">Advisory findings</span><strong id="stat-warnings">—</strong><span class="stat-trend warning">review</span></article>
+            <article class="stat-card"><span class="stat-label">High severity open</span><strong id="stat-high">—</strong><span class="stat-trend danger">priority queue</span></article>
           </div>
         </section>
 
@@ -98,17 +98,25 @@
             <label class="search-field"><span aria-hidden="true">⌕</span><input id="finding-search" type="search" placeholder="Search checks or evidence" autocomplete="off" /></label>
             <label class="select-field"><span>Status</span><select id="status-filter"><option value="all">All statuses</option><option value="FAIL">Failures</option><option value="INCONCLUSIVE">Inconclusive</option><option value="WARN">Warnings</option><option value="PASS">Passed</option></select></label>
             <label class="select-field"><span>Severity</span><select id="severity-filter"><option value="all">All severities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+            <label class="select-field"><span>Category</span><select id="category-filter"><option value="all">All categories</option><option value="schema">Schema</option><option value="completeness">Completeness</option><option value="data_integrity">Data integrity</option><option value="domain">Domain</option><option value="governance">Governance</option><option value="model_quality">Model quality</option></select></label>
             <button class="clear-filter" id="clear-filters" type="button">Clear</button>
           </div>
-          <div class="table-wrap"><table class="findings-table"><thead><tr><th scope="col">Control</th><th scope="col">Status</th><th scope="col">Severity</th><th scope="col">Evidence</th><th scope="col"><span class="sr-only">Open</span></th></tr></thead><tbody id="findings-body"></tbody></table><div class="empty-state" id="empty-state" hidden>No findings match the current filters.</div></div>
+          <div class="table-wrap"><table class="findings-table"><caption class="sr-only">Finding-level release controls. Open a row to inspect structured evidence and decision context.</caption><thead><tr><th scope="col">Control</th><th scope="col">Status</th><th scope="col">Severity</th><th scope="col">Evidence</th><th scope="col"><span class="sr-only">Open</span></th></tr></thead><tbody id="findings-body"></tbody></table><div class="empty-state" id="empty-state" hidden>No findings match the current filters.</div></div>
         </section>
 
         <section id="evidence" class="evidence-grid">
           <article class="panel detail-panel" id="schema-panel"><div class="panel-heading"><div><p class="eyebrow">05 / DATA CONTRACT</p><h2>Schema integrity</h2></div><span class="mini-status" id="schema-status">—</span></div><div class="detail-content" id="schema-detail"></div></article>
-          <article class="panel detail-panel" id="leakage-panel"><div class="panel-heading"><div><p class="eyebrow">06 / GOVERNANCE RISK</p><h2>Leakage &amp; privacy flags</h2></div><span class="mini-status" id="leakage-status">—</span></div><div class="detail-content" id="leakage-detail"></div></article>
+          <article class="panel detail-panel" id="leakage-panel"><div class="panel-heading"><div><p class="eyebrow">06 / GOVERNANCE RISK</p><h2>Leakage &amp; contract flags</h2></div><span class="mini-status" id="leakage-status">—</span></div><div class="detail-content" id="leakage-detail"></div></article>
           <article class="panel detail-panel" id="missingness-panel"><div class="panel-heading"><div><p class="eyebrow">07 / COMPLETENESS</p><h2>Missingness profile</h2></div><span class="mini-status" id="missingness-status">—</span></div><div class="detail-content" id="missingness-detail"></div></article>
           <article class="panel detail-panel" id="repro-panel"><div class="panel-heading"><div><p class="eyebrow">08 / EVIDENCE CHAIN</p><h2>Reproducibility</h2></div><span class="mini-status" id="repro-status">—</span></div><div class="detail-content" id="repro-detail"></div></article>
+          <p class="section-caption evidence-caption" id="evidence-caption">Finding-level evidence is available from each control row.</p>
         </section>
+
+        <aside id="finding-drawer" class="finding-drawer" role="dialog" aria-modal="true" aria-labelledby="finding-drawer-title" aria-hidden="true" hidden>
+          <div class="finding-drawer-card"><div class="drawer-heading"><div><p class="eyebrow">FINDING EVIDENCE</p><h2 id="finding-drawer-title">Control detail</h2><div id="finding-drawer-meta" class="drawer-meta"></div></div><button id="finding-drawer-close" class="drawer-close" type="button" aria-label="Close finding detail">×</button></div>
+            <p id="finding-drawer-detail" class="drawer-detail"></p><section><h3>Structured evidence</h3><div id="finding-drawer-evidence" class="drawer-evidence"></div></section><section><h3>Release decision context</h3><div id="finding-drawer-decision"></div></section>
+          </div>
+        </aside>
 
         <section class="run-card">
           <div class="run-mark">⌘</div><div><p class="eyebrow">RE-RUN THE AUDIT</p><h2>Keep the evidence current</h2><p>Regenerate the deterministic fixture and both reports, then refresh this dashboard.</p></div>

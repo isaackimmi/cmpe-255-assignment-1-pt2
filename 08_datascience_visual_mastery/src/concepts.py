@@ -21,7 +21,8 @@ def naive_bayes_posterior(prior: float, likelihood_positive: NumberOrNumbers,
     """Return ``P(class | evidence)`` for one or more independent features.
 
     Scalar likelihoods preserve the original one-feature example.  Sequences
-    demonstrate the Naive Bayes product ``∏ P(feature | class)``.  If the
+    demonstrate the Naive Bayes product ``∏ P(feature | class)``.  Products are
+    normalized in log space so long feature lists do not underflow. If the
     evidence has zero probability under both classes, the posterior is
     undefined and a ``ValueError`` is raised rather than silently returning 0.
     """
@@ -31,13 +32,19 @@ def naive_bayes_posterior(prior: float, likelihood_positive: NumberOrNumbers,
     negative = _probability_values(likelihood_negative, "likelihood_negative")
     if len(positive) != len(negative):
         raise ValueError("likelihood feature lists must be aligned")
-    positive_product = math.prod(positive)
-    negative_product = math.prod(negative)
-    numerator = positive_product * prior
-    denominator = numerator + negative_product * (1 - prior)
-    if denominator == 0:
+    def log_joint(values: list[float], class_prior: float) -> float:
+        if class_prior == 0 or any(value == 0 for value in values):
+            return -math.inf
+        return math.log(class_prior) + sum(math.log(value) for value in values)
+
+    log_positive = log_joint(positive, prior)
+    log_negative = log_joint(negative, 1 - prior)
+    if log_positive == -math.inf and log_negative == -math.inf:
         raise ValueError("evidence has zero probability under both classes")
-    return numerator / denominator
+    scale = max(log_positive, log_negative)
+    positive_weight = math.exp(log_positive - scale) if log_positive > -math.inf else 0.0
+    negative_weight = math.exp(log_negative - scale) if log_negative > -math.inf else 0.0
+    return positive_weight / (positive_weight + negative_weight)
 
 
 @dataclass(frozen=True)

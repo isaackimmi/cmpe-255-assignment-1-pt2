@@ -51,11 +51,32 @@ def save_figures() -> dict[str, str]:
     ax.set(xlabel="Parameter x", ylabel="Loss f(x)", title="Gradient descent follows the slope")
     fig.tight_layout(); fig.savefig(OUT / "gradient_descent.png", dpi=150); plt.close(fig)
 
-    labels = ["x", "w", "w·x+b", "loss"]; xs = [0.1, 0.35, 0.62, 0.9]
-    fig, ax = plt.subplots(figsize=(6, 2.6)); ax.scatter(xs, [0.5] * 4, s=800, c=["#8b5cf6"] * 4)
-    for pos, label in zip(xs, labels): ax.text(pos, .5, label, ha="center", va="center", color="white", weight="bold")
-    ax.annotate("forward pass →", (0.2, .68), (0.75, .68), arrowprops={"arrowstyle": "->", "color": "#475569"})
-    ax.annotate("← gradients flow back", (0.75, .32), (0.2, .32), arrowprops={"arrowstyle": "->", "color": "#dc2626"})
+    values = backprop_demo()
+    nodes = [("x = 2", 0.10, 0.68), ("w = 3", 0.10, 0.28),
+             ("w×x", 0.30, 0.48), ("b = 1", 0.48, 0.14),
+             ("+ b", 0.50, 0.48), (f"ŷ = {values['y_hat']:.1f}", 0.70, 0.48),
+             (f"L = {values['loss']:.1f}", 0.90, 0.48)]
+    fig, ax = plt.subplots(figsize=(8, 3.6))
+    for label, x_pos, y_pos in nodes:
+        ax.scatter([x_pos], [y_pos], s=900, c=["#eef2ff"], edgecolors="#3b6cf5", linewidths=1.5, zorder=3)
+        ax.text(x_pos, y_pos, label, ha="center", va="center", color="#172033", weight="bold", fontsize=9, zorder=4)
+
+    forward_edges = [((0.14, 0.68), (0.26, 0.51)), ((0.14, 0.28), (0.26, 0.45)),
+                     ((0.34, 0.48), (0.46, 0.48)), ((0.52, 0.48), (0.66, 0.48)),
+                     ((0.74, 0.48), (0.86, 0.48)), ((0.48, 0.18), (0.49, 0.42))]
+    for start, end in forward_edges:
+        ax.annotate("", xy=end, xytext=start, arrowprops={"arrowstyle": "->", "color": "#3b6cf5", "lw": 1.8})
+    reverse_edges = [((0.86, 0.42), (0.74, 0.42)), ((0.66, 0.42), (0.54, 0.42)),
+                     ((0.46, 0.42), (0.34, 0.42)), ((0.48, 0.42), (0.45, 0.20)),
+                     ((0.26, 0.42), (0.14, 0.30))]
+    for start, end in reverse_edges:
+        ax.annotate("", xy=end, xytext=start, arrowprops={"arrowstyle": "->", "color": "#d95d9b", "lw": 1.8})
+    ax.text(0.50, 0.87, "forward pass →", ha="center", color="#3b6cf5", weight="bold", fontsize=10)
+    ax.text(0.80, 0.34, f"dL/dŷ = {values['dL_dy']:.1f}", ha="center", color="#d95d9b", fontsize=8)
+    ax.text(0.58, 0.36, "dŷ/d(w×x) = 1", ha="center", color="#d95d9b", fontsize=8)
+    ax.text(0.43, 0.24, "dŷ/db = 1", ha="center", color="#d95d9b", fontsize=8)
+    ax.text(0.20, 0.38, "d(w×x)/dw = x = 2", ha="center", color="#d95d9b", fontsize=8)
+    ax.text(0.50, 0.04, f"backward: dL/dw = {values['dL_dw']:.1f} · dL/db = {values['dL_db']:.1f}", ha="center", color="#d95d9b", fontsize=9)
     ax.set(xlim=(0, 1), ylim=(0, 1), title="Backpropagation reverses the chain"); ax.axis("off")
     fig.tight_layout(); fig.savefig(OUT / "backpropagation.png", dpi=150); plt.close(fig)
 
@@ -124,11 +145,11 @@ def _evaluation_svg() -> str:
     origin_x, origin_y, width, height = 120, 330, 600, 220
     path = ' '.join(f'{origin_x + x*width:.1f},{origin_y-y*height:.1f}' for x, y, _ in points)
     metric = threshold_metrics(labels, scores, .5)
-    cells = [("actual + / predicted +", metric.tp, 160, 150, "#e8f8f5"),
-             ("actual + / predicted −", metric.fn, 430, 150, "#fff2e8"),
-             ("actual − / predicted +", metric.fp, 160, 220, "#fff2e8"),
-             ("actual − / predicted −", metric.tn, 430, 220, "#e8f8f5")]
-    matrix = ''.join(f'<rect x="{x}" y="{y}" width="220" height="52" rx="8" fill="{color}"/><text x="{x+110}" y="{y+22}" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#475569">{label}</text><text x="{x+110}" y="{y+44}" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#172033">count = {count}</text>' for label, count, x, y, color in cells)
+    cells = [("TP", metric.tp, 0, 160, 150, "#e8f8f5"),
+             ("FN", metric.fn, 4, 430, 150, "#fff2e8"),
+             ("FP", metric.fp, 1, 160, 220, "#fff2e8"),
+             ("TN", metric.tn, 0, 430, 220, "#e8f8f5")]
+    matrix = ''.join(f'<rect x="{x}" y="{y}" width="220" height="52" rx="8" fill="{color}"/><text x="{x+110}" y="{y+21}" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#475569">{label}: count {count}</text><text x="{x+110}" y="{y+43}" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#172033">{count} × {cost} = {count * cost}</text>' for label, count, cost, x, y, color in cells)
     return _svg_shell("ROC curve and Cost matrix", f"ROC-AUC = {auc:.3f} · threshold = 0.50 · cost = FP×1 + FN×4 = {metric.cost:.0f}", ''.join([
         f'<line x1="{origin_x}" y1="{origin_y}" x2="{origin_x+width}" y2="{origin_y-height}" stroke="#e1e6f0" stroke-dasharray="7 7" stroke-width="2"/>',
         f'<path d="M{origin_x} {origin_y} L{origin_x+width} {origin_y-height}" stroke="#94a3b8" stroke-width="2"/>',
@@ -158,15 +179,24 @@ def _gradient_svg() -> str:
 
 def _backprop_svg() -> str:
     values = backprop_demo()
-    nodes = [("x = 2", 105), ("w×x", 290), ("+ b", 455), (f"ŷ = {values['y_hat']:.1f}", 620), (f"L = {values['loss']:.1f}", 785)]
-    circles = ''.join(f'<circle cx="{x}" cy="190" r="38" fill="#eef2ff" stroke="#3b6cf5" stroke-width="2"/><text x="{x}" y="195" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#172033">{label}</text>' for label, x in nodes)
-    arrows = ''.join(f'<line x1="{x+40}" y1="190" x2="{nodes[i+1][1]-40}" y2="190" stroke="#3b6cf5" stroke-width="3"/>' for i, (_, x) in enumerate(nodes[:-1]))
+    nodes = [("x = 2", 105, 150), ("w = 3", 105, 285), ("w×x", 290, 215),
+             ("b = 1", 430, 335), ("+ b", 495, 215),
+             (f"ŷ = {values['y_hat']:.1f}", 665, 215), (f"L = {values['loss']:.1f}", 830, 215)]
+    circles = ''.join(f'<circle cx="{x}" cy="{y}" r="38" fill="#eef2ff" stroke="#3b6cf5" stroke-width="2"/><text x="{x}" y="{y+5}" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#172033">{label}</text>' for label, x, y in nodes)
+    forward_edges = [(143, 150, 252, 215), (143, 285, 252, 225), (328, 215, 457, 215),
+                     (468, 335, 476, 253), (533, 215, 627, 215), (703, 215, 792, 215)]
+    arrows = ''.join(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="#3b6cf5" stroke-width="3" marker-end="url(#arrow-forward)"/>' for x1, y1, x2, y2 in forward_edges)
+    reverse = '<path d="M792 245 H703" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/><path d="M627 245 H533" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/><path d="M457 245 H328" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/><path d="M476 245 C470 282 448 300 430 297" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/><path d="M252 242 C210 270 175 285 143 285" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/>'
     return _svg_shell("Backpropagation through an affine neuron", "x,w → multiply → + b → ŷ → L · local derivatives multiply backward", ''.join([
-        circles, arrows,
-        '<text x="445" y="125" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#3b6cf5">forward pass →</text>',
-        f'<text x="445" y="290" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#db2777">← backward: dL/dŷ = {values["dL_dy"]:.1f} · dL/dw = {values["dL_dw"]:.1f} · dL/db = {values["dL_db"]:.1f}</text>',
-        '<text x="445" y="320" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#71809a">local factors: dŷ/d(w×x) = 1 · d(w×x)/dw = x = 2 · dŷ/db = 1</text>',
-        '<text x="445" y="350" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#475569">one-neuron affine model, not a two-layer network</text>'
+        '<defs><marker id="arrow-forward" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#3b6cf5"/></marker><marker id="arrow-backward" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#d95d9b"/></marker></defs>',
+        circles, arrows, reverse,
+        '<text x="450" y="120" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#3b6cf5">forward pass →</text>',
+        f'<text x="750" y="265" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#d95d9b">dL/dŷ = {values["dL_dy"]:.1f}</text>',
+        '<text x="580" y="270" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#d95d9b">dŷ/d(w×x) = 1</text>',
+        '<text x="450" y="300" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#d95d9b">dŷ/db = 1</text>',
+        '<text x="205" y="260" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#d95d9b">d(w×x)/dw = x = 2</text>',
+        f'<text x="450" y="382" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#db2777">backward results: dL/dw = {values["dL_dw"]:.1f} · dL/db = {values["dL_db"]:.1f}</text>',
+        '<text x="450" y="405" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#71809a">pink arrows branch the loss gradient to both parameters</text>'
     ]))
 
 

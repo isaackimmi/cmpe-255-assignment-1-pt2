@@ -1,5 +1,10 @@
 import unittest
+import math
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
+import examples.basic_pipeline as basic_pipeline
 from examples.basic_pipeline import clean_data, validate_data
 from flowforge import DAG, Runner, Task
 
@@ -22,11 +27,29 @@ class BasicPipelineQualityTests(unittest.TestCase):
             [{"age": 22, "score": "high"}],
             [{"age": -1, "score": 80}],
             [{"age": 22}],
+            [{"age": True, "score": 80}],
+            [{"age": math.nan, "score": 80}],
+            [{"age": math.inf, "score": 80}],
+            [{"age": 22, "score": 80, "segment": "extra"}],
             [],
         ]
         for rows in cases:
             with self.subTest(rows=rows), self.assertRaisesRegex(RuntimeError, "data-quality validation failed"):
                 Runner(self._pipeline_for(rows)).run(seed=255)
+
+    def test_example_manifest_export_round_trips_runner_state(self):
+        context = Runner(self._pipeline_for([{"age": 22, "score": 80}])).run(seed=255)
+        with TemporaryDirectory() as directory:
+            previous = basic_pipeline.ARTIFACT_DIR
+            basic_pipeline.ARTIFACT_DIR = Path(directory)
+            try:
+                path = basic_pipeline.write_manifest(context, "test_manifest.json")
+            finally:
+                basic_pipeline.ARTIFACT_DIR = previous
+            exported = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(exported["status"], "succeeded")
+        self.assertEqual(exported["task_order"], ["load_data", "validate_data", "clean_data"])
+        self.assertEqual(exported["tasks"]["clean_data"]["output"]["producer"], "clean_data")
 
 
 if __name__ == "__main__":

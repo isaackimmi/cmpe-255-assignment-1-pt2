@@ -111,14 +111,17 @@
       ['TP', metrics.tp, '0', '#e8f8f5'], ['FN', metrics.fn, '4', '#fff2e8'],
       ['FP', metrics.fp, '1', '#fff2e8'], ['TN', metrics.tn, '0', '#e8f8f5']
     ];
-    const labels = showCosts ? cells.map(([name, count, cost]) => `${name}: ${count} · cost ${cost}`) : cells.map(([name, count]) => `${name}: ${count}`);
+    const labels = showCosts ? cells.map(([name, count, cost]) => ({
+      name,
+      detail: `${count} × ${cost} = ${count * cost}`
+    })) : cells.map(([name, count]) => ({ name, detail: `count = ${count}` }));
     return `<rect x="${x}" y="${y}" width="310" height="${showCosts ? 152 : 162}" rx="14" fill="#f7f9ff" stroke="#e2e7f1"/>` +
       `<text x="${x + 155}" y="${y + 25}" text-anchor="middle" fill="#34415c" font-weight="800" font-size="14">${title}</text>` +
       `<text x="${x + 106}" y="${y + 50}" text-anchor="middle" fill="#71809a" font-size="12">pred +</text><text x="${x + 230}" y="${y + 50}" text-anchor="middle" fill="#71809a" font-size="12">pred −</text>` +
       `<text x="${x + 13}" y="${y + 78}" fill="#71809a" font-size="12">actual +</text><text x="${x + 13}" y="${y + 126}" fill="#71809a" font-size="12">actual −</text>` +
       cells.map((cell, index) => {
         const cx = x + (index % 2 ? 178 : 55); const cy = y + (index < 2 ? 57 : 105);
-        return `<rect x="${cx}" y="${cy}" width="62" height="40" rx="8" fill="${cell[3]}"/><text x="${cx + 31}" y="${cy + 16}" text-anchor="middle" fill="#172033" font-size="11" font-weight="800">${labels[index]}</text><text x="${cx + 31}" y="${cy + 33}" text-anchor="middle" fill="#71809a" font-size="10">${showCosts ? 'count × cost' : 'count'}</text>`;
+        return `<rect x="${cx}" y="${cy}" width="62" height="40" rx="8" fill="${cell[3]}"/><text x="${cx + 31}" y="${cy + 15}" text-anchor="middle" fill="#172033" font-size="10" font-weight="800">${labels[index].name}</text><text x="${cx + 31}" y="${cy + 31}" text-anchor="middle" fill="#71809a" font-size="9">${labels[index].detail}</text>`;
       }).join('');
   }
 
@@ -129,7 +132,8 @@
     const area = auc(points);
     [['tp', metrics.tp], ['fp', metrics.fp], ['tn', metrics.tn], ['fn', metrics.fn]].forEach(([key, value]) => $(key).textContent = value);
     $('thresholdOut').textContent = threshold.toFixed(2);
-    $('evalNote').textContent = `Precision ${formatRatio(metrics.precision)} · recall ${formatRatio(metrics.recall)} · false-positive rate ${formatRatio(metrics.fpr)} · ROC-AUC ${area.toFixed(3)} · cost ${metrics.fp}×1 + ${metrics.fn}×4 = ${metrics.fp + 4 * metrics.fn} units.`;
+    const costBreakdown = `${metrics.tp}×0 + ${metrics.fp}×1 + ${metrics.tn}×0 + ${metrics.fn}×4`;
+    $('evalNote').textContent = `Precision ${formatRatio(metrics.precision)} · recall ${formatRatio(metrics.recall)} · false-positive rate ${formatRatio(metrics.fpr)} · ROC-AUC ${area.toFixed(3)} · cost ${costBreakdown} = ${metrics.fp + 4 * metrics.fn} units.`;
     const originX = 463; const originY = 270; const width = 280; const height = 180;
     const pointPath = points.map(([fpr, tpr]) => `${originX + fpr * width},${originY - tpr * height}`).join(' ');
     const currentX = originX + (metrics.fpr || 0) * width;
@@ -145,15 +149,31 @@
     const slope = 2 * (x - 3); const path = [x];
     for (let index = 0; index < 6; index += 1) path.push(path[path.length - 1] - rate * 2 * (path[path.length - 1] - 3));
     $('xOut').textContent = x.toFixed(2); $('rateOut').textContent = rate.toFixed(2);
-    const xMin = -2.5; const xMax = 7.5; const yMin = 0; const yMax = 34;
+    const baseMin = -2.5; const baseMax = 7.5; const yMin = 0;
+    const rawMin = Math.min(baseMin, ...path); const rawMax = Math.max(baseMax, ...path);
+    const xMargin = Math.max(0.3, (rawMax - rawMin) * 0.08);
+    const xMin = rawMin - xMargin; const xMax = rawMax + xMargin;
+    const pathLosses = path.map((value) => (value - 3) ** 2 + 1);
+    const yMax = Math.max(34, ...pathLosses) * 1.12;
     const gx = (value) => 90 + (value - xMin) * 66; const gy = (value) => 302 - (value - yMin) / (yMax - yMin) * 232;
-    const curve = Array.from({ length: 101 }, (_, index) => `L${gx(xMin + index * 0.1)} ${gy((xMin + index * 0.1 - 3) ** 2 + 1)}`).join(' ');
+    const curve = Array.from({ length: 101 }, (_, index) => {
+      const curveX = xMin + index * (xMax - xMin) / 100;
+      return `L${gx(curveX)} ${gy((curveX - 3) ** 2 + 1)}`;
+    }).join(' ');
     const points = path.map((value) => `${gx(value)},${gy((value - 3) ** 2 + 1)}`).join(' ');
     const tangentStart = Math.max(xMin, x - 2); const tangentEnd = Math.min(xMax, x + 2);
     const tangent = (value) => (x - 3) ** 2 + 1 + slope * (value - x);
     $('calcSvg').setAttribute('viewBox', '0 0 800 350');
     $('calcSvg').innerHTML = `<text x="34" y="31" fill="#34415c" font-size="16" font-weight="800">The tangent tells you which way to step</text><line x1="75" y1="302" x2="755" y2="302" stroke="#aeb8cc"/><path d="M${gx(xMin)} ${gy((xMin - 3) ** 2 + 1)} ${curve}" fill="none" stroke="#1fa08e" stroke-width="4" stroke-linecap="round"/><line x1="${gx(tangentStart)}" y1="${gy(tangent(tangentStart))}" x2="${gx(tangentEnd)}" y2="${gy(tangent(tangentEnd))}" stroke="#f58b45" stroke-width="3" stroke-linecap="round"/><polyline points="${points}" fill="none" stroke="#3b6cf5" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 5"/>${path.map((value, index) => `<circle cx="${gx(value)}" cy="${gy((value - 3) ** 2 + 1)}" r="${index === 0 ? 9 : 5}" fill="${index === 0 ? '#f58b45' : '#3b6cf5'}" stroke="#fff" stroke-width="3"/>`).join('')}<text x="${gx(x) + 14}" y="${gy((x - 3) ** 2 + 1) - 13}" fill="#c66a2e" font-size="12" font-weight="800">slope ${slope.toFixed(2)}</text><text x="${gx(3)}" y="334" text-anchor="middle" fill="#71809a" font-size="12">minimum · x = 3</text>`;
-    $('calcNote').textContent = `At x=${x.toFixed(1)}, the slope is ${slope.toFixed(2)} and loss is ${((x - 3) ** 2 + 1).toFixed(2)}. The blue points apply x ← x − η·slope.`;
+    const behavior = rate < 0.5
+      ? 'the path converges without changing sides'
+      : rate <= 1
+        ? 'the path crosses the minimum and converges with a damped oscillation'
+        : 'the path is unstable: each crossing grows, so the loss diverges';
+    const calcNote = `At x=${x.toFixed(1)}, the slope is ${slope.toFixed(2)} and loss is ${((x - 3) ** 2 + 1).toFixed(2)}. The blue points apply x ← x − η·slope; at η=${rate.toFixed(2)}, ${behavior}.`;
+    $('calcNote').textContent = calcNote;
+    const calcControlNote = document.querySelector('#calculus .control-note');
+    if (calcControlNote) calcControlNote.textContent = rate > 1 ? 'Unstable regime: the update overshoots farther each time. Lower η to recover.' : rate >= 0.5 ? 'Oscillating regime: the updates cross the minimum, but still shrink when η ≤ 1.' : 'Stable regime: the updates move toward the minimum from the same side.';
   }
 
   function updateBp() {
@@ -163,9 +183,10 @@
     const nodes = [['x = 2', 90, 90], [`w = ${w.toFixed(1)}`, 90, 205], ['w×x', 280, 148], [`b = ${b.toFixed(1)}`, 390, 245], ['+ b', 470, 148], [`ŷ = ${y.toFixed(1)}`, 610, 148], [`L = ${loss.toFixed(1)}`, 740, 148]];
     const nodeSvg = nodes.map(([label, xPos, yPos]) => `<circle cx="${xPos}" cy="${yPos}" r="34" fill="#eef2ff" stroke="#3b6cf5" stroke-width="2"/><text x="${xPos}" y="${yPos + 5}" text-anchor="middle" fill="#182238" font-weight="800" font-size="13">${esc(label)}</text>`).join('');
     const lines = [[124, 90, 246, 135], [124, 205, 246, 160], [314, 148, 436, 148], [424, 245, 452, 177], [504, 148, 576, 148], [644, 148, 706, 148]];
-    const lineSvg = lines.map(([x1, y1, x2, y2]) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#3b6cf5" stroke-width="3" marker-end="url(#arrow)"/>`).join('');
+    const lineSvg = lines.map(([x1, y1, x2, y2]) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#3b6cf5" stroke-width="3" marker-end="url(#arrow-forward)"/>`).join('');
+    const reverseSvg = `<path d="M706 178 H644" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/><path d="M576 178 H504" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/><path d="M436 178 H314" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/><path d="M452 178 C447 201 430 211 418 211" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/><path d="M246 174 C210 198 175 205 124 205" fill="none" stroke="#d95d9b" stroke-width="3" marker-end="url(#arrow-backward)"/>`;
     $('bpSvg').setAttribute('viewBox', '0 0 800 340');
-    $('bpSvg').innerHTML = `<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#3b6cf5"/></marker></defs><text x="34" y="31" fill="#34415c" font-size="16" font-weight="800">Forward values go right. Gradients come back.</text>${lineSvg}${nodeSvg}<text x="400" y="69" text-anchor="middle" fill="#3b6cf5" font-size="12" font-weight="800">forward pass →</text><text x="400" y="285" text-anchor="middle" fill="#d95d9b" font-size="12" font-weight="800">← backward · dL/dŷ = ${error.toFixed(1)} · dL/dw = ${dW.toFixed(1)} · dL/db = ${dB.toFixed(1)}</text><text x="400" y="315" text-anchor="middle" fill="#71809a" font-size="11">local factors: dŷ/d(w×x) = 1 · d(w×x)/dw = x = 2 · dŷ/db = 1</text>`;
+    $('bpSvg').innerHTML = `<defs><marker id="arrow-forward" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#3b6cf5"/></marker><marker id="arrow-backward" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#d95d9b"/></marker></defs><text x="34" y="31" fill="#34415c" font-size="16" font-weight="800">Forward values go right. Gradients come back.</text>${lineSvg}${reverseSvg}${nodeSvg}<text x="400" y="69" text-anchor="middle" fill="#3b6cf5" font-size="12" font-weight="800">forward pass →</text><text x="744" y="170" text-anchor="middle" fill="#d95d9b" font-size="10" font-weight="800">dL/dŷ = ${error.toFixed(1)}</text><text x="540" y="198" text-anchor="middle" fill="#d95d9b" font-size="10" font-weight="800">dŷ/d(w×x) = 1</text><text x="445" y="205" text-anchor="middle" fill="#d95d9b" font-size="10" font-weight="800">dŷ/db = 1</text><text x="210" y="192" text-anchor="middle" fill="#d95d9b" font-size="10" font-weight="800">d(w×x)/dw = x = 2</text><text x="400" y="285" text-anchor="middle" fill="#d95d9b" font-size="12" font-weight="800">backward results · dL/dw = ${dW.toFixed(1)} · dL/db = ${dB.toFixed(1)}</text><text x="400" y="315" text-anchor="middle" fill="#71809a" font-size="11">pink arrows carry the loss gradient backward and branch to both parameters</text>`;
     $('bpNote').textContent = `One affine neuron: prediction ${y.toFixed(1)} versus target ${target}; error ${error.toFixed(1)}. The bias receives dL/db = dL/dŷ because ∂ŷ/∂b = 1.`;
   }
 

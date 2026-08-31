@@ -51,19 +51,19 @@
           <article class="metric-card">
             <div class="metric-topline"><div class="metric-label">Usage / renewal</div><span class="metric-icon">↗</span></div>
             <div class="metric-value accent-text" id="correlation-value">—</div>
-            <div class="metric-note">correlation coefficient</div>
+            <div class="metric-note" id="correlation-note">descriptive r · observed usage</div>
             <div class="metric-progress"><span id="correlation-progress"></span></div>
           </article>
           <article class="metric-card">
             <div class="metric-topline"><div class="metric-label">Held-out rule</div><span class="metric-icon">◎</span></div>
             <div class="metric-value" id="accuracy-value">—</div>
-            <div class="metric-note">accuracy · stratified holdout</div>
+            <div class="metric-note" id="accuracy-note">accuracy · stratified holdout</div>
             <div class="metric-progress progress-warm"><span id="accuracy-progress"></span></div>
           </article>
           <article class="metric-card">
             <div class="metric-topline"><div class="metric-label">Regression error</div><span class="metric-icon">⌁</span></div>
             <div class="metric-value" id="mae-value">—</div>
-            <div class="metric-note">held-out observed MAE · usage</div>
+            <div class="metric-note" id="mae-note">held-out observed MAE · usage</div>
             <div class="metric-sparkline" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           </article>
         </section>
@@ -78,16 +78,17 @@
           </div>
           <div class="module-layout">
             <nav class="module-list" id="module-list" aria-label="Skills lab modules">
-              <button class="module-button is-active" data-module="clean" type="button"><span class="module-number">01</span><span><strong>Clean the signal</strong><small>ingestion + validation</small></span><span class="module-arrow">→</span></button>
-              <button class="module-button" data-module="explore" type="button"><span class="module-number">02</span><span><strong>Explore relationships</strong><small>EDA + correlation</small></span><span class="module-arrow">→</span></button>
-              <button class="module-button" data-module="predict" type="button"><span class="module-number">03</span><span><strong>Predict usage</strong><small>linear regression</small></span><span class="module-arrow">→</span></button>
-              <button class="module-button" data-module="classify" type="button"><span class="module-number">04</span><span><strong>Classify renewal</strong><small>rule-based baseline</small></span><span class="module-arrow">→</span></button>
-              <button class="module-button" data-module="cluster" type="button"><span class="module-number">05</span><span><strong>Find customer groups</strong><small>k-means clustering</small></span><span class="module-arrow">→</span></button>
+              <button class="module-button is-active" data-module="clean" type="button" aria-pressed="true"><span class="module-number">01</span><span><strong>Clean the signal</strong><small>ingestion + validation</small></span><span class="module-arrow">→</span></button>
+              <button class="module-button" data-module="explore" type="button" aria-pressed="false"><span class="module-number">02</span><span><strong>Explore relationships</strong><small>EDA + correlation</small></span><span class="module-arrow">→</span></button>
+              <button class="module-button" data-module="predict" type="button" aria-pressed="false"><span class="module-number">03</span><span><strong>Predict usage</strong><small>linear regression</small></span><span class="module-arrow">→</span></button>
+              <button class="module-button" data-module="classify" type="button" aria-pressed="false"><span class="module-number">04</span><span><strong>Classify renewal</strong><small>rule-based baseline</small></span><span class="module-arrow">→</span></button>
+              <button class="module-button" data-module="cluster" type="button" aria-pressed="false"><span class="module-number">05</span><span><strong>Find customer groups</strong><small>k-means clustering</small></span><span class="module-arrow">→</span></button>
             </nav>
-            <article class="module-detail" id="module-detail" aria-live="polite">
+            <article class="module-detail" id="module-detail" aria-live="polite" aria-label="Selected skill evidence">
               <div class="detail-kicker"><span class="detail-icon" id="detail-icon">01</span><span id="detail-kicker">INGESTION + VALIDATION</span></div>
               <h3 id="detail-title">Clean the signal</h3>
               <p id="detail-description">Before analysis, the lab validates the schema, numeric domains, plans, labels, and duplicate policy.</p>
+              <div class="detail-evidence" id="detail-evidence" aria-label="Selected skill numeric evidence"></div>
               <div class="detail-footer"><div><span class="detail-label">Result</span><strong id="detail-result">23 clean rows</strong></div><div><span class="detail-label">Why it matters</span><strong id="detail-why">reliable inputs</strong></div></div>
             </article>
           </div>
@@ -98,12 +99,23 @@
             <div class="panel-heading">
               <div><p class="eyebrow">Artifact evidence</p><h2 id="chart-title">Tenure × monthly usage</h2></div>
               <div class="chart-tabs" role="tablist" aria-label="Chart selection">
-                <button class="chart-tab is-active" type="button" data-chart="tenure" role="tab" aria-selected="true">01 / trend</button>
-                <button class="chart-tab" type="button" data-chart="clusters" role="tab" aria-selected="false">02 / groups</button>
+                <button class="chart-tab is-active" type="button" data-chart="tenure" role="tab" aria-selected="true" aria-controls="chart-panel" id="chart-tab-tenure">01 / trend</button>
+                <button class="chart-tab" type="button" data-chart="clusters" role="tab" aria-selected="false" aria-controls="chart-panel" id="chart-tab-clusters">02 / groups</button>
               </div>
             </div>
-            <div class="chart-frame"><img id="chart-image" src="artifacts/tenure_usage.svg" alt="Scatter plot of tenure versus monthly usage" /><div class="chart-loading" id="chart-loading">Loading SVG artifact…</div></div>
-            <div class="chart-caption"><span id="chart-caption">Observed values show association between tenure and usage; this is not causal evidence.</span><span class="mono">SVG / generated by Python</span></div>
+            <div class="chart-controls" aria-label="Chart filters">
+              <label>Plan <select id="plan-filter"><option value="all">All plans</option><option value="basic">Basic</option><option value="pro">Pro</option><option value="enterprise">Enterprise</option></select></label>
+              <label>Renewal <select id="renewal-filter"><option value="all">All outcomes</option><option value="1">Renewed</option><option value="0">Not renewed</option></select></label>
+              <label id="cluster-filter-wrap" hidden>Group <select id="cluster-filter"><option value="all">All groups</option></select></label>
+              <button class="reset-button" id="reset-filters" type="button">Reset filters</button>
+            </div>
+            <div class="chart-frame" id="chart-panel" role="tabpanel" aria-labelledby="chart-tab-tenure"><svg id="chart-svg" viewBox="0 0 700 420" role="img" aria-labelledby="chart-svg-title chart-svg-description"></svg><div class="chart-loading" id="chart-loading">Loading artifact data…</div><div class="chart-tooltip" id="chart-tooltip" role="status" aria-live="polite"></div></div>
+            <div class="chart-data-summary"><strong id="chart-count">— points shown</strong><span id="chart-data-note">Interactive points are drawn from summary.json.</span></div>
+            <details class="chart-table-details" open>
+              <summary>Inspect plotted rows</summary>
+              <div class="table-scroll"><table class="chart-table"><caption class="sr-only">Rows currently shown in the selected chart</caption><thead id="chart-table-head"></thead><tbody id="chart-table-body"></tbody></table></div>
+            </details>
+            <div class="chart-caption"><span id="chart-caption">Observed values show association between tenure and usage; this is not causal evidence.</span><span class="mono">JSON / browser-rendered</span></div>
           </article>
 
           <aside class="quality-panel panel">

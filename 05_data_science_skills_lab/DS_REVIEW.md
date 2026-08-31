@@ -1,8 +1,10 @@
-# Project 05 Data-Science Robustness Review
+# Project 05 Data-Science Robustness Review (historical)
+
+> **Historical document.** This review captures the pre-polish implementation and is retained for traceability. Its earlier findings about imputed regression targets, in-sample classification, raw clustering, and weak validation were addressed in the current pipeline. Use [README.md](README.md) and `artifacts/metrics.json` as the current source of truth for evaluation design, results, and verification.
 
 ## Scope and overall assessment
 
-Reviewed the ingestion/cleaning, EDA, regression, classification, clustering, plotting, artifact generation, dashboard-facing outputs, tests, and reproducibility notes in this project. The implementation is a useful offline teaching fixture and its happy path is deterministic, but the current numerical results should not be treated as model-validation evidence. The most important problems are the imputed target being scored as if it were observed, in-sample classification scoring, weak input validation, and unscaled/under-validated clustering.
+Reviewed the ingestion/cleaning, EDA, regression, classification, clustering, plotting, artifact generation, dashboard-facing outputs, tests, and reproducibility notes in an earlier revision of this project. The implementation was a useful offline teaching fixture, but that revision had methodological and validation gaps; those findings are superseded by the current implementation and artifacts.
 
 Severity tags below use `HIGH` for issues that can make a reported result materially misleading or make ordinary inputs unsafe, `MEDIUM` for important methodological or robustness gaps, and `LOW` for documentation/interpretability improvements.
 
@@ -119,11 +121,11 @@ Evidence:
 
 Concrete fix: report sample size and uncertainty/robustness checks for correlations, inspect influential points, and consider stratified or adjusted analyses for tenure/plan. Document when each feature is measured relative to renewal, ensure all prediction features precede the label, and explicitly describe the correlations as association rather than causal evidence. If this is only an educational retrospective rule, label it that way in the artifacts/dashboard.
 
-## Checks run
+## Checks run during the historical review
 
 All checks were run from the project root, and no source code was modified.
 
-- `python3 -m unittest discover -s tests -v` — passed, 4/4.
+- `python3 -m unittest discover -s tests -v` — passed, 4/4 at that time; the current suite is 8/8.
 - `python3 run_lab.py` — completed successfully and reproduced the existing metrics/artifacts.
 - `python3 -m compileall -q src run_lab.py` — passed.
 - Targeted edge-case probes confirmed the failure modes above: mismatched correlation returned `0.5`; empty/constant inputs raised `ZeroDivisionError` or low-level `ValueError`/`UnboundLocalError`; constant-range SVGs raised `ZeroDivisionError`.

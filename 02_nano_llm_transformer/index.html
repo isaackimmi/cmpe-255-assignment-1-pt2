@@ -51,21 +51,21 @@
 
       <section class="metrics-grid" aria-label="Experiment metrics">
         <article class="metric-card metric-featured">
-          <div class="card-topline"><span class="card-label">HELD-OUT PERPLEXITY</span><span class="metric-icon">↗</span></div>
+          <div class="card-topline"><span class="card-label">TEST PERPLEXITY</span><span class="metric-icon">↗</span></div>
           <div class="metric-value" id="perplexity">—</div>
-          <p class="metric-caption"><span class="signal"></span> lower is better · test split</p>
+          <p class="metric-caption"><span class="signal"></span> <span id="perplexity-caption">conditional character-stream test</span></p>
           <div class="sparkline" aria-hidden="true"><span style="height: 35%"></span><span style="height: 53%"></span><span style="height: 44%"></span><span style="height: 68%"></span><span style="height: 57%"></span><span style="height: 79%"></span><span style="height: 72%"></span><span style="height: 92%"></span><span style="height: 82%"></span><span style="height: 100%"></span></div>
         </article>
         <article class="metric-card">
           <div class="card-topline"><span class="card-label">BACKEND</span><span class="status-badge" id="backend-status">LOADING</span></div>
           <div class="metric-value metric-text" id="backend">—</div>
-          <p class="metric-caption">dependency-free baseline</p>
+          <p class="metric-caption" id="backend-caption">loaded from artifact</p>
           <div class="micro-bar"><span style="width: 100%"></span></div>
         </article>
         <article class="metric-card">
           <div class="card-topline"><span class="card-label">HELD-OUT LOSS</span><span class="metric-icon">∿</span></div>
           <div class="metric-value" id="loss">—</div>
-          <p class="metric-caption">cross-entropy · nats / character</p>
+          <p class="metric-caption">test cross-entropy · nats / character</p>
           <div class="loss-track"><span></span></div>
         </article>
         <article class="metric-card">
@@ -87,33 +87,34 @@
         </div>
         <div class="corpus-panel panel">
           <div class="panel-header"><div><p class="card-label">CORPUS SNAPSHOT</p><h3>tiny_corpus.txt</h3></div><span class="file-chip">.TXT</span></div>
-          <div class="corpus-visual"><div class="split-label"><span>TRAIN</span><strong id="train-chars">—</strong><small>characters</small></div><div class="split-bar"><span id="train-bar"></span></div><div class="split-label split-test"><span>TEST</span><strong id="test-chars">—</strong><small>characters</small></div></div>
+          <div class="corpus-visual"><div class="split-label"><span>TRAIN</span><strong id="train-chars">—</strong><small>characters</small></div><div class="split-bar" aria-label="Train, validation, and test character split"><span id="train-bar"></span><span id="validation-bar"></span><span id="test-bar"></span></div><div class="split-label split-test"><span>TEST</span><strong id="test-chars">—</strong><small>characters</small></div></div>
+          <div class="split-summary"><div><span>VALIDATION</span><strong id="validation-chars">—</strong></div><div><span>TEST OOV</span><strong id="test-oov">—</strong></div><div><span>VAL OOV</span><strong id="validation-oov">—</strong></div></div>
           <div class="panel-divider"></div>
-          <div class="corpus-details"><div><span class="detail-key">FORMAT</span><strong>character-level</strong></div><div><span class="detail-key">DIALOGUE</span><strong>7 lines</strong></div><div><span class="detail-key">SOURCE</span><strong>local / synthetic</strong></div></div>
+          <div class="corpus-details"><div><span class="detail-key">FORMAT</span><strong>character-level</strong></div><div><span class="detail-key">DIALOGUE</span><strong id="dataset-lines">—</strong></div><div><span class="detail-key">SOURCE</span><strong id="dataset-source">—</strong></div></div>
         </div>
       </section>
 
       <section class="section-block playground-section" id="playground">
         <div class="section-heading section-heading-wide">
           <div><p class="eyebrow accent">02 / INTERACT</p><h2>A tiny window<br /><em>into generation.</em></h2></div>
-          <div class="illustrative-note"><span class="note-icon">i</span><p><strong>Illustrative local behavior</strong><br />This browser preview uses curated responses from the tiny corpus. It does not execute Python or claim to be a live model endpoint.</p></div>
+          <div class="illustrative-note"><span class="note-icon">i</span><p><strong>Serialized model replay</strong><br />The browser reads the checked-in artifact. Each reply exposes context, next-character probabilities, and the deterministic generation trace; it does not call Python or a network endpoint.</p></div>
         </div>
         <div class="playground panel">
-          <div class="chat-topbar"><div class="chat-title"><span class="nano-avatar">N</span><div><strong>Nano assistant</strong><span>character n-gram · local preview</span></div></div><button class="ghost-button" id="reset-chat" type="button">Reset chat <span>↺</span></button></div>
+          <div class="chat-topbar"><div class="chat-title"><span class="nano-avatar">N</span><div><strong>Nano assistant</strong><span id="backend-mode">serialized model replay</span></div></div><button class="ghost-button" id="reset-chat" type="button">Reset replay <span>↺</span></button></div>
           <div class="chat-window" id="chat-window" aria-live="polite">
             <div class="message message-assistant"><span class="message-avatar">N</span><div><p>Hi — I’m Nano, a tiny language model trained on a tiny local corpus. Ask me about transformers, machine learning, or the experiment.</p><time>now · local preview</time></div></div>
             <div class="suggestions" id="suggestions"><button type="button" data-prompt="What is machine learning?">What is machine learning?</button><button type="button" data-prompt="Explain a transformer">Explain a transformer</button><button type="button" data-prompt="Be concise">Be concise</button></div>
           </div>
           <form class="chat-form" id="chat-form"><label class="sr-only" for="chat-input">Ask Nano a question</label><input id="chat-input" type="text" autocomplete="off" placeholder="Ask about the tiny experiment…" /><button class="send-button" type="submit" aria-label="Send message">↗</button></form>
-          <div class="chat-footnote"><span class="signal"></span> no network calls · illustrative responses only</div>
+          <div class="inspector" aria-live="polite"><div class="inspector-header"><div><p class="card-label">BEHAVIOR INSPECTOR</p><h3>Why did it choose that character?</h3></div><span class="trace-badge" id="replay-status">WAITING FOR PROMPT</span></div><div class="inspector-grid"><div class="inspector-card"><span class="detail-key">LAST CONTEXT WINDOW</span><code id="replay-context">—</code><small id="replay-context-note">order —</small></div><div class="inspector-card"><span class="detail-key">NEXT-CHARACTER PROBABILITIES</span><div id="next-probabilities" class="probability-list"><span class="empty-state">Submit a prompt to inspect the distribution.</span></div></div></div><div class="trace-card"><div class="trace-title"><span class="detail-key">GENERATION TRACE</span><span id="trace-count">0 steps</span></div><div id="generation-trace" class="generation-trace"><span class="empty-state">The selected character and its candidate probabilities will appear here.</span></div></div></div><div class="chat-footnote"><span class="signal"></span> no network calls · artifact-backed deterministic replay</div>
         </div>
       </section>
 
       <section class="section-block split-grid config-section" id="configuration">
         <div class="config-panel panel">
           <div class="panel-header"><div><p class="card-label">EXPERIMENT CONFIGURATION</p><h3>Reproducible by design</h3></div><span class="config-lock">⌘</span></div>
-          <div class="config-list"><div><span>BACKEND</span><strong>stdlib_char_ngram</strong></div><div><span>ORDER</span><strong>3 <small>context chars</small></strong></div><div><span>TRAIN FRACTION</span><strong>0.80</strong></div><div><span>ALPHA</span><strong>0.20 <small>smoothing</small></strong></div><div><span>SEED</span><strong id="config-seed">255</strong></div><div><span>OUTPUT</span><strong>metrics.json</strong></div></div>
-          <div class="config-callout"><span>↳</span><p>Optional path: <code>--backend torch</code> adds a small causal Transformer when PyTorch is installed.</p></div>
+          <div class="config-list"><div><span>BACKEND</span><strong id="config-backend">—</strong></div><div><span>CONTEXT</span><strong id="config-order">—</strong></div><div><span>TRAIN FRACTION</span><strong id="config-train-fraction">—</strong></div><div><span>VALIDATION FRACTION</span><strong id="config-validation-fraction">—</strong></div><div><span>TEST FRACTION</span><strong id="config-test-fraction">—</strong></div><div><span>ALPHA / LR</span><strong id="config-smoothing">—</strong></div><div><span>SEED</span><strong id="config-seed">—</strong></div><div><span>DEVICE</span><strong id="config-device">—</strong></div><div><span>VOCABULARY</span><strong id="config-vocab">—</strong></div><div><span>TEST EVALS</span><strong id="config-test-evals">—</strong></div></div>
+          <div class="config-callout"><span>↳</span><p id="config-callout">The page reflects the serialized run configuration. The optional Torch path is shown only when a Torch artifact is loaded.</p></div>
         </div>
         <div class="section-heading config-copy"><p class="eyebrow accent">03 / CONFIGURE</p><h2>Designed for<br /><em>small surfaces.</em></h2><p class="section-copy">Every important choice stays close to the experiment: a fixed seed, chronological split, transparent model, and one portable JSON artifact.</p><div class="tag-row"><span>CPU-safe</span><span>offline</span><span>auditable</span></div></div>
       </section>
@@ -122,17 +123,17 @@
         <div class="section-heading section-heading-wide"><div><p class="eyebrow accent">04 / FOLLOW THE METHOD</p><h2>CRISP-DM, kept<br /><em>within reach.</em></h2></div><p class="section-copy">A six-step record keeps a tiny modeling exercise grounded in the same discipline as a larger production project.</p></div>
         <div class="crisp-track">
           <article class="crisp-step is-active"><div class="step-number">01</div><div class="step-dot"></div><h3>Business<br />understanding</h3><p>Demonstrate an inspectable conversational autoregressive model.</p></article>
-          <article class="crisp-step is-active"><div class="step-number">02</div><div class="step-dot"></div><h3>Data<br />understanding</h3><p>Inspect a seven-line synthetic chat corpus.</p></article>
+          <article class="crisp-step is-active"><div class="step-number">02</div><div class="step-dot"></div><h3>Data<br />understanding</h3><p>Inspect an eight-line synthetic chat corpus.</p></article>
           <article class="crisp-step is-active"><div class="step-number">03</div><div class="step-dot"></div><h3>Data<br />preparation</h3><p>Preserve order; split chronologically at 80/10/10.</p></article>
           <article class="crisp-step is-active"><div class="step-number">04</div><div class="step-dot"></div><h3>Modeling</h3><p>Fit a smoothed character n-gram baseline.</p></article>
-          <article class="crisp-step is-active"><div class="step-number">05</div><div class="step-dot"></div><h3>Evaluation</h3><p>Report held-out loss, perplexity, and sample.</p></article>
+          <article class="crisp-step is-active"><div class="step-number">05</div><div class="step-dot"></div><h3>Evaluation</h3><p>Use validation for selection; score test once.</p></article>
           <article class="crisp-step is-next"><div class="step-number">06</div><div class="step-dot"></div><h3>Deployment &amp;<br />monitoring</h3><p>Next: larger holdout, safety checks, latency.</p></article>
         </div>
       </section>
 
       <section class="section-block reproduce-section" id="reproduce">
-        <div class="reproduce-copy"><p class="eyebrow accent">05 / REPRODUCE</p><h2>One command<br /><em>to verify.</em></h2><p class="section-copy">Run from this directory. The baseline completes on CPU in under a second and rewrites the local metrics artifact.</p><div class="command-block"><div class="command-line"><span class="prompt">$</span><code>python3 nano_llm.py --output metrics.json</code><button class="copy-button" data-copy="python3 nano_llm.py --output metrics.json" type="button">copy</button></div><div class="command-line"><span class="prompt">$</span><code>python3 -m unittest discover -v</code><button class="copy-button" data-copy="python3 -m unittest discover -v" type="button">copy</button></div></div><p class="reproduce-foot">Optional Transformer run is documented in <a href="README.md">README.md</a>.</p></div>
-        <div class="verify-card panel"><div class="verify-stamp">✓</div><p class="card-label">VERIFIED ARTIFACT</p><h3>metrics.json</h3><div class="verify-row"><span>loss</span><strong id="verify-loss">—</strong></div><div class="verify-row"><span>perplexity</span><strong id="verify-perplexity">—</strong></div><div class="verify-row"><span>unit tests</span><strong class="success-text">8 passed · 1 optional skip</strong></div><div class="verify-divider"></div><p>Last loaded from the local workspace. Refresh after a new run to inspect updated values.</p></div>
+        <div class="reproduce-copy"><p class="eyebrow accent">05 / REPRODUCE</p><h2>One command<br /><em>to verify.</em></h2><p class="section-copy">Run from this directory. The baseline completes on CPU in under a second and rewrites the local metrics artifact.</p><div class="command-block"><div class="command-line"><span class="prompt">$</span><code>python3 nano_llm.py --corpus data/tiny_corpus.txt --output metrics.json</code><button class="copy-button" data-copy="python3 nano_llm.py --corpus data/tiny_corpus.txt --output metrics.json" type="button">copy</button></div><div class="command-line"><span class="prompt">$</span><code>python3 -m unittest discover -v</code><button class="copy-button" data-copy="python3 -m unittest discover -v" type="button">copy</button></div></div><p class="reproduce-foot">Optional Transformer run is documented in <a href="README.md">README.md</a>.</p></div>
+        <div class="verify-card panel"><div class="verify-stamp">✓</div><p class="card-label">VERIFIED ARTIFACT</p><h3>metrics.json</h3><div class="verify-row"><span>loss</span><strong id="verify-loss">—</strong></div><div class="verify-row"><span>perplexity</span><strong id="verify-perplexity">—</strong></div><div class="verify-row"><span>unit tests</span><strong class="success-text" id="verify-tests">—</strong></div><div class="verify-divider"></div><p>Last loaded from the local workspace. Refresh after a new run to inspect updated values.</p></div>
       </section>
 
       <footer class="footer"><div class="brand"><span class="brand-mark"><span></span><span></span><span></span></span><span>nano<span class="brand-muted">/</span>llm</span></div><p>Teaching miniature · no pretrained weights · no production claims</p><a href="#top" class="back-top">back to top ↑</a></footer>

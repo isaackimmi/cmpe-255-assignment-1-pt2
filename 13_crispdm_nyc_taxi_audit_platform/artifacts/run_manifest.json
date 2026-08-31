@@ -3,18 +3,14 @@
   "command": [
     "run_platform.py",
     "--output",
-    "artifacts",
-    "--rows",
-    "1200",
-    "--seed",
-    "255"
+    "artifacts"
   ],
   "source": {
     "data_source": "synthetic",
     "description": "Deterministic NYC-like fixture; not downloaded TLC data",
     "data_hash_sha256": "ce8e97906f49d643fbe0cc9fb19546f2babae425d1db7c64a22fefd47be0af3f",
-    "source_hash_sha256": "3e5749aa5e8fc23874ecee1ab7a1dca45e287952381bfffca08624fbd63c7390",
-    "git_revision": "8de463527ee123c0af1f08f0320a11995f02f728"
+    "source_hash_sha256": "e5d46f432ffd708e2009f9d4e3519ab69dd7885982f94843701d22b233e51573",
+    "git_revision": "08697d2ff0b5757e60f2682deba38c2001e8beec"
   },
   "runtime": {
     "python": "3.14.7",
@@ -66,6 +62,47 @@
       "maximum_minutes": 180.0,
       "above_maximum": "exclude"
     },
+    "feature_policies": {
+      "pickup_datetime": {
+        "invalid": "fail_before_modeling_or_inference"
+      },
+      "passenger_count": {
+        "missing": "impute_in_train_pipeline",
+        "invalid": "coerce_to_missing_and_impute",
+        "range": [
+          1,
+          6
+        ],
+        "integer_only": true
+      },
+      "distance_miles": {
+        "missing": "impute_in_train_pipeline",
+        "invalid": "coerce_to_missing_and_impute",
+        "range": [
+          0,
+          100.0
+        ]
+      },
+      "pickup_zone": {
+        "missing": "impute_in_train_pipeline",
+        "invalid": "reject_before_inference",
+        "range": [
+          1,
+          7
+        ],
+        "integer_only": true
+      },
+      "dropoff_zone": {
+        "missing": "impute_in_train_pipeline",
+        "invalid": "reject_before_inference",
+        "range": [
+          1,
+          7
+        ],
+        "integer_only": true
+      }
+    },
+    "duplicate_policy": "keep_first_exclude_later_rows",
     "distance_policy": {
       "maximum_miles": 100.0,
       "invalid_values": "coerce to missing and impute in fitted training pipeline"
@@ -75,6 +112,8 @@
     "raw_rows": 1200,
     "retained_rows": 1194,
     "excluded_target_rows": 6,
+    "excluded_duplicate_rows": 0,
+    "excluded_rows": 6,
     "excluded_target_trip_ids": [
       1,
       212,
@@ -82,6 +121,24 @@
       634,
       845,
       1056
-    ]
+    ],
+    "train_rows": 955,
+    "holdout_rows": 239,
+    "time_ranges": {
+      "train_start": "2024-01-01T01:12:00",
+      "train_end": "2024-02-18T17:56:00",
+      "holdout_start": "2024-02-18T18:28:00",
+      "holdout_end": "2024-02-29T23:50:00"
+    }
+  },
+  "run_id": "fee9e45c293a106f",
+  "artifact_hashes_sha256": {
+    "audit_report.json": "f0f90ba72ff777540b0b85b27dd984266523e7dd2f720dc704af6c7290580591",
+    "metrics.json": "db3e109632f3566dadda4fca3472665a6d19dc22f4576bd1696fcc7e11338d7b",
+    "model.joblib": "b7df0463457ce2ca3cdf53b3bb53332cc151beba203a6a80d14515a82cfdb642",
+    "prediction_errors.json": "82b0c936cb37f695aa17df0d238e9ba7bbad9222ebe5b7424ec2c26155e7ea19",
+    "eda.png": "f7043f864d659c95cb4990ad12e1da631bb347865dd5247a7fe7b14c9cfb7e22",
+    "actual_vs_predicted.png": "486987b402ae2f52ad8a60619004ac96f4159846578b3c0b6236eb25359d537e",
+    "crispdm_report.md": "138efd91ae34dc7086d2ba066f07bf2e6895c7e87c7755ffd2e7115d4ae3a9f1"
   }
 }

@@ -1,4 +1,6 @@
-# Project 13 data-science robustness review
+# Project 13 data-science robustness review (superseded)
+
+> Superseded by `FINAL_POLISH_REVIEW.md` and the implementation changes that followed it. The leakage, incomplete-category, and older test/metric claims below describe the pre-polish state and are retained only as historical review context.
 
 ## Scope and overall assessment
 

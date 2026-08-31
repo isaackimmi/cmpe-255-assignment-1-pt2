@@ -15,7 +15,7 @@ The run writes `artifacts/metrics.json`, `artifacts/summary.json`, and two SVG s
 
 ## Dashboard
 
-The project includes a responsive browser dashboard in `index.html`. It reads `artifacts/metrics.json` and `artifacts/summary.json` at runtime, displays the generated SVG artifacts, and provides an interactive selector for the five lab modules.
+The project includes a responsive browser dashboard in `index.html`. It reads `artifacts/metrics.json` and `artifacts/summary.json` at runtime, renders an inline evidence explorer from those artifacts, and provides an interactive selector for the five lab modules.
 
 From this directory, regenerate the artifacts and start a local static server:
 
@@ -32,7 +32,8 @@ The dashboard is intentionally labeled **offline-ready** and **synthetic fixture
 
 - Confirm the footer reports `ARTIFACT STATUS: READY`.
 - Select all five module rows and confirm the detail panel changes.
-- Switch between `01 / trend` and `02 / groups` to verify both existing SVG artifacts render.
+- Switch between `01 / trend` and `02 / groups`; filter by plan, renewal outcome, and cluster group; and inspect the plotted-row table.
+- Hover or keyboard-focus a point to inspect its customer-level values and verify the evidence count changes with filters.
 - Resize the browser to a narrow viewport to check the responsive layout.
 
 ## Evaluation and reproducibility
@@ -53,5 +54,5 @@ The original Project 05 prompt was not present in the supplied repository, so th
 
 - **Prompt alignment:** Public Project 05 asks for data-science skills and CRISP-DM; the lab covers ingestion, cleaning, EDA, regression, classification, clustering, metrics, and plots.
 - **Results/artifacts:** generated metrics include validation counts, observed held-out scores, baselines, scaled-clustering diagnostics, and configuration metadata; run `python3 run_lab.py` to regenerate the current snapshot.
-- **Tests:** regression tests cover validation failures, fold-local imputation, held-out artifact integrity, degenerate SVG inputs, numerical edge cases, and deterministic multi-initialized k-means.
+- **Tests:** 8 regression tests cover validation failures, fold-local imputation, held-out artifact integrity, degenerate SVG inputs, numerical edge cases, and deterministic multi-initialized k-means. The generated `summary.json` also carries each descriptive clustering row’s selected cluster label for the dashboard explorer.
 - **Issue/resolution:** External skill repositories and Kaggle data were replaced by safe offline fixtures and standard-library implementations.

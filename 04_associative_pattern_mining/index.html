@@ -43,7 +43,7 @@
         <section class="stat-strip" aria-label="Dataset summary">
           <div class="stat-item"><span class="stat-label">Baskets analyzed</span><strong id="stat-transactions">24</strong><span class="stat-foot">checked-in transactions</span></div>
           <div class="stat-item"><span class="stat-label">Distinct products</span><strong id="stat-items">6</strong><span class="stat-foot" id="stat-items-foot">bread · butter · coffee · eggs · jam · milk</span></div>
-          <div class="stat-item"><span class="stat-label">Frequent itemsets</span><strong id="stat-itemsets">18</strong><span class="stat-foot">at <span id="stat-support">25%</span> minimum support</span></div>
+          <div class="stat-item"><span class="stat-label">Frequent itemsets</span><strong id="stat-itemsets">18</strong><span class="stat-foot">at <span id="stat-support">25% · at least 6/24</span></span></div>
           <div class="stat-item stat-highlight"><span class="stat-label">Best lift signal</span><strong id="stat-lift">1.85×</strong><span class="stat-foot" id="stat-lift-rule">bread + jam → butter</span></div>
         </section>
 
@@ -54,8 +54,9 @@
 
         <section class="content-grid">
           <article class="card chart-card">
-            <div class="card-topline"><div><p class="card-kicker">Frequent itemsets</p><h3>Most supported combinations</h3></div><span class="live-tag"><span class="pulse-dot"></span> Live threshold</span></div>
+            <div class="card-topline"><div><p class="card-kicker">Frequent itemsets</p><h3>Most supported itemsets</h3></div><span class="live-tag"><span class="pulse-dot"></span> Live threshold</span></div>
             <div class="chart-legend"><span><i class="legend-swatch"></i> Support in baskets · count shown below</span><span>0% <span class="legend-divider"></span> 100%</span></div>
+            <div class="chart-tools"><label for="itemset-size">Show itemset size</label><select id="itemset-size"><option value="2+" selected>Pairs and larger</option><option value="all">All sizes</option><option value="2">Pairs only</option><option value="3">Triples only</option></select><span id="chart-filter-note">10 of 12 itemsets shown · pairs and triples</span></div>
             <div id="support-chart" class="support-chart" role="img" aria-label="Horizontal bar chart of frequent itemset support"></div>
             <div class="chart-foot"><span>Source: <code>data/transactions.csv</code></span><span>n = <span id="chart-n">24</span> baskets</span></div>
           </article>
@@ -70,22 +71,22 @@
         </section>
 
         <section class="threshold-section" aria-labelledby="threshold-title">
-          <div class="threshold-intro"><p class="eyebrow"><span class="eyebrow-line"></span> Threshold lab</p><h2 id="threshold-title">Tune the definition of frequent</h2><p>Slide the minimum support to see which itemsets survive Apriori pruning. The rule cards update with the same local sample.</p></div>
+          <div class="threshold-intro"><p class="eyebrow"><span class="eyebrow-line"></span> Threshold lab</p><h2 id="threshold-title">Tune the definition of frequent</h2><p>Support is a prevalence filter; confidence is a conditional co-occurrence filter. Adjust the absolute basket floor when you want to make small-denominator patterns ineligible.</p></div>
           <div class="threshold-control card">
-            <div class="control-head"><div><span class="card-kicker">Minimum support</span><strong id="support-value">25%</strong></div><span class="control-hint">Higher = fewer, more prevalent patterns</span></div>
-            <input id="support-slider" type="range" min="10" max="70" value="25" step="5" aria-label="Minimum support threshold">
-            <div class="range-labels"><span>10%</span><span>35%</span><span>70%</span></div>
-            <div class="control-result"><span class="result-number" id="threshold-count">18</span><span>frequent itemsets<br><small>currently visible</small></span></div>
+            <div class="threshold-control-row"><div><label for="support-slider">Minimum support <strong id="support-value">25%</strong></label><input id="support-slider" type="range" min="10" max="70" value="25" step="5" aria-label="Minimum support threshold"><div class="range-labels"><span>10%</span><span>35%</span><span>70%</span></div></div><p>Prevalence<br><small>share of all baskets</small></p></div>
+            <div class="threshold-control-row"><div><label for="confidence-slider">Minimum confidence <strong id="confidence-value">60%</strong></label><input id="confidence-slider" type="range" min="50" max="100" value="60" step="5" aria-label="Minimum confidence threshold"><div class="range-labels"><span>50%</span><span>75%</span><span>100%</span></div></div><p>Rule filter<br><small>share of antecedent baskets</small></p></div>
+            <div class="threshold-control-row"><div><label for="support-count-slider">Minimum support count <strong id="support-count-value">6/24</strong></label><input id="support-count-slider" type="range" min="1" max="24" value="6" step="1" aria-label="Minimum absolute support count"><div class="range-labels"><span>1</span><span>12</span><span>24 baskets</span></div></div><p>Count floor<br><small>absolute denominator</small></p></div>
+            <div class="control-result"><span class="result-number" id="threshold-count">18</span><span>frequent itemsets<br><small id="threshold-count-foot">6/24 basket floor</small></span><span class="effective-result">Effective support<br><strong id="effective-support">25% (6/24)</strong></span></div>
           </div>
         </section>
 
         <section class="rules-section" aria-labelledby="rules-title">
-          <div class="section-heading compact"><div><p class="eyebrow"><span class="eyebrow-line"></span> Association rules</p><h2 id="rules-title">Signals worth a closer look</h2></div><span class="section-meta" id="rule-count">8 rules shown</span></div>
+          <div class="section-heading compact"><div><p class="eyebrow"><span class="eyebrow-line"></span> Association rules</p><h2 id="rules-title">Signals worth a closer look</h2><p class="section-note">Exploratory, in-sample rules only. Every card shows absolute support and antecedent denominators.</p></div><div class="rule-toolbar"><span class="section-meta" id="rule-count">Showing 8 of 15 rules</span><label for="rule-sort" class="sr-only">Sort rules by</label><select id="rule-sort"><option value="lift">Sort: lift</option><option value="confidence">Sort: confidence</option><option value="support">Sort: support</option></select><button id="show-all-rules" class="text-button" type="button">Show all 15 rules</button></div></div>
           <div id="rules-grid" class="rules-grid"></div>
         </section>
 
         <section class="explorer-section" id="explorer">
-          <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Basket explorer</p><h2>Put a basket under the lens</h2></div><p class="section-caption">Select a transaction to see its products and candidate prevalence conditioned on any selected basket item.</p></div>
+          <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Basket explorer</p><h2>Put a basket under the lens</h2></div><p class="section-caption">Select a transaction to see which active rules fire for it, then compare those rules with a separately named local context view.</p></div>
           <div class="explorer-grid">
             <article class="card basket-card">
               <div class="basket-select-row"><div><p class="card-kicker">Inspect transaction</p><h3 id="basket-title">Basket T001</h3></div><label class="select-wrap"><span class="sr-only">Select transaction</span><select id="basket-select"></select><span class="select-chevron">⌄</span></label></div>
@@ -93,11 +94,17 @@
               <div class="basket-summary"><span><strong id="basket-size">3</strong> items</span><span class="basket-summary-dot"></span><span id="basket-match">2 frequent patterns</span></div>
               <div class="basket-id"><span class="id-dot"></span> <span id="basket-id-label">T001</span> <span>·</span> source row <span id="basket-row">01</span></div>
             </article>
-            <article class="card context-card">
-              <div class="card-topline"><div><p class="card-kicker">Candidate context</p><h3>What appears with any selected item?</h3></div><span class="context-label">Local sample</span></div>
-              <div id="context-list" class="context-list"></div>
-              <p class="context-footnote">Bars show P(candidate | any selected basket item): candidate baskets / baskets containing at least one selected item.</p>
-            </article>
+            <div class="explorer-insights">
+              <article class="card triggered-card">
+                <div class="card-topline"><div><p class="card-kicker">Rules triggered by this basket</p><h3>Candidate consequents</h3></div><span class="context-label light-label" id="basket-rule-count">0 triggered</span></div>
+                <div id="triggered-rules" class="triggered-rules"></div>
+              </article>
+              <article class="card context-card">
+                <div class="card-topline"><div><p class="card-kicker">Context view · not rules</p><h3>What appears with any selected item?</h3></div><span class="context-label">Local sample</span></div>
+                <div id="context-list" class="context-list"></div>
+                <p class="context-footnote">Bars show P(candidate | any selected basket item): candidate baskets / baskets containing at least one selected item.</p>
+              </article>
+            </div>
           </div>
         </section>
 

@@ -6,4 +6,4 @@ Verbatim Project 03 prompt from the canonical catalog:
 
 Source: <https://github.com/dlmastery/data_science_examples/blob/main/PROMPTS.md>
 
-This compact assignment implementation focuses on the reproducible clustering experiment, CRISP-DM trace, research-style metrics, visualization, and limitations requested by the handoff. A dashboard is intentionally out of scope for this small offline reproduction.
+This compact assignment implementation focuses on the reproducible clustering experiment, CRISP-DM trace, research-style metrics, visualization, responsible limitations, and a dependency-free dashboard requested by the handoff. The dashboard is backed by committed artifacts and provides selected-run point inspection; it does not imply observed customer validity or production readiness.

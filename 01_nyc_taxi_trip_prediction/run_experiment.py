@@ -12,11 +12,21 @@ import statistics
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 SEED = 255
 DEFAULT_SAMPLE_SIZE = 6000
 TRAIN_DURATION_QUANTILE = 0.99
 MAX_DROP_RATE = 0.25
+INPUT_TIMEZONE = "America/New_York"
+UTC = timezone.utc
+NYC_TIMEZONE = ZoneInfo(INPUT_TIMEZONE)
+SERVICE_AREA = {
+    "longitude": [-74.3, -73.65],
+    "latitude": [40.45, 40.95],
+}
+ALLOWED_VENDOR_IDS = {1, 2}
+TIMESTAMP_COVERAGE = {"min": "2010-01-01 00:00:00", "max": "2030-01-01 00:00:00"}
 MODEL_CONFIG = {
     "type": "regularized_linear_regression",
     "target_transform": "log1p",
@@ -82,12 +92,25 @@ def read_csv(path: str | Path) -> list[dict]:
         return list(reader)
 
 
-def parse_timestamp(value: object) -> datetime:
-    """Parse timestamps and normalize aware/naive values to UTC-naive datetimes."""
-    parsed = datetime.fromisoformat(str(value).strip().replace("Z", "+00:00"))
-    if parsed.tzinfo is not None:
-        parsed = parsed.astimezone(timezone.utc).replace(tzinfo=None)
-    return parsed
+def parse_timestamp(value: object, expect_aware: bool | None = None) -> datetime:
+    """Parse one timestamp under the declared NYC-naive/UTC-aware contract."""
+    raw = str(value).strip()
+    if not raw:
+        raise ValueError("missing_timestamp")
+    parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    is_aware = parsed.tzinfo is not None and parsed.utcoffset() is not None
+    if expect_aware is not None and is_aware != expect_aware:
+        raise ValueError("mixed_timestamp_timezone_awareness")
+    if is_aware:
+        return parsed.astimezone(UTC).replace(tzinfo=None)
+
+    # Naive values are explicitly NYC local time. Reject DST fall-back values
+    # that have two possible UTC interpretations instead of silently guessing.
+    local = parsed.replace(tzinfo=NYC_TIMEZONE, fold=0)
+    alternate = parsed.replace(tzinfo=NYC_TIMEZONE, fold=1)
+    if local.utcoffset() != alternate.utcoffset():
+        raise ValueError("ambiguous_local_timestamp")
+    return local.astimezone(UTC).replace(tzinfo=None)
 
 
 def _feature_row(row: dict, timestamp: datetime) -> tuple[list[float], float, datetime]:
@@ -98,12 +121,22 @@ def _feature_row(row: dict, timestamp: datetime) -> tuple[list[float], float, da
     values = {key: float(row[key]) for key in keys}
     if not all(math.isfinite(value) for value in values.values()):
         raise ValueError("non_finite_numeric")
-    if not 1 <= values["passenger_count"] <= 10:
+    if values["vendor_id"] not in ALLOWED_VENDOR_IDS or not values["vendor_id"].is_integer():
+        raise ValueError("invalid_vendor_id")
+    if not values["passenger_count"].is_integer() or not 1 <= values["passenger_count"] <= 10:
         raise ValueError("invalid_passenger_count")
     if not -180 <= values["pickup_longitude"] <= 180 or not -180 <= values["dropoff_longitude"] <= 180:
         raise ValueError("invalid_longitude")
     if not -90 <= values["pickup_latitude"] <= 90 or not -90 <= values["dropoff_latitude"] <= 90:
         raise ValueError("invalid_latitude")
+    if not SERVICE_AREA["longitude"][0] <= values["pickup_longitude"] <= SERVICE_AREA["longitude"][1] \
+            or not SERVICE_AREA["longitude"][0] <= values["dropoff_longitude"] <= SERVICE_AREA["longitude"][1]:
+        raise ValueError("outside_service_area_longitude")
+    if not SERVICE_AREA["latitude"][0] <= values["pickup_latitude"] <= SERVICE_AREA["latitude"][1] \
+            or not SERVICE_AREA["latitude"][0] <= values["dropoff_latitude"] <= SERVICE_AREA["latitude"][1]:
+        raise ValueError("outside_service_area_latitude")
+    if not datetime(2010, 1, 1) <= timestamp < datetime(2030, 1, 1):
+        raise ValueError("timestamp_out_of_coverage")
 
     dlat = math.radians(values["dropoff_latitude"] - values["pickup_latitude"])
     dlon = math.radians(values["dropoff_longitude"] - values["pickup_longitude"])
@@ -142,18 +175,36 @@ def featurize(rows: list[dict], return_audit: bool = False):
     """
     audit = {"input_rows": len(rows), "dropped_by_reason": {}}
     result = []
+    seen_ids = set()
+    awareness = None
     for row in rows:
         try:
-            timestamp = parse_timestamp(row["pickup_datetime"])
+            row_id = str(row.get("id", "")).strip()
+            if not row_id:
+                raise ValueError("missing_id")
+            if row_id in seen_ids:
+                raise ValueError("duplicate_id")
+            seen_ids.add(row_id)
+            raw_timestamp = str(row["pickup_datetime"]).strip()
+            parsed_raw = datetime.fromisoformat(raw_timestamp.replace("Z", "+00:00"))
+            row_awareness = parsed_raw.tzinfo is not None and parsed_raw.utcoffset() is not None
+            if awareness is None:
+                awareness = row_awareness
+            elif row_awareness != awareness:
+                raise ValueError("mixed_timestamp_timezone_awareness")
+            timestamp = parse_timestamp(raw_timestamp, expect_aware=awareness)
             features, target, timestamp = _feature_row(row, timestamp)
-            result.append({"features": features, "target": target, "timestamp": timestamp, "id": row.get("id", "")})
+            result.append({"features": features, "target": target, "timestamp": timestamp, "id": row_id})
         except KeyError:
             reason = "missing_value"
         except (ValueError, TypeError, OverflowError) as error:
             reason = str(error) if str(error) in {
                 "non_finite_numeric", "invalid_longitude", "invalid_latitude",
                 "invalid_passenger_count", "distance_outlier", "non_finite_duration",
-                "non_positive_duration",
+                "non_positive_duration", "invalid_vendor_id", "outside_service_area_longitude",
+                "outside_service_area_latitude", "timestamp_out_of_coverage", "missing_id",
+                "duplicate_id", "missing_timestamp", "ambiguous_local_timestamp",
+                "mixed_timestamp_timezone_awareness",
             } else "parse_error"
         else:
             continue
@@ -178,14 +229,24 @@ def quantile(values: list[float], q: float) -> float:
     return ordered[lower] + (ordered[upper] - ordered[lower]) * fraction
 
 
-def apply_duration_policy(train: list[dict], test: list[dict], q: float = TRAIN_DURATION_QUANTILE):
-    """Remove target outliers using a threshold learned from training targets only."""
+def apply_duration_policy(
+    train: list[dict],
+    test: list[dict],
+    q: float = TRAIN_DURATION_QUANTILE,
+    trim_test: bool = True,
+):
+    """Fit a train-only target threshold; optionally trim the test sensitivity set.
+
+    The primary evaluation never trims test rows because their targets would be
+    unavailable at prediction time. ``trim_test=True`` remains available for
+    callers that explicitly need the historical inlier-only sensitivity view.
+    """
     upper = quantile([record["target"] for record in train], q)
     train_kept = [record for record in train if record["target"] <= upper]
-    test_kept = [record for record in test if record["target"] <= upper]
+    test_kept = [record for record in test if record["target"] <= upper] if trim_test else list(test)
     dropped = {
         "train_duration_outlier": len(train) - len(train_kept),
-        "test_duration_outlier": len(test) - len(test_kept),
+        "test_duration_outlier": sum(record["target"] > upper for record in test),
     }
     return train_kept, test_kept, upper, dropped
 
@@ -194,10 +255,18 @@ def split_records(records: list[dict], fraction: float = 0.8):
     if len(records) < 2:
         raise ValueError("At least two valid rows are required for a train/test split")
     ordered = sorted(records, key=lambda record: (record["timestamp"], str(record["id"])))
-    cut = max(1, min(len(ordered) - 1, int(len(ordered) * fraction)))
-    train, test = ordered[:cut], ordered[cut:]
-    if train[-1]["timestamp"] > test[0]["timestamp"]:
-        raise AssertionError("Chronological split invariant violated")
+    groups = []
+    for record in ordered:
+        if not groups or groups[-1][0]["timestamp"] != record["timestamp"]:
+            groups.append([record])
+        else:
+            groups[-1].append(record)
+    target_cut = len(ordered) * fraction
+    cut = min(range(1, len(groups)), key=lambda index: abs(sum(len(group) for group in groups[:index]) - target_cut))
+    train = [record for group in groups[:cut] for record in group]
+    test = [record for group in groups[cut:] for record in group]
+    if train[-1]["timestamp"] >= test[0]["timestamp"]:
+        raise AssertionError("Chronological split invariant violated: tied timestamps cross the boundary")
     return train, test
 
 
@@ -247,14 +316,22 @@ def hour_median_predictions(train_records: list[dict], test_records: list[dict],
 def temporal_folds(records: list[dict], count: int = 3):
     """Return expanding chronological folds ending at the final holdout boundary."""
     ordered = sorted(records, key=lambda record: (record["timestamp"], str(record["id"])))
-    boundaries = [int(len(ordered) * fraction) for fraction in (0.5, 0.65, 0.8)]
+    groups = []
+    for record in ordered:
+        if not groups or groups[-1][0]["timestamp"] != record["timestamp"]:
+            groups.append([record])
+        else:
+            groups[-1].append(record)
+    group_offsets = [sum(len(group) for group in groups[:index]) for index in range(1, len(groups))]
+    boundaries = [min(group_offsets, key=lambda offset: abs(offset - len(ordered) * fraction)) for fraction in (0.5, 0.65, 0.8)]
     folds = []
-    for index, train_end in enumerate(boundaries[-count:], start=1):
-        test_end = boundaries[index] if index < len(boundaries) else len(ordered)
+    selected = boundaries[-count:]
+    for index, train_end in enumerate(selected):
+        test_end = selected[index + 1] if index + 1 < len(selected) else len(ordered)
         if test_end <= train_end:
             continue
         train, test = ordered[:train_end], ordered[train_end:test_end]
-        train, test, _, _ = apply_duration_policy(train, test)
+        train, _, _, _ = apply_duration_policy(train, test, trim_test=False)
         if train and test:
             folds.append((train, test))
     return folds
@@ -269,12 +346,24 @@ def evaluate_fold(train, test):
     recent = train_y[max(0, int(len(train_y) * 0.8)):]
     recent_median = statistics.median(recent)
     model_predictions, _ = fit_predict(train_x, train_y, test_x)
-    return {
-        "global_median": score(test_y, [global_median] * len(test_y)),
-        "recent_median": score(test_y, [recent_median] * len(test_y)),
-        "hour_median": score(test_y, hour_median_predictions(train, test, global_median)),
-        "linear_log_target": score(test_y, model_predictions),
+    hour_predictions = hour_median_predictions(train, test, global_median)
+    predictions = {
+        "global_median": [global_median] * len(test_y),
+        "recent_median": [recent_median] * len(test_y),
+        "hour_median": hour_predictions,
+        "linear_log_target": model_predictions,
     }
+    result = {name: score(test_y, values) for name, values in predictions.items()}
+    upper = quantile(train_y, TRAIN_DURATION_QUANTILE)
+    robust_indexes = [index for index, value in enumerate(test_y) if value <= upper]
+    result["robust_inlier"] = {
+        name: score([test_y[index] for index in robust_indexes], [values[index] for index in robust_indexes])
+        for name, values in predictions.items()
+    } if robust_indexes else {}
+    result["test_rows"] = len(test_y)
+    result["robust_test_rows"] = len(robust_indexes)
+    result["train_rows"] = len(train)
+    return result
 
 
 def svg_hist(values, path):
@@ -323,16 +412,19 @@ def run_experiment(input_path: str | None = None, sample_size: int = DEFAULT_SAM
 
     records, audit = featurize(rows, return_audit=True)
     train_structural, test_structural = split_records(records)
-    train, test, duration_upper, target_drops = apply_duration_policy(train_structural, test_structural)
-    drop_rate = 1 - (len(train) + len(test)) / len(rows) if rows else 1
+    train, test, duration_upper, target_drops = apply_duration_policy(
+        train_structural, test_structural, trim_test=False
+    )
+    robust_test = [record for record in test if record["target"] <= duration_upper]
+    drop_rate = 1 - len(records) / len(rows) if rows else 1
     if drop_rate > MAX_DROP_RATE:
         raise ValueError(f"Cleaning dropped {drop_rate:.1%} of input rows, above the {MAX_DROP_RATE:.1%} limit")
     if len(train) < 2 or not test:
         raise ValueError("Duration cleaning left too few rows for evaluation")
-    train_timestamp = train[-1]["timestamp"]
-    test_timestamp = test[0]["timestamp"]
-    if train_timestamp > test_timestamp:
-        raise AssertionError("Chronological split invariant violated after target cleaning")
+    train_timestamp = train_structural[-1]["timestamp"]
+    test_timestamp = test_structural[0]["timestamp"]
+    if train_timestamp >= test_timestamp:
+        raise AssertionError("Chronological split invariant violated after structural cleaning")
 
     train_x = [record["features"] for record in train]
     train_y = [record["target"] for record in train]
@@ -342,6 +434,7 @@ def run_experiment(input_path: str | None = None, sample_size: int = DEFAULT_SAM
     global_median = statistics.median(train_y)
     recent_median = statistics.median(train_y[max(0, int(len(train_y) * 0.8)):])
     hour_predictions = hour_median_predictions(train, test, global_median)
+    robust_indexes = {id(record) for record in robust_test}
 
     output_dir.mkdir(exist_ok=True)
     predictions_path = output_dir / "predictions.csv"
@@ -349,10 +442,16 @@ def run_experiment(input_path: str | None = None, sample_size: int = DEFAULT_SAM
         writer = csv.writer(handle, lineterminator="\n")
         writer.writerow([
             "pickup_datetime", "actual_seconds", "predicted_seconds", "global_median_seconds",
-            "recent_median_seconds", "hour_median_seconds",
+            "recent_median_seconds", "hour_median_seconds", "distance_miles", "hour", "weekday",
+            "is_weekend", "absolute_error_seconds", "residual_seconds", "robust_inlier",
         ])
         writer.writerows([
-            [record["timestamp"].isoformat(sep=" "), actual, predicted, global_median, recent_median, hour_prediction]
+            [
+                record["timestamp"].isoformat(sep=" "), actual, predicted, global_median, recent_median,
+                hour_prediction, record["features"][11], record["timestamp"].hour,
+                record["timestamp"].weekday(), int(record["timestamp"].weekday() >= 5),
+                abs(actual - predicted), predicted - actual, int(id(record) in robust_indexes),
+            ]
             for record, actual, predicted, hour_prediction in zip(test, test_y, model_predictions, hour_predictions)
         ])
 
@@ -365,35 +464,74 @@ def run_experiment(input_path: str | None = None, sample_size: int = DEFAULT_SAM
     for fold_number, (fold_train, fold_test) in enumerate(temporal_folds(records), start=1):
         result = evaluate_fold(fold_train, fold_test)
         result["fold"] = fold_number
-        result["train_rows"] = len(fold_train)
-        result["test_rows"] = len(fold_test)
+        result["split_cutoff"] = {
+            "train_max_pickup_datetime": fold_train[-1]["timestamp"].isoformat(sep=" "),
+            "test_min_pickup_datetime": fold_test[0]["timestamp"].isoformat(sep=" "),
+        }
         folds.append(result)
 
+    fold_summary = {}
+    for method in ("global_median", "recent_median", "hour_median", "linear_log_target"):
+        values = [fold[method]["mae_seconds"] for fold in folds]
+        fold_summary[method] = {
+            "mean_mae_seconds": round(statistics.mean(values), 3),
+            "stdev_mae_seconds": round(statistics.pstdev(values), 3),
+            "min_mae_seconds": min(values),
+            "max_mae_seconds": max(values),
+        }
+
     metrics = {
+        "run_timestamp_utc": datetime.now(UTC).isoformat(),
         "source": source,
         "source_sha256": source_hash,
         "input_rows": audit["input_rows"],
         "rows_after_structural_cleaning": audit["rows_after_structural_cleaning"],
-        "rows_after_cleaning": len(train) + len(test),
+        "rows_after_cleaning": len(records),
         "drop_rate": round(drop_rate, 6),
-        "dropped_by_reason": {
-            **audit["dropped_by_reason"],
-            **{reason: count for reason, count in target_drops.items() if count},
+        "dropped_by_reason": audit["dropped_by_reason"],
+        "target_policy": {
+            "quantile": TRAIN_DURATION_QUANTILE,
+            "upper_bound_seconds": round(duration_upper, 3),
+            "train_rows_before_trim": len(train_structural),
+            "train_rows_used_for_fit": len(train),
+            "train_duration_outlier_rows": target_drops["train_duration_outlier"],
+            "test_duration_outlier_rows": target_drops["test_duration_outlier"],
+            "primary_test_rows_scored": len(test),
+            "robust_inlier_test_rows_scored": len(robust_test),
+            "robust_inlier_exclusion_is_sensitivity_only": True,
         },
         "duration_upper_bound_seconds": round(duration_upper, 3),
         "duration_quantile": TRAIN_DURATION_QUANTILE,
         "train_rows": len(train),
         "test_rows": len(test),
+        "test_rows_robust_inlier": len(robust_test),
         "split_cutoff": {
             "train_max_pickup_datetime": train_timestamp.isoformat(sep=" "),
             "test_min_pickup_datetime": test_timestamp.isoformat(sep=" "),
+        },
+        "observed_timestamp_range": {
+            "min_pickup_datetime": records[0]["timestamp"].isoformat(sep=" "),
+            "max_pickup_datetime": records[-1]["timestamp"].isoformat(sep=" "),
         },
         "baseline_median_seconds": global_median,
         "baseline": score(test_y, [global_median] * len(test_y)),
         "recent_median_baseline": score(test_y, [recent_median] * len(test_y)),
         "hour_median_baseline": score(test_y, hour_predictions),
         "linear_log_target": score(test_y, model_predictions),
-        "temporal_validation": {"folds": folds},
+        "robust_inlier_sensitivity": {
+            "baseline": score([record["target"] for record in robust_test], [global_median] * len(robust_test)),
+            "recent_median_baseline": score([record["target"] for record in robust_test], [recent_median] * len(robust_test)),
+            "hour_median_baseline": score(
+                [record["target"] for record in robust_test],
+                [hour_predictions[index] for index, record in enumerate(test) if id(record) in robust_indexes],
+            ),
+            "linear_log_target": score(
+                [record["target"] for record in robust_test],
+                [prediction for record, prediction in zip(test, model_predictions) if id(record) in robust_indexes],
+            ),
+            "test_rows": len(robust_test),
+        },
+        "temporal_validation": {"folds": folds, "fold_summary": fold_summary},
         "run_config": {
             "seed": None if input_path else SEED,
             "sample_size": requested_sample_size,
@@ -401,10 +539,22 @@ def run_experiment(input_path: str | None = None, sample_size: int = DEFAULT_SAM
             "model": MODEL_CONFIG,
             "cleaning": {
                 "coordinate_ranges": "latitude [-90, 90], longitude [-180, 180]",
-                "passenger_count_range": "[1, 10]",
+                "service_area": SERVICE_AREA,
+                "passenger_count_range": "integer [1, 10]",
+                "allowed_vendor_ids": sorted(ALLOWED_VENDOR_IDS),
                 "maximum_route_distance_miles": 100,
-                "duration": "positive values; upper bound is the training 99th percentile",
+                "duration": "positive values; upper bound is fit on training only and used for sensitivity scoring",
+                "duplicate_handling": "duplicate non-empty ids are dropped after the first occurrence",
+                "timestamp_coverage": TIMESTAMP_COVERAGE,
                 "maximum_allowed_drop_rate": MAX_DROP_RATE,
+            },
+            "timestamp_policy": {
+                "naive_input_timezone": INPUT_TIMEZONE,
+                "aware_input_normalization": "UTC",
+                "mixed_awareness": "rejected",
+                "ambiguous_local_times": "rejected",
+                "split_tie_handling": "pickup timestamp groups stay wholly in train or test",
+                "strict_forward_invariant": "train_max_pickup_datetime < test_min_pickup_datetime",
             },
             "python_version": platform.python_version(),
             "platform": sys.platform,

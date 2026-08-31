@@ -116,6 +116,17 @@ class FlowForgeTests(unittest.TestCase):
         self.assertEqual(first.manifest["tasks"]["random_value"]["config_fingerprint"], second.manifest["tasks"]["random_value"]["config_fingerprint"])
         self.assertNotEqual(first.run_id, second.run_id)
 
+    def test_manifest_exposes_config_lineage_and_bounded_output_preview(self):
+        dag = DAG()
+        dag.add_task(Task("source", lambda ctx: {"value": 7}, config={"role": "fixture"}))
+        context = Runner(dag).run(seed=11)
+        record = context.manifest["tasks"]["source"]
+        self.assertEqual(context.manifest["task_order"], ["source"])
+        self.assertEqual(record["config"], {"role": "fixture"})
+        self.assertEqual(record["output"]["producer"], "source")
+        self.assertEqual(record["output"]["preview"], '{"value":7}')
+        self.assertEqual(record["output"]["run_id"], context.run_id)
+
     def test_dependency_input_validation_rejects_malformed_collections(self):
         with self.assertRaisesRegex(DAGError, "not a string"):
             Task("consumer", lambda ctx: None, "source")

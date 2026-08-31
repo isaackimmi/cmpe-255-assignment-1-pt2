@@ -83,7 +83,7 @@
             </article>
             <article class="stat-card">
               <div class="stat-label">FINAL HOLDOUT ROC-AUC</div>
-              <div class="stat-value" id="best-accuracy">—</div>
+              <div class="stat-value" id="final-auc">—</div>
               <div class="stat-foot">Selected model, evaluated once</div>
             </article>
             <article class="stat-card">
@@ -101,11 +101,24 @@
               <p class="eyebrow">MODEL COMPARISON</p>
               <h2>Leaderboard</h2>
             </div>
-            <div class="metric-legend" aria-label="Leaderboard metrics">
-              <span><i class="legend-swatch swatch-auc"></i>Dev CV ROC-AUC</span>
-              <span><i class="legend-swatch swatch-accuracy"></i>CV accuracy</span>
+          <div class="metric-legend" aria-label="Leaderboard metrics">
+              <span><i class="legend-swatch swatch-auc"></i>CV quality</span>
+              <span><i class="legend-swatch swatch-accuracy"></i>Operating point</span>
               <span><i class="legend-swatch swatch-time"></i>CV fit time</span>
             </div>
+          </div>
+          <div class="explorer-controls" aria-label="Leaderboard exploration controls">
+            <label>Sort lens <select id="sort-select">
+              <option value="roc_auc">ROC-AUC</option>
+              <option value="balanced_accuracy">Balanced accuracy</option>
+              <option value="f1">Malignant F1</option>
+              <option value="sensitivity">Sensitivity</option>
+              <option value="pr_auc">PR-AUC</option>
+              <option value="fit_seconds">Fit time</option>
+            </select></label>
+            <label>Backend <select id="backend-filter"><option value="all">All backends</option></select></label>
+            <label class="checkbox-label"><input id="tie-filter" type="checkbox" /> Show practical ties</label>
+            <span class="explorer-note" id="explorer-note">Sorting changes the exploration lens only; model selection remains development-CV ROC-AUC.</span>
           </div>
           <div class="leaderboard-layout">
             <div class="model-list" id="model-list" aria-live="polite">
@@ -132,8 +145,8 @@
           <div class="insight-copy">
             <p class="eyebrow">READ THE SIGNAL</p>
             <h2>One metric, three<br /><em>decision lenses.</em></h2>
-            <p>Mean development-CV ROC-AUC is the selection signal. Standard deviation shows variability, while fit time makes iteration cost visible.</p>
-            <div class="insight-callout"><span aria-hidden="true">↗</span><span>Higher ROC-AUC wins. Lower fit time wins.</span></div>
+            <p>Quality is ranked on development-CV ROC-AUC. The operating point makes malignant detection costs visible, while fit time exposes iteration cost. The final holdout stays locked and separate.</p>
+            <div class="insight-callout"><span aria-hidden="true">↗</span><span id="chart-caption">Higher quality wins. Lower fit time wins.</span></div>
           </div>
           <div class="comparison-chart" id="comparison-chart" aria-label="Model metric comparison chart"></div>
         </section>

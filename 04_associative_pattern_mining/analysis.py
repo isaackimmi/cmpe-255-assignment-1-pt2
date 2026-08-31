@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import math
 from collections import Counter
 from itertools import combinations
 from pathlib import Path
@@ -72,17 +73,35 @@ def _validate_probability(value: float, name: str) -> None:
         raise ValueError(f"{name} must be in (0, 1]")
 
 
+def minimum_support_count(min_support: float, transaction_count: int) -> int:
+    """Return the smallest whole-basket count that clears ``min_support``."""
+    _validate_probability(min_support, "min_support")
+    if isinstance(transaction_count, bool) or not isinstance(transaction_count, int) or transaction_count <= 0:
+        raise ValueError("transaction_count must be a positive integer")
+    # The tiny tolerance keeps an exact value such as 6 / 24 from becoming 7
+    # because of binary floating-point representation.
+    return max(1, math.ceil(min_support * transaction_count - 1e-12))
+
+
 def support(itemset: frozenset[str], transactions: list[frozenset[str]]) -> float:
     if not itemset:
         raise ValueError("itemset must be non-empty")
     normalized = _validate_transactions(transactions)
     return sum(itemset <= tx for tx in normalized) / len(normalized)
 
+
+def support_count(itemset: frozenset[str], transactions: list[frozenset[str]]) -> int:
+    """Return the absolute number of baskets containing ``itemset``."""
+    if not itemset:
+        raise ValueError("itemset must be non-empty")
+    normalized = _validate_transactions(transactions)
+    return sum(itemset <= tx for tx in normalized)
+
 def apriori(transactions: list[frozenset[str]], min_support: float = 0.25) -> dict[frozenset[str], float]:
     """Return all frequent itemsets using level-wise Apriori pruning."""
     normalized = _validate_transactions(transactions)
     _validate_probability(min_support, "min_support")
-    threshold = min_support * len(normalized)
+    threshold = minimum_support_count(min_support, len(normalized))
     counts = Counter(item for tx in normalized for item in tx)
     current = {frozenset([item]) for item, count in counts.items() if count >= threshold}
     frequent = {itemset: support(itemset, normalized) for itemset in current}
@@ -91,7 +110,7 @@ def apriori(transactions: list[frozenset[str]], min_support: float = 0.25) -> di
         prior = sorted(current, key=lambda s: tuple(sorted(s)))
         candidates = {frozenset(a | b) for a, b in combinations(prior, 2) if len(a | b) == k}
         candidates = {c for c in candidates if all(frozenset(subset) in current for subset in combinations(c, k - 1))}
-        current = {c for c in candidates if support(c, normalized) >= min_support}
+        current = {c for c in candidates if support_count(c, normalized) >= threshold}
         frequent.update({itemset: support(itemset, normalized) for itemset in current})
         k += 1
     return frequent
@@ -115,13 +134,24 @@ def association_rules(frequent: dict[frozenset[str], float], min_confidence: flo
                     raise ValueError("frequent is missing a required subset support")
                 confidence = itemset_support / frequent[antecedent]
                 lift = confidence / frequent[consequent]
+                if confidence > 1 + 1e-12 or lift <= 0 or not math.isfinite(lift):
+                    raise ValueError("frequent contains inconsistent support values")
                 if confidence >= min_confidence:
                     rules.append({"antecedent": antecedent, "consequent": consequent, "support": itemset_support, "confidence": confidence, "lift": lift})
-    return sorted(rules, key=lambda r: (-r["lift"], -r["confidence"], sorted(r["antecedent"])))
+    return sorted(
+        rules,
+        key=lambda r: (
+            -r["lift"],
+            -r["confidence"],
+            -r["support"],
+            tuple(sorted(r["antecedent"])),
+            tuple(sorted(r["consequent"])),
+        ),
+    )
 
 def save_plot(frequent: dict[frozenset[str], float], output: Path = ROOT / "outputs" / "support_plot.svg") -> Path:
     """Write a dependency-free SVG bar chart of the ten most supported itemsets."""
-    top = sorted(frequent.items(), key=lambda x: (-x[1], tuple(sorted(x[0]))))[:10]
+    top = sorted(frequent.items(), key=lambda x: (-x[1], -len(x[0]), tuple(sorted(x[0]))))[:10]
     output.parent.mkdir(exist_ok=True)
     width, row_height, left = 900, 42, 260
     height = 80 + row_height * len(top)
@@ -133,7 +163,7 @@ def save_plot(frequent: dict[frozenset[str], float], output: Path = ROOT / "outp
         rows.append(f'<rect x="{left}" y="{y}" width="{int(value * 560)}" height="24" fill="#34d399"/>')
         rows.append(f'<text x="{left + int(value * 560) + 8}" y="{y + 18}" font-size="13">{value:.3f}</text>')
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">'
-           '<rect width="100%" height="100%" fill="#0f172a"/><text x="30" y="28" fill="white" font-size="18" font-family="sans-serif">Frequent itemsets — support</text>'
+           '<rect width="100%" height="100%" fill="#0f172a"/><text x="30" y="28" fill="white" font-size="18" font-family="sans-serif">Frequent itemsets — support (all sizes)</text>'
            + ''.join(row.replace('font-size="', 'fill="white" font-family="sans-serif" font-size="') for row in rows) + '</svg>')
     output.write_text(svg)
     return output
@@ -143,7 +173,9 @@ def main() -> None:
     frequent = apriori(transactions, min_support=0.25)
     rules = association_rules(frequent, min_confidence=0.60)
     print(f"Transactions: {len(transactions)}")
+    print(f"Minimum support: 25% (at least {minimum_support_count(0.25, len(transactions))}/{len(transactions)} baskets)")
     print(f"Frequent itemsets: {len(frequent)}")
+    print(f"Rules: {len(rules)} at minimum confidence 60%")
     print("Top rules:")
     for rule in rules[:8]:
         left = ", ".join(sorted(rule["antecedent"]))

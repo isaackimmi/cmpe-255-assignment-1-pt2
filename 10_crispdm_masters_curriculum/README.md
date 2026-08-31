@@ -30,7 +30,13 @@ python3 src/inference.py \
   --features 5.1 3.5 1.4 0.2
 ```
 
-The contract requires the four features in this order: sepal length, sepal width, petal length, petal width. Values must be finite numeric centimeter measurements in the inclusive range `[0, 10]`. Invalid, missing, reordered, or out-of-range input is rejected; no imputation or silent reordering occurs.
+The contract requires the four positional features in this order: sepal length, sepal width, petal length, petal width. Values must be finite numeric centimeter measurements in the inclusive range `[0, 10]`. Invalid, missing, or out-of-range input is rejected; values are never silently reordered or imputed. Because a positional payload has no feature names with which to detect a plausible swap, callers with schema metadata should use named input, which canonicalises by exact feature name and rejects missing or extra keys:
+
+```bash
+python3 src/inference.py \
+  --model-path artifacts/model.joblib \
+  --named-features '{"sepal length (cm)":5.1,"sepal width (cm)":3.5,"petal length (cm)":1.4,"petal width (cm)":0.2}'
+```
 
 ## Interactive dashboard
 
@@ -40,7 +46,7 @@ Serve this directory so the browser can fetch the report (opening `index.html` d
 python3 -m http.server 8000
 ```
 
-Open <http://localhost:8000>. The six cards are a visual guide to this one supervised walkthrough, and the JSON report remains the source of truth. The dashboard shows the baseline/model evidence and the explicit deployment claim boundary.
+Open <http://localhost:8000>. The six cards are a visual guide to this one supervised walkthrough, and the JSON report remains the source of truth. The dashboard includes an artifact-backed candidate/baseline/metric explorer, repeated-CV score distribution, clickable confusion-matrix row details, artifact fingerprints, and a named-feature contract checker. Browser validation does not execute the model; use the local inference command for that.
 
 ## What the run demonstrates
 
@@ -57,4 +63,4 @@ The model artifact supports local, schema-validated inference on Iris-like measu
 
 ## Reproducibility
 
-The report records Python, NumPy, scikit-learn, and joblib versions, the data SHA-256, model configuration fingerprint, artifact hashes, random seed, split protocol, and CV scores. Dependencies are pinned in `requirements.txt`. Run `pytest -q` to verify deterministic splitting, data contracts, report schema, baseline comparison, artifact hashes, and inference behavior.
+The report records Python, NumPy, scikit-learn, and joblib versions, the data SHA-256, separate model configuration and fitted-artifact fingerprints, artifact hashes, random seed, split protocol, and CV scores. Dependencies are pinned in `requirements.txt`. Run `pytest -q` to verify deterministic splitting, data contracts, report schema, baseline comparison, artifact hashes, holdout row evidence, and inference behavior. The curriculum pass gate is strictly `modeling.beats_baseline_in_cv`; holdout accuracy and its baseline delta are separate, descriptive split-specific readouts.

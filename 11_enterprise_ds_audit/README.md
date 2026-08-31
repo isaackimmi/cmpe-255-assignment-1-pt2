@@ -18,7 +18,7 @@ python3 -m unittest discover -s tests -v
 
 ## Governance dashboard
 
-`index.html` is a dependency-free responsive dashboard for the generated reports. It presents the release recommendation, quality-dimension health, severity mix, model-quality baseline, schema/leakage/missingness/reproducibility evidence, and a filterable findings table. The page fetches both `reports/audit_results.json` and `reports/audit_report.md` at load time.
+`index.html` is a dependency-free responsive dashboard for the generated reports. It presents the release recommendation, quality-dimension health, severity mix, model-quality baseline, and finding-level evidence. Findings can be filtered by status, severity, category, or search text; each row opens an accessible detail drawer with structured evidence and the exact release blockers/advisories. The Markdown report remains available as a linked export.
 
 Because browsers restrict `fetch()` for local `file://` pages, serve the project directory locally:
 
@@ -35,13 +35,15 @@ The sample is synthetic; no production records are used. The dashboard labels th
 
 - Schema: required columns, type/parseability, allowed categorical values, duplicate IDs, and row count.
 - Missingness: per-column null rates and a configurable threshold.
-- Leakage risks: target-like fields, post-outcome timestamps, and identifier-like columns detected from the configured feature manifest, including row-level temporal evidence.
-- Reproducibility: policy/configuration/source/dependency hashes, repository revision, stable input and canonical result SHA-256 values, rerun comparison, and exact split row/date manifests.
+- Leakage risks: target-like fields, post-outcome timestamps, and identifier-like columns detected from the configured feature manifest, including row-level temporal evidence. This is a contract/leakage control, not a privacy-compliance certification.
+- Duplicate gate: exact duplicate rows are counted and deterministically excluded; conflicting repeated `(customer_id, snapshot_date)` keys are reported separately and block model evaluation.
+- Release policy: `INCONCLUSIVE` and high-severity `FAIL` findings are `BLOCKED`; warnings, medium/low failures, and high-severity warnings are `CONDITIONAL`; only an all-pass run with a passing model gate is `APPROVED`.
+- Reproducibility: policy/configuration/source/runner/dependency hashes, repository revision, stable input and canonical result SHA-256 values, an independent clean-process rerun comparison, and exact split row/date manifests. Domain checks use the fixed policy `as_of_date` rather than the machine clock.
 - Model quality: two temporal holdouts, minimum row/class-support gates, majority baseline, confusion matrices, confidence intervals, calibration diagnostics, and an explicit operating threshold. Invalid input produces `INCONCLUSIVE` and never reaches model code.
 
 ## Limitations
 
-This is a teaching artifact, not a certification framework. It does not prove fairness, privacy compliance, access control, lineage, drift, label correctness, calibration, robustness, or production monitoring. A real release would need an approved data dictionary, ownership and retention policies, protected-attribute impact analysis, a temporal validation design agreed with stakeholders, and independent review.
+This is a teaching artifact, not a certification framework. It does not prove fairness, privacy compliance, access control, lineage, drift, label correctness, calibration, robustness, or production monitoring. The model panel is a tiny synthetic diagnostic and must not be treated as business-readiness evidence. A real release would need an approved data dictionary, ownership and retention policies, protected-attribute impact analysis, a temporal validation design agreed with stakeholders, and independent review.
 ## Integration verification
 
 - **Prompt alignment:** Public Project 11 asks for an advanced audit of all projects and a detailed report; this provides schema, missingness, duplicate, leakage, reproducibility, and model-quality checks.

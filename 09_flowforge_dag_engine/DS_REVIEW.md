@@ -1,5 +1,7 @@
 # FlowForge Data-Science Robustness Review
 
+> Historical review: the findings below describe the pre-polish implementation. Current behavior and verification are documented in `FINAL_POLISH_REVIEW.md` and `README.md`; stale counts and examples in this audit are superseded.
+
 ## Scope and overall assessment
 
 Reviewed the Python DAG engine, its unit tests, the data-science example, and the browser companion in project 09. The scheduler is correct for a small, single-process graph whose tasks honor their declared dependencies: it validates unknown dependencies and cycles, produces a stable insertion-order Kahn traversal, and stops before later tasks after an exception. That is not yet a guarantee of sound, lineage-preserving, reproducible data-science execution. The main risks are stale run state, undeclared data access, lack of artifact lineage and contracts, and the absence of reproducibility controls around arbitrary Python callables.
@@ -64,8 +66,8 @@ Reviewed the Python DAG engine, its unit tests, the data-science example, and th
 
 Executed from the project root:
 
-- `python3 -m unittest discover -s tests -v`: **PASS**, 6 tests.
-- `python3 examples/basic_pipeline.py`: **PASS**, output order `load_data -> clean_data -> summarize -> report`; mean score `83.3`.
+- `python3 -m unittest discover -s tests -v`: **PASS**, 16 tests.
+- `python3 examples/basic_pipeline.py`: **PASS**, output order `load_data -> validate_data -> clean_data -> summarize -> report`; mean score `83.3`, with success and failure manifests exported.
 - `python3 -m compileall -q flowforge examples tests`: **PASS**.
 - Targeted checks reproduced stale output after a failed reused-context run, failure from an undeclared dependency, and differing values from an unseeded random task.
 

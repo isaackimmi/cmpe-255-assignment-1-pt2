@@ -4,9 +4,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import platform
 from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.covariance import EllipticEnvelope
@@ -27,6 +32,7 @@ DEFAULT_MODEL_CONTAMINATION = 0.10
 DEFAULT_ALERT_BUDGET = 100
 THRESHOLD_PERCENTILES = tuple(range(50, 96))
 ALERT_BUDGETS = tuple(range(25, 201, 5))
+STABILITY_SEEDS = (0, 7, 21, 42, 84)
 
 
 def _sample_normal(rng: np.random.Generator, n: int) -> np.ndarray:
@@ -232,8 +238,19 @@ def _category_recall(scores, categories: np.ndarray, alert_budget: int):
     return result
 
 
-def build_metrics(seed: int = 42) -> tuple[dict, dict[str, np.ndarray], dict[str, np.ndarray]]:
-    """Run the protocol in memory and return metrics plus plot inputs."""
+def _runtime_versions() -> dict[str, str]:
+    packages = {"numpy": "numpy", "scikit_learn": "scikit-learn", "matplotlib": "matplotlib"}
+    versions = {"python": platform.python_version()}
+    for name, package in packages.items():
+        try:
+            versions[name] = version(package)
+        except PackageNotFoundError:
+            versions[name] = "unavailable"
+    return versions
+
+
+def _build_metrics_once(seed: int = 42) -> tuple[dict, dict[str, np.ndarray], dict[str, np.ndarray]]:
+    """Run one protocol draw in memory and return metrics plus plot inputs."""
     data = make_protocol_data(seed)
     calibration_scores = score_methods(data["train"], data["calibration"], seed)
     test_scores = score_methods(data["train"], data["test"], seed)
@@ -256,10 +273,14 @@ def build_metrics(seed: int = 42) -> tuple[dict, dict[str, np.ndarray], dict[str
         "test_anomaly_count": int((data["labels"] == 1).sum()),
         "test_anomaly_rate": float(data["labels"].mean()),
         "alert_budget": DEFAULT_ALERT_BUDGET,
+        "alert_budget_semantics": "oracle_budget_benchmark",
         "model_contamination": DEFAULT_MODEL_CONTAMINATION,
         "threshold_selection": "clean calibration score percentile",
+        "ranking_metric": "roc_auc",
+        "holdout_use": "offline diagnostic evaluation only; do not tune deployment thresholds here",
         "anomaly_acceptance": "nearest normal-component Mahalanobis distance squared >= 8",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "runtime_versions": _runtime_versions(),
     }
     metrics["data_quality"] = {
         "anomaly_categories": {
@@ -270,15 +291,86 @@ def build_metrics(seed: int = 42) -> tuple[dict, dict[str, np.ndarray], dict[str
     return metrics, data, test_scores
 
 
-def plot_results(x, labels, scores, output: Path) -> None:
+def _stability_summary(seed: int, metrics: dict) -> dict:
+    rows = []
+    for repeat_seed in STABILITY_SEEDS:
+        if repeat_seed == seed:
+            repeat_metrics = metrics
+        else:
+            repeat_metrics, _, _ = _build_metrics_once(repeat_seed)
+        rows.append({
+            "seed": repeat_seed,
+            "methods": {
+                name: {
+                    "roc_auc": repeat_metrics[name]["roc_auc"],
+                    "average_precision": repeat_metrics[name]["average_precision"],
+                    "f1_at_k": repeat_metrics[name]["f1_at_k"],
+                    "category_recall": repeat_metrics["category_recall"][name],
+                }
+                for name in METHOD_NAMES
+            },
+        })
+
+    summary = {}
+    for name in METHOD_NAMES:
+        summary[name] = {}
+        for metric_name in ("roc_auc", "average_precision", "f1_at_k"):
+            values = np.array([row["methods"][name][metric_name] for row in rows])
+            summary[name][metric_name] = {
+                "mean": float(values.mean()),
+                "std": float(values.std(ddof=1)),
+                "min": float(values.min()),
+                "max": float(values.max()),
+            }
+        summary[name]["category_recall"] = {}
+        for category in ANOMALY_CATEGORIES:
+            values = np.array([row["methods"][name]["category_recall"][category] for row in rows])
+            summary[name]["category_recall"][category] = {
+                "mean": float(values.mean()),
+                "std": float(values.std(ddof=1)),
+                "min": float(values.min()),
+                "max": float(values.max()),
+            }
+    return {"seeds": list(STABILITY_SEEDS), "runs": rows, "summary": summary}
+
+
+def build_metrics(seed: int = 42) -> tuple[dict, dict[str, np.ndarray], dict[str, np.ndarray]]:
+    """Run the protocol in memory; stability summaries are added when writing artifacts."""
+    return _build_metrics_once(seed)
+
+
+def build_observations(data: dict[str, np.ndarray], scores: dict[str, np.ndarray]) -> list[dict]:
+    """Serialize the holdout rows so the dashboard can inspect actual scores."""
+    observations = []
+    for index in range(len(data["test"])):
+        observations.append({
+            "id": f"holdout-{index + 1:03d}",
+            "split": "holdout",
+            "feature_1": float(data["test"][index, 0]),
+            "feature_2": float(data["test"][index, 1]),
+            "label": int(data["labels"][index]),
+            "category": str(data["categories"][index]),
+            "scores": {name: float(score[index]) for name, score in scores.items()},
+        })
+    return observations
+
+
+def plot_results(x, labels, scores, output: Path, threshold_metrics: dict | None = None) -> None:
     fig, axes = plt.subplots(2, 2, figsize=(12, 9), constrained_layout=True)
     for ax, (name, score) in zip(axes.flat, scores.items()):
         sizes = 18 + 80 * _normalise(score)
         ax.scatter(x[labels == 0, 0], x[labels == 0, 1], s=sizes[labels == 0], c="#b8c4d6", alpha=.55, label="normal")
         ax.scatter(x[labels == 1, 0], x[labels == 1, 1], s=sizes[labels == 1], c=score[labels == 1], cmap="Reds", alpha=.9, edgecolor="black", linewidth=.25, label="holdout anomaly")
-        ax.set_title(name.replace("_", " ").title())
+        annotation = ""
+        if threshold_metrics and name in threshold_metrics:
+            threshold = threshold_metrics[name]["threshold"]
+            flagged = int((score >= threshold).sum())
+            annotation = f"\n95% calibration cut · {flagged} unbounded flags"
+        ax.set_title(name.replace("_", " ").title() + annotation, fontsize=10)
         ax.set_xlabel("feature 1")
         ax.set_ylabel("feature 2")
+        colorbar = fig.colorbar(ax.collections[-1], ax=ax, fraction=.046, pad=.04)
+        colorbar.set_label("anomaly score", fontsize=8)
     handles, labels_text = axes.flat[0].get_legend_handles_labels()
     fig.legend(handles, labels_text, loc="lower center", ncol=2)
     fig.suptitle("Holdout anomaly scores: larger markers are more suspicious", fontsize=15)
@@ -289,7 +381,11 @@ def plot_results(x, labels, scores, output: Path) -> None:
 def run(output_dir: Path, seed: int = 42) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     metrics, data, test_scores = build_metrics(seed)
-    plot_results(data["test"], data["labels"], test_scores, output_dir / "anomaly_scores.png")
+    plot_results(
+        data["test"], data["labels"], test_scores, output_dir / "anomaly_scores.png", metrics["threshold_metrics"]
+    )
+    (output_dir / "observations.json").write_text(json.dumps(build_observations(data, test_scores), indent=2) + "\n")
+    metrics["stability"] = _stability_summary(seed, metrics)
     (output_dir / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
     return metrics
 

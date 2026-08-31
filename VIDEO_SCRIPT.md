@@ -4,7 +4,7 @@
 
 Open the root README and show that Projects 00–13 are independent, offline-friendly reproductions. Point out PROMPTS_USED.md, REPRODUCTION_LOG.md, and COMPARISON_REPORT.md as the evidence trail.
 
-Start the repository static server and open the new dashboard pages. Show the polished UI for Projects 01, 03, 04, 06, 07, 08, 12, and 13, then briefly open the remaining project UIs so every project has visual evidence. Demonstrate metric cards, artifact previews, phase navigation, and at least one interactive control.
+Start the repository static server and open the dashboard pages one at a time. Show Projects 01, 03, 04, 06, 07, 08, 12, and 13, then briefly open the remaining UIs so every project has visual evidence. Demonstrate metric cards, artifact-backed charts, phase navigation, threshold/sort/filter controls, and a row- or point-level detail view.
 
 ## 0:30–1:20 — Applications and workflow
 
@@ -12,11 +12,11 @@ Open Project 00 and show the task/workspace UI. Run its Node tests. Then show Pr
 
 ## 1:20–2:10 — Modeling examples
 
-Show Project 03's segmentation PNG and summary JSON, Project 04's support plot, and Project 06's anomaly score grid. Explain that synthetic data are intentionally labeled as teaching fixtures and metrics are not production claims.
+Show Project 03's segmentation explorer and summary JSON, Project 04's rule/threshold explorer, and Project 06's anomaly score and operating-point views. Explain that synthetic data are intentionally labeled as teaching fixtures and metrics are not production claims.
 
 ## 2:10–2:55 — Skills and education
 
-Show Project 05's metrics/plots and Project 08's GitHub Pages-ready page. Demonstrate the threshold slider or a lesson quiz, then mention that numerical tests cover the same concepts.
+Show Project 05's metrics/plots and Project 08's visual lab. Demonstrate a chart focus/metric control, the threshold/learning-rate explorer, or a lesson quiz, then mention that numerical tests cover the same concepts.
 
 ## 2:55–3:40 — Pipelines, CRISP-DM, and audits
 

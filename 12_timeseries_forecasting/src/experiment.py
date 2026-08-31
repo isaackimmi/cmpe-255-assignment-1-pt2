@@ -7,11 +7,13 @@ deliberately explicit so that the example is safe to adapt for coursework.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.metadata
 import json
 import platform
 from pathlib import Path
 import subprocess
+from datetime import datetime, timezone
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -142,6 +144,29 @@ def _source_revision() -> str:
     return revision or "unknown"
 
 
+def _repository_dirty() -> bool:
+    project_dir = Path(__file__).resolve().parents[1]
+    try:
+        status = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all"],
+            cwd=project_dir,
+            capture_output=True,
+            text=True,
+            check=False,
+        ).stdout
+    except OSError:
+        return False
+    return bool(status.strip())
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def _block_metrics(actual: np.ndarray, baseline: np.ndarray, model: np.ndarray) -> dict:
     return {
         "baseline_seasonal_naive": metrics(actual, baseline),
@@ -216,11 +241,17 @@ def run(output_dir: str | Path = "outputs") -> dict:
         {
             "date": data.date.iloc[train_end:].dt.strftime("%Y-%m-%d").to_numpy(),
             "split": ["validation"] * validation_horizon + ["test"] * test_horizon,
+            "forecast_lead": np.arange(1, total_horizon + 1),
+            "test_prefix_month": [None] * validation_horizon + list(range(1, test_horizon + 1)),
             "actual": values[train_end:],
             "baseline_seasonal_naive": baseline_forecast,
             "model_hist_gradient_boosting": model_forecast,
         }
     )
+    forecast_rows["baseline_residual"] = forecast_rows["actual"] - forecast_rows["baseline_seasonal_naive"]
+    forecast_rows["model_residual"] = forecast_rows["actual"] - forecast_rows["model_hist_gradient_boosting"]
+    forecast_rows["baseline_absolute_error"] = forecast_rows["baseline_residual"].abs()
+    forecast_rows["model_absolute_error"] = forecast_rows["model_residual"].abs()
     forecast_rows.to_csv(output_dir / "forecast_predictions.csv", index=False)
 
     forecast_artifacts = {}
@@ -251,11 +282,19 @@ def run(output_dir: str | Path = "outputs") -> dict:
             "test_rows": test_horizon,
         },
         "forecast_protocol": {
-            "name": "closed_loop_multi_step",
+            "name": "single_origin_closed_loop_with_reporting_slices",
+            "interpretation": "One 72-step forecast from the training origin; nominal validation and test blocks are reporting slices, not tuning or refit stages.",
             "forecast_origin_index": train_end,
             "forecast_origin": data.date.iloc[train_end].strftime("%Y-%m-%d"),
             "history_through_index": train_end - 1,
             "history_through": data.date.iloc[train_end - 1].strftime("%Y-%m-%d"),
+            "forecast_lead_start": 1,
+            "forecast_lead_end": total_horizon,
+            "test_lead_start": validation_horizon + 1,
+            "test_lead_end": total_horizon,
+            "validation_role": "reporting_slice_only",
+            "test_role": "late_lead_reporting_slice",
+            "refit_after_validation": False,
             "validation_horizon": validation_horizon,
             "test_horizon": test_horizon,
             "actual_intermediate_observations_used": False,
@@ -269,11 +308,28 @@ def run(output_dir: str | Path = "outputs") -> dict:
         "baseline_seasonal_naive": metrics(test_actual, test_baseline),
         "model_hist_gradient_boosting": metrics(test_actual, test_model),
         "horizon_metrics": horizon_metrics,
+        "horizon_metric_semantics": "cumulative_test_prefix_months_1_through_horizon_from_the_single_forecast_origin",
+        "lead_metrics": {
+            str(lead): _block_metrics(
+                test_actual[lead - 1:lead],
+                test_baseline[lead - 1:lead],
+                test_model[lead - 1:lead],
+            )
+            for lead in range(1, test_horizon + 1)
+        },
         "available_horizons": [int(horizon) for horizon in horizon_metrics],
         "forecast_artifacts": forecast_artifacts,
         "forecast_predictions_artifact": "forecast_predictions.csv",
         "provenance": {
-            "data": {"generator": "make_dataset", "seed": DATA_SEED, "frequency": "MS"},
+            "data": {
+                "generator": "make_dataset",
+                "seed": DATA_SEED,
+                "rows": n,
+                "start": data.date.iloc[0].strftime("%Y-%m-%d"),
+                "frequency": "MS",
+            },
+            "features": {"lags": list(LAGS), "seasonal_period": SEASONAL_PERIOD, "feature_count": len(LAGS) + 3},
+            "split_fractions": {"train": 0.70, "validation": 0.15, "test": 0.15},
             "model": {"estimator": "HistGradientBoostingRegressor", **MODEL_CONFIG},
             "software": {
                 "python": platform.python_version(),
@@ -283,11 +339,37 @@ def run(output_dir: str | Path = "outputs") -> dict:
                 "matplotlib": _package_version("matplotlib"),
             },
             "source_revision": _source_revision(),
+            "repository_dirty": _repository_dirty(),
         },
+        "artifact_manifest": "artifact_manifest.json",
         "leakage_control": "Chronological split; lag/rolling features use values before t; both forecasts share one closed-loop origin and never use actual validation/test targets as inputs.",
     }
     (output_dir / "metrics.json").write_text(json.dumps(results, indent=2) + "\n")
     data.to_csv(output_dir / "synthetic_monthly_series.csv", index=False)
+    artifact_names = [
+        "metrics.json",
+        "synthetic_monthly_series.csv",
+        "forecast_predictions.csv",
+        "forecast.png",
+        *forecast_artifacts.values(),
+    ]
+    manifest = {
+        "manifest_version": 1,
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "source_revision": results["provenance"]["source_revision"],
+        "repository_dirty": results["provenance"]["repository_dirty"],
+        "reproduction": {
+            "command": "python -m src.experiment --output-dir outputs",
+            "environment": "requirements-lock.txt",
+            "test_command": "pytest -q",
+            "status": "artifacts_generated; tests_run_separately",
+        },
+        "artifacts": {
+            name: {"sha256": _sha256(output_dir / name), "bytes": (output_dir / name).stat().st_size}
+            for name in artifact_names
+        },
+    }
+    (output_dir / "artifact_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     return results
 
 

@@ -1,13 +1,34 @@
 {
   "model": "logistic_regression",
   "backend": "sklearn",
-  "accuracy": 0.956140350877193,
-  "balanced_accuracy": 0.9503968253968254,
-  "f1": 0.9655172413793104,
-  "roc_auc": 0.9947089947089948,
-  "fit_seconds": 0.007,
+  "accuracy": 0.9649122807017544,
+  "balanced_accuracy": 0.9623015873015872,
+  "f1": 0.9523809523809523,
+  "f1_negative_class": 0.9722222222222222,
+  "sensitivity": 0.9523809523809523,
+  "specificity": 0.9722222222222222,
+  "precision": 0.9523809523809523,
+  "npv": 0.9722222222222222,
+  "confusion_matrix": {
+    "tn": 70,
+    "fp": 2,
+    "fn": 2,
+    "tp": 40
+  },
+  "threshold": 0.425242,
+  "roc_auc": 0.9947089947089947,
+  "pr_auc": 0.9919926303854876,
+  "brier_score": 0.02615064789993449,
+  "fit_seconds": 0.0076,
   "evaluation_scope": "final_holdout",
   "selection_metric": "cv_roc_auc_mean",
   "selected_by": "development_cv",
-  "final_test_samples": 114
+  "final_test_samples": 114,
+  "decision_threshold": 0.425242,
+  "threshold_selection_scope": "development_cv_oof",
+  "positive_class": {
+    "label": 0,
+    "name": "malignant"
+  },
+  "uncertainty": "No confidence interval is reported for this single locked holdout evaluation."
 }

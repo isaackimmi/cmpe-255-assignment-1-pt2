@@ -1,0 +1,97 @@
+{
+  "config": {
+    "dataset": "malformed-fixture"
+  },
+  "environment": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "error": {
+    "message": "data-quality validation failed: row 0 has an invalid score",
+    "type": "ValueError"
+  },
+  "execution_order": [
+    "load_data"
+  ],
+  "run_id": "65c0e202226a47b0a0675692c84f4cdf",
+  "seed": 255,
+  "started_at": "2026-08-31T07:13:21.717056+00:00",
+  "status": "failed",
+  "task_order": [
+    "load_data",
+    "validate_data",
+    "clean_data",
+    "summarize",
+    "report"
+  ],
+  "tasks": {
+    "clean_data": {
+      "code_fingerprint": "dddee033b96696cac7f59d3c7cc83706a79a4d26bfaf7a4923ed89b4f936d59e",
+      "config": {
+        "missing_age_policy": "None -> 0; preserve legitimate zero"
+      },
+      "config_fingerprint": "4247e81cb07575d552994a55656dc51e9a2e5046bcdcb3637afb1ac3cb975786",
+      "depends_on": [
+        "validate_data"
+      ],
+      "inputs": [],
+      "status": "skipped"
+    },
+    "load_data": {
+      "code_fingerprint": "0593fdcc03e133fb93ae165eddef765903f332697f3cf7f72bb3070123493937",
+      "config": {
+        "source": "inline-observations"
+      },
+      "config_fingerprint": "540d0ed44850c3fb75e7b4e4f3521b887a49bc85d1fdb480a9cc087f923e19b8",
+      "depends_on": [],
+      "inputs": [],
+      "output": {
+        "artifact_id": "86cf2f8a583bf23344df26ff",
+        "content_hash": "e0c4a311e612d4e6930667087e956d6d5c4e2b466b66124fcdbfb6710fdd1a10",
+        "created_at": "2026-08-31T07:13:21.717385+00:00",
+        "parent_artifact_ids": [],
+        "preview": "[{\"age\":22,\"score\":\"not-a-number\"}]",
+        "producer": "load_data",
+        "run_id": "65c0e202226a47b0a0675692c84f4cdf",
+        "schema_fingerprint": "9a8c2b13e043762d1b66c9d2a1241e7f6c5ceddcf0d3ec873885475171b7b9dc"
+      },
+      "status": "succeeded"
+    },
+    "report": {
+      "code_fingerprint": "a2c401ed4a69b12472d4ef94acee6a11afa7b2b9562c6bd6c3972840348fa9b9",
+      "config": {},
+      "config_fingerprint": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "depends_on": [
+        "summarize"
+      ],
+      "inputs": [],
+      "status": "skipped"
+    },
+    "summarize": {
+      "code_fingerprint": "52cf37a100106479ad28e9c959c05a42f85788632172b444d2c6fec4039c019a",
+      "config": {},
+      "config_fingerprint": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "depends_on": [
+        "clean_data"
+      ],
+      "inputs": [],
+      "status": "skipped"
+    },
+    "validate_data": {
+      "code_fingerprint": "ef05a92cea75b8b6be0b99aacf70a1eeb026b3d20c2f7a2732bceaebc0c9f78b",
+      "config": {},
+      "config_fingerprint": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "depends_on": [
+        "load_data"
+      ],
+      "error": {
+        "message": "data-quality validation failed: row 0 has an invalid score",
+        "type": "ValueError"
+      },
+      "inputs": [
+        "86cf2f8a583bf23344df26ff"
+      ],
+      "status": "failed"
+    }
+  }
+}

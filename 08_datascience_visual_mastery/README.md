@@ -58,5 +58,5 @@ The prompt asks for a “live simulation” and a GitHub.io-ready page. This rep
 ## Integration verification
 
 - **Prompt alignment:** Public Project 08 asks for Naive Bayes, evaluation, calculus/gradient descent, backpropagation, quizzes, interview prep, live simulation, and GitHub Pages readiness; all are represented.
-- **Results/artifacts:** Four snapshots and manifest are present; pytest passed 6/6.
-- **Issue/resolution:** Fixed a manifest path bug when pytest redirects output outside the repository.
+- **Results/artifacts:** Four dependency-free SVG snapshots and the manifest are checked in; the backprop snapshot mirrors the live graph with explicit bias and branching reverse-gradient arrows.
+- **Verification:** Run `python3 -m pytest -q` after installing `requirements.txt`; lightweight syntax, numerical, HTML-structure, and fallback-artifact checks are also documented by the test suite.

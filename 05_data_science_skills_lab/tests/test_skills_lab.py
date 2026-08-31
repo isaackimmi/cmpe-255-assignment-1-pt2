@@ -132,6 +132,8 @@ class SkillsLabTests(unittest.TestCase):
         self.assertEqual(metrics["data_quality"]["missing_values_imputed"], 1)
         self.assertEqual(metrics["clustering"]["k"], 2)
         self.assertGreater(metrics["clustering"]["silhouette"], 0)
+        self.assertEqual(len(summary["analysis_rows"]), metrics["data_quality"]["clean_rows"])
+        self.assertEqual(sorted({row["cluster"] for row in summary["analysis_rows"]}), [0, 1])
 
 
 if __name__ == "__main__":

@@ -7,7 +7,9 @@ sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 from anomaly_experiment import (  # noqa: E402
     ANOMALY_CATEGORIES,
     DEFAULT_ALERT_BUDGET,
+    METHOD_NAMES,
     build_metrics,
+    build_observations,
     calibrate_thresholds,
     evaluate,
     make_data,
@@ -96,3 +98,28 @@ def test_protocol_remains_finite_and_reproducible_for_multiple_seeds():
         second = make_protocol_data(seed)
         assert np.array_equal(first["test"], second["test"])
         assert np.isfinite(score_methods(first["train"], first["test"])["rank_ensemble"]).all()
+
+
+def test_observation_export_contains_inspectable_holdout_scores():
+    metrics, data, scores = build_metrics(42)
+    observations = build_observations(data, scores)
+    assert len(observations) == metrics["metadata"]["test_size"] == 300
+    assert {row["split"] for row in observations} == {"holdout"}
+    assert len({row["id"] for row in observations}) == 300
+    assert set(observations[0]["scores"]) == set(METHOD_NAMES)
+    assert all(np.isfinite(list(row["scores"].values())).all() for row in observations)
+    assert {row["category"] for row in observations} == {"normal", *ANOMALY_CATEGORIES}
+
+
+def test_runtime_metadata_and_stability_artifact_contract(tmp_path):
+    from anomaly_experiment import run
+
+    run(tmp_path, 42)
+    artifact = __import__("json").loads((tmp_path / "metrics.json").read_text())
+    assert artifact["metadata"]["alert_budget_semantics"] == "oracle_budget_benchmark"
+    assert artifact["metadata"]["ranking_metric"] == "roc_auc"
+    assert set(("python", "numpy", "scikit_learn", "matplotlib")) <= set(artifact["metadata"]["runtime_versions"])
+    assert artifact["stability"]["seeds"] == [0, 7, 21, 42, 84]
+    assert set(artifact["stability"]["summary"]) == set(METHOD_NAMES)
+    assert (tmp_path / "observations.json").exists()
+    assert (tmp_path / "anomaly_scores.png").stat().st_size > 0

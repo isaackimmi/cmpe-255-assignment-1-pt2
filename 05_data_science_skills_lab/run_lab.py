@@ -155,7 +155,8 @@ def run_pipeline(root=ROOT):
         "reproducibility": {"seed": SEED, "test_fraction": TEST_FRACTION, "cluster_iterations": CLUSTER_ITERATIONS, "cluster_n_init": CLUSTER_N_INIT, "input_sha256": _sha256(data_path)},
     }
     summary = {
-        "rows": raw_data, "analysis_rows": analysis_data,
+        "rows": raw_data,
+        "analysis_rows": [dict(row, cluster=labels[index]) for index, row in enumerate(analysis_data)],
         "imputation": {"scope": "all clean rows for descriptive outputs", "medians": full_imputation["medians"], "counts": full_imputation["counts"]},
         "regression_predictions": regression_predictions,
         "regression_excluded_test_targets": [{"customer_id": row["customer_id"], "reason": "monthly_usage is missing; target was not imputed for scoring"} for row in regression_test if row["monthly_usage"] is None],

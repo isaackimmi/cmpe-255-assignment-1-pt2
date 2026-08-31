@@ -85,3 +85,7 @@ At the selected 25% threshold, the highest-lift rule (`bread + jam -> butter`) i
 - `pytest -q` and `python3 -m pytest -q`: not runnable in the review environment because `pytest` is not installed. `requirements.txt:1` specifies an unpinned `pytest>=7.0`; the README claim that pytest passed (`README.md:44-48`) could not be independently reproduced here without installing dependencies.
 
 No source code was modified and no PR or push was created.
+
+## Implementation follow-up
+
+The findings above are retained as the baseline review. The subsequent implementation now derives the product metadata from the browser dataset, separates rule-triggered basket suggestions from the explicitly named context estimand, exposes confidence and absolute support-count controls, and adds itemset-size and rule visibility/sort controls. The test suite now also checks discrete threshold counts, metric invariants, and Python/browser mining parity.

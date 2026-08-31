@@ -1,4 +1,4 @@
-# Project 03 — Customer Intelligence Clustering
+# Project 03 — Customer Segmentation Clustering
 
 An end-to-end, reproducible customer-segmentation experiment based on the original Project 03 prompt in [`PROMPTS.md`](https://github.com/dlmastery/data_science_examples/blob/main/PROMPTS.md): clustering, CRISP-DM, research-aware evaluation, and data-science reporting. This compact implementation intentionally uses a generated retail sample instead of requiring a Kaggle download, so it runs offline and is fully reproducible.
 
@@ -14,11 +14,11 @@ python3 -m src.experiment
 python3 -m pytest -q
 ```
 
-Expected outputs include `artifacts/segmentation.png`, `summary.json`, `manifest.json`, and four CSV reports. The data generator creates 120 customers across three intentionally interpretable prototypes (budget/infrequent, frequent/high-spend, and affluent/premium); it is not a claim about real customer behavior.
+Expected outputs include `artifacts/segmentation.png`, `summary.json`, `manifest.json`, and five CSV reports. The data generator creates 120 customers across three intentionally interpretable prototypes (budget/infrequent, frequent/high-spend, and affluent/premium); it is a prototype-recovery teaching sample, not a claim about real customer behavior.
 
 ## Interactive dashboard
 
-The project includes a dependency-free browser dashboard in `index.html`. It loads the summary, both preprocessing score tables, validation scores, assignments, plot, and manifest at runtime. The UI checks schemas, row counts, selected-model metadata, and SHA-256 hashes before showing a verified status; run the experiment first if artifacts are missing or stale.
+The project includes a dependency-free browser dashboard in `index.html`. It loads the summary, both preprocessing score tables, validation scores, assignments, point-level explorer diagnostics, plot, and manifest at runtime. The UI checks exact schemas, finite numeric values, row counts, selected-model metadata, and the complete SHA-256 hash set before showing a verified status; run the experiment first if artifacts are missing or stale. The summary’s feature audit is descriptive for the generated sample, not a substitute for a real-data quality policy.
 
 From this directory, run:
 
@@ -28,16 +28,16 @@ python3 -m pytest -q
 python3 -m http.server 8000
 ```
 
-Then open [http://localhost:8000](http://localhost:8000). Use the segment filter and feature selector to explore the profile cards, click through the CRISP-DM phase navigator, and review the exported segmentation image. Serving the directory over HTTP is required because browsers block `fetch()` requests for local files opened directly with `file://`.
+Then open [http://localhost:8000](http://localhost:8000). Use the segment filter and feature selector to explore the heuristic profile cards, select raw x/y features or the PCA view, and click points to inspect customer-level features and assignment diagnostics. The PCA map is visualization-only. Distance, margin, and confidence are geometry proxies in fitted scaled space, not probabilities or outcome predictions. Serving the directory over HTTP is required because browsers block `fetch()` requests for local files opened directly with `file://`.
 
 ## CRISP-DM trace
 
 1. **Business understanding:** identify actionable customer groups for differentiated offers.
-2. **Data understanding:** inspect four numeric behavioral/value features; the generator documents distributions and bounds.
+2. **Data understanding:** inspect four numeric behavioral/value features; the generator documents distributions and bounds. Point-level map data is exported to `artifacts/explorer_points.csv`.
 3. **Data preparation:** validate the feature contract, optionally apply log1p to the two monetary fields, then fit `StandardScaler` on each training split. No target is used and no labels enter preprocessing.
 4. **Modeling:** fit K-Means for the predeclared k=2…7 candidates with 25 initializations.
 5. **Evaluation:** use repeated held-out silhouette means and uncertainty, partition stability via ARI, descriptive full-sample metrics, a PCA projection, and a measured preprocessing comparison.
-6. **Deployment/use:** use the exported table only for hypothesis generation; `fit_segmenter()` and `score_customers()` provide a paired preprocessing/model scoring path for future observed data.
+6. **Deployment/use:** use the exported table only for hypothesis generation; `fit_segmenter()` and `score_customers()` provide a paired preprocessing/model scoring path for future observed data. The browser explorer is a selected-run inspection surface, not a production assignment tool.
 
 ## Limitations and responsible use
 
@@ -47,7 +47,7 @@ This is a teaching experiment, not a production segmentation. The synthetic clus
 
 - `src/experiment.py` — data contract, preprocessing, repeated validation, stability, scoring, and artifact checks.
 - `tests/test_experiment.py` — reproducibility, validation, scoring, and artifact-content tests.
-- `artifacts/` — generated outputs (created by the run command).
+- `artifacts/` — generated outputs (created by the run command), including the browser-ready `explorer_points.csv` diagnostics.
 - `reports/` — reserved for a future full research report.
 ## Integration verification
 

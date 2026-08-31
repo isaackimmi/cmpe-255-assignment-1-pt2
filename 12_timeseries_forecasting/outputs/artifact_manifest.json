@@ -1,0 +1,46 @@
+{
+  "manifest_version": 1,
+  "generated_at_utc": "2026-08-31T07:10:16.034376+00:00",
+  "source_revision": "08697d2",
+  "repository_dirty": true,
+  "reproduction": {
+    "command": "python -m src.experiment --output-dir outputs",
+    "environment": "requirements-lock.txt",
+    "test_command": "pytest -q",
+    "status": "artifacts_generated; tests_run_separately"
+  },
+  "artifacts": {
+    "metrics.json": {
+      "sha256": "984858713405c78f8be542739d138073a2a9c13c4db2412b5754aa06db846686",
+      "bytes": 13214
+    },
+    "synthetic_monthly_series.csv": {
+      "sha256": "44ab5cb8ea1babc52d13f89820646677b017e17bb96b62149d3d4a544b20bdd3",
+      "bytes": 7109
+    },
+    "forecast_predictions.csv": {
+      "sha256": "e1e79ef4f4815a634aac7ec0ca794d39a5fa36b1f7cea933136c9ed8a5a030de",
+      "bytes": 11402
+    },
+    "forecast.png": {
+      "sha256": "d49157992c2f76ea4a24f6b5fadd1d6ceac48ee124bcdb4861db466aa02076b3",
+      "bytes": 133268
+    },
+    "forecast_horizon_6.png": {
+      "sha256": "1ee1a90c9c31670537f3f98c683ae1d4e420d6429778a801d807375cb4c68405",
+      "bytes": 121556
+    },
+    "forecast_horizon_12.png": {
+      "sha256": "de30429b6d8895080ea05eadd112b3fb1957cd4557301af468ddcfa773016773",
+      "bytes": 123934
+    },
+    "forecast_horizon_24.png": {
+      "sha256": "4e6c30d9dd9b149b19427a14761ae9eb3cccc18862416aa47770028aa7db988c",
+      "bytes": 128856
+    },
+    "forecast_horizon_36.png": {
+      "sha256": "2bbd672586993f6413789793162a15191d6273a754ca1acd1eb10e5e00b0ad86",
+      "bytes": 133725
+    }
+  }
+}

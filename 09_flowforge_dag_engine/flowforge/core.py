@@ -64,6 +64,17 @@ def _schema(value: Any) -> Any:
     return {"type": type(value).__name__}
 
 
+def _preview(value: Any, limit: int = 320) -> str:
+    """Return a bounded, human-readable representation for run manifests."""
+    try:
+        rendered = json.dumps(_canonical(value), sort_keys=True, separators=(",", ":"))
+    except (TypeError, ValueError):
+        rendered = repr(value)
+    if len(rendered) <= limit:
+        return rendered
+    return f"{rendered[: limit - 1]}…"
+
+
 def _timestamp(clock: Callable[[], Any] | None) -> str:
     value = clock() if clock is not None else datetime.now(timezone.utc)
     if isinstance(value, datetime):
@@ -273,6 +284,7 @@ class PipelineContext:
                     "content_hash": artifact.content_hash,
                     "schema_fingerprint": artifact.schema_fingerprint,
                     "created_at": artifact.created_at,
+                    "preview": _preview(value),
                 },
             }
         )
@@ -454,6 +466,7 @@ class Runner:
         context._begin_run(run_id, seed, config, started_at, environment)
         try:
             order = self.dag.topological_order()
+            context._manifest["task_order"] = list(order)
         except Exception as exc:
             context._fail_run(None, exc)
             raise
@@ -473,6 +486,7 @@ class Runner:
                 "depends_on": list(task.depends_on),
                 "inputs": [],
                 "code_fingerprint": _function_fingerprint(task.function),
+                "config": deepcopy(dict(task.config)),
                 "config_fingerprint": _fingerprint(dict(task.config)),
             }
         try:

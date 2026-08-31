@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
-from enterprise_audit import LABEL_COLUMN, PREDICTION_TIME_COLUMN, SAFE_FEATURES, _metric, audit_dataset, generate_sample
+from enterprise_audit import DEFAULT_AS_OF_DATE, LABEL_COLUMN, PREDICTION_TIME_COLUMN, SAFE_FEATURES, _duplicate_evidence, _metric, _release_decision, audit_dataset, generate_sample
 
 
 class AuditTests(unittest.TestCase):
@@ -155,6 +155,67 @@ class AuditTests(unittest.TestCase):
     def test_metric_rejects_mismatched_arrays(self):
         with self.assertRaises(ValueError):
             _metric([0, 1], [0])
+
+    def test_model_evaluation_is_blocked_when_declared_manifest_omits_model_feature(self):
+        result = audit_dataset(self._clean_path(), prediction_time_column=PREDICTION_TIME_COLUMN, label_column=LABEL_COLUMN, feature_manifest=["tenure_months"])
+        quality = result["model_quality"]
+        self.assertEqual(quality["status"], "INCONCLUSIVE")
+        self.assertIn("support_tickets_90d", quality["model_feature_manifest"])
+        self.assertEqual(quality["feature_manifest"], ["tenure_months"])
+        self.assertTrue(quality["model_configuration_sha256"])
+
+    def test_duplicate_evidence_separates_exact_multi_snapshot_and_conflicting_keys(self):
+        rows = self._rows()[:2]
+        rows[1]["customer_id"] = rows[0]["customer_id"]
+        rows[1]["snapshot_date"] = "2025-01-03"
+        conflict = dict(rows[0])
+        conflict["monthly_spend"] = "999.99"
+        evidence = _duplicate_evidence([rows[0], dict(rows[0]), rows[1], conflict])
+        self.assertEqual(evidence["exact_duplicate_rows"], 1)
+        self.assertEqual(evidence["valid_multi_snapshot_customer_ids"], ["C0001"])
+        self.assertEqual(evidence["conflicting_duplicate_key_count"], 1)
+        self.assertEqual(evidence["conflicting_duplicate_keys"][0]["key"], ["C0001", "2025-01-02"])
+
+    def test_conflicting_duplicate_key_blocks_model_evaluation(self):
+        rows = self._rows()
+        rows[6]["monthly_spend"] = "123.45"
+        rows.pop()
+        conflict = dict(rows[0])
+        conflict["monthly_spend"] = "999.99"
+        rows.append(conflict)
+        path = Path(self.tmp.name) / "conflicting_key.csv"
+        self._write(path, rows)
+        result = self._audit(path)
+        self.assertEqual(result["model_quality"]["status"], "INCONCLUSIVE")
+        self.assertIn("conflicting duplicate keys", result["model_quality"]["reason"])
+
+    def test_fixed_as_of_date_controls_future_date_behavior(self):
+        rows = self._rows()
+        rows[6]["monthly_spend"] = "123.45"
+        rows[0]["snapshot_date"] = "2026-01-01"
+        rows[0]["churn_confirmed_at"] = "2026-01-07"
+        path = Path(self.tmp.name) / "future.csv"
+        self._write(path, rows[:-1])
+        fixed = self._audit(path, as_of_date=DEFAULT_AS_OF_DATE)
+        later = self._audit(path, as_of_date="2026-12-31")
+        self.assertEqual(fixed["config"]["as_of_date"], DEFAULT_AS_OF_DATE)
+        self.assertEqual(next(check for check in fixed["checks"] if check["name"] == "domain_validity")["status"], "FAIL")
+        self.assertEqual(next(check for check in later["checks"] if check["name"] == "domain_validity")["status"], "PASS")
+
+    def test_release_decision_matrix_has_consistent_state_and_prose(self):
+        cases = [
+            ([{"name": "high_fail", "status": "FAIL", "severity": "high", "detail": "bad"}], "BLOCKED", "CONDITIONAL", "blocked by"),
+            ([{"name": "medium_fail", "status": "FAIL", "severity": "medium", "detail": "review"}], "CONDITIONAL", "CONDITIONAL", "conditional pending"),
+            ([{"name": "warn", "status": "WARN", "severity": "low", "detail": "watch"}], "CONDITIONAL", "CONDITIONAL", "conditional pending"),
+            ([{"name": "unknown", "status": "INCONCLUSIVE", "severity": "low", "detail": "unknown"}], "BLOCKED", "CONDITIONAL", "blocked by"),
+            ([{"name": "pass", "status": "PASS", "severity": "low", "detail": "ok"}], "APPROVED", "APPROVE", "All mandatory"),
+        ]
+        for checks, state, recommendation, phrase in cases:
+            decision = _release_decision(checks, {"status": "PASS"})
+            self.assertEqual(decision["decision_state"], state)
+            self.assertEqual(decision["recommendation"], recommendation)
+            self.assertIn(phrase, decision["text"])
+            self.assertEqual(bool(decision["blocking"]), state == "BLOCKED")
 
 
 if __name__ == "__main__":

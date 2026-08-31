@@ -32,6 +32,17 @@ CANDIDATE_K_VALUES = tuple(range(2, 8))
 VALIDATION_REPEATS = 12
 TRAIN_FRACTION = 0.8
 VARIANTS = ("standard", "log1p")
+EXPLORER_COLUMNS = [
+    "customer_id", *FEATURES, "cluster", "pca_x", "pca_y",
+    "centroid_distance", "assignment_margin", "assignment_confidence",
+    "uncertainty_label",
+]
+DOMAIN_BOUNDS = {
+    "annual_income_k": (15, None),
+    "spend_score": (1, 99),
+    "purchase_frequency": (0.2, None),
+    "avg_order_value": (5, None),
+}
 
 
 def make_dataset(n_per_segment: int = 40, seed: int = SEED) -> pd.DataFrame:
@@ -72,6 +83,12 @@ def validate_dataset(df: pd.DataFrame) -> dict:
                 errors.append(f"missing values: {missing_values}")
             if nonfinite_values:
                 errors.append(f"non-finite values: {nonfinite_values}")
+    range_violations = {}
+    if not missing_columns and not errors:
+        for feature, (lower, upper) in DOMAIN_BOUNDS.items():
+            values = df[feature]
+            invalid = (values < lower) if upper is None else ((values < lower) | (values > upper))
+            range_violations[feature] = int(invalid.sum())
     return {
         "valid": not errors,
         "errors": errors,
@@ -79,7 +96,27 @@ def validate_dataset(df: pd.DataFrame) -> dict:
         "feature_schema": FEATURES,
         "missing_values": int(df[FEATURES].isna().sum().sum()) if not missing_columns else None,
         "duplicate_rows": int(df.duplicated().sum()),
+        "range_violations": range_violations,
     }
+
+
+def feature_audit(df: pd.DataFrame) -> dict:
+    """Summarize scale, skew, IQR outliers, and redundancy for the toy input."""
+    report = validate_dataset(df)
+    if not report["valid"]:
+        raise ValueError("Invalid dataset: " + "; ".join(report["errors"]))
+    features = {}
+    for feature in FEATURES:
+        values = df[feature]
+        q1, q3 = values.quantile([0.25, 0.75])
+        iqr = q3 - q1
+        outliers = (values < q1 - 1.5 * iqr) | (values > q3 + 1.5 * iqr)
+        features[feature] = {
+            "min": float(values.min()), "max": float(values.max()),
+            "mean": float(values.mean()), "std": float(values.std(ddof=1)),
+            "skew": float(values.skew()), "iqr_outliers": int(outliers.sum()),
+        }
+    return {"features": features, "correlation": df[FEATURES].corr().round(4).to_dict()}
 
 
 def _raw_values(df: pd.DataFrame, preprocessing: str) -> np.ndarray:
@@ -210,6 +247,32 @@ def score_customers(df: pd.DataFrame, fitted: dict) -> pd.Series:
     return pd.Series(fitted["model"].predict(transformed), index=df.index, name="cluster")
 
 
+def _explorer_points(raw: pd.DataFrame, values: np.ndarray, model: KMeans,
+                     embedding: np.ndarray) -> pd.DataFrame:
+    """Create browser-safe point diagnostics for the selected fitted run.
+
+    Distance and margin are unitless geometry diagnostics in the fitted,
+    scaled feature space. They are not calibrated assignment probabilities.
+    """
+    distances = model.transform(values)
+    nearest = distances.min(axis=1)
+    runner_up = np.partition(distances, 1, axis=1)[:, 1]
+    margin = runner_up - nearest
+    confidence = np.clip(1 - nearest / np.maximum(runner_up, 1e-12), 0, 1)
+    labels = np.where(confidence >= 0.55, "clear",
+                      np.where(confidence >= 0.30, "moderate", "ambiguous"))
+    points = raw.copy()
+    points.insert(0, "customer_id", [f"C{index:03d}" for index in range(1, len(raw) + 1)])
+    points["cluster"] = model.labels_.astype(int)
+    points["pca_x"] = embedding[:, 0]
+    points["pca_y"] = embedding[:, 1]
+    points["centroid_distance"] = nearest
+    points["assignment_margin"] = margin
+    points["assignment_confidence"] = confidence
+    points["uncertainty_label"] = labels
+    return points[EXPLORER_COLUMNS]
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -230,7 +293,8 @@ def validate_artifacts(output_dir: str | Path = "artifacts", require_manifest: b
     out = Path(output_dir)
     errors: list[str] = []
     required = ["summary.json", "baseline_scores.csv", "log1p_scores.csv",
-                "validation_scores.csv", "customer_segments.csv", "segmentation.png"]
+                "validation_scores.csv", "customer_segments.csv", "explorer_points.csv",
+                "segmentation.png"]
     missing = [name for name in required if not (out / name).exists()]
     if missing:
         errors.append(f"missing artifacts: {missing}")
@@ -238,6 +302,7 @@ def validate_artifacts(output_dir: str | Path = "artifacts", require_manifest: b
     try:
         summary = json.loads((out / "summary.json").read_text())
         assignments = pd.read_csv(out / "customer_segments.csv")
+        explorer = pd.read_csv(out / "explorer_points.csv")
         validation = pd.read_csv(out / "validation_scores.csv")
         scores = {name: pd.read_csv(out / name) for name in ("baseline_scores.csv", "log1p_scores.csv")}
         expected_columns = FEATURES + ["cluster"]
@@ -247,6 +312,19 @@ def validate_artifacts(output_dir: str | Path = "artifacts", require_manifest: b
             errors.append("assignment row count disagrees with summary")
         if assignments[FEATURES].isna().any().any() or not np.isfinite(assignments[FEATURES].to_numpy()).all():
             errors.append("assignment features contain missing or non-finite values")
+        if explorer.columns.tolist() != EXPLORER_COLUMNS:
+            errors.append(f"explorer schema mismatch: {explorer.columns.tolist()}")
+        if len(explorer) != len(assignments):
+            errors.append("explorer row count disagrees with assignments")
+        if len(explorer) and explorer["customer_id"].tolist() != [f"C{index:03d}" for index in range(1, len(explorer) + 1)]:
+            errors.append("explorer customer IDs are not deterministic")
+        numeric_explorer = [column for column in EXPLORER_COLUMNS if column not in {"customer_id", "uncertainty_label"}]
+        if explorer[numeric_explorer].isna().any().any() or not np.isfinite(explorer[numeric_explorer].to_numpy()).all():
+            errors.append("explorer diagnostics contain missing or non-finite values")
+        if not set(explorer["uncertainty_label"].dropna()).issubset({"clear", "moderate", "ambiguous"}):
+            errors.append("explorer uncertainty labels are invalid")
+        if not assignments["cluster"].equals(explorer["cluster"]):
+            errors.append("explorer clusters disagree with assignments")
         clusters = sorted(assignments["cluster"].dropna().unique().tolist())
         expected_clusters = list(range(int(summary["selected_k"])))
         if clusters != expected_clusters:
@@ -278,8 +356,10 @@ def validate_artifacts(output_dir: str | Path = "artifacts", require_manifest: b
         if manifest_path.exists():
             manifest = json.loads(manifest_path.read_text())
             expected_hash_names = {"summary.json", "baseline_scores.csv", "log1p_scores.csv",
-                                   "validation_scores.csv", "customer_segments.csv", "segmentation.png"}
-            if (manifest.get("selected_k") != summary.get("selected_k")
+                                   "validation_scores.csv", "customer_segments.csv", "explorer_points.csv",
+                                   "segmentation.png"}
+            if (manifest.get("manifest_version") != 2
+                    or manifest.get("selected_k") != summary.get("selected_k")
                     or manifest.get("n_customers") != summary.get("n_customers")
                     or manifest.get("selected_preprocessing") != summary.get("selected_preprocessing")
                     or manifest.get("features") != summary.get("features")
@@ -301,6 +381,7 @@ def run(output_dir: str | Path = "artifacts") -> dict:
     data_quality = validate_dataset(raw)
     if not data_quality["valid"]:
         raise ValueError("Generated dataset failed validation")
+    data_quality["feature_audit"] = feature_audit(raw)
 
     baseline = _transform(raw, improved=False)
     log1p = _transform(raw, improved=True)
@@ -318,8 +399,12 @@ def run(output_dir: str | Path = "artifacts") -> dict:
     final_values = _transform(raw, improved=selected_preprocessing == "log1p")
     final_model = _fit_kmeans(final_values, selected_k)
     fit_metrics = _metrics(final_values, final_model.labels_)
+    pca = PCA(n_components=2, random_state=SEED).fit(final_values)
+    embedding = pca.transform(final_values)
+    explorer_points = _explorer_points(raw, final_values, final_model, embedding)
 
     raw.assign(cluster=final_model.labels_).to_csv(out / "customer_segments.csv", index=False)
+    explorer_points.to_csv(out / "explorer_points.csv", index=False)
     baseline_scores.to_csv(out / "baseline_scores.csv", index=False)
     log1p_scores.to_csv(out / "log1p_scores.csv", index=False)
     validation_scores.to_csv(out / "validation_scores.csv", index=False)
@@ -332,9 +417,9 @@ def run(output_dir: str | Path = "artifacts") -> dict:
     axes[0].set(xlabel="Number of clusters (k)", ylabel="Held-out silhouette",
                 title="Exploratory validation")
     axes[0].legend()
-    embedding = PCA(n_components=2, random_state=SEED).fit_transform(final_values)
     axes[1].scatter(embedding[:, 0], embedding[:, 1], c=final_model.labels_, cmap="viridis", s=24)
-    axes[1].set(title=f"Customer map (k={selected_k})", xlabel="PC1", ylabel="PC2")
+    axes[1].set(title=f"PCA projection only (k={selected_k})",
+                xlabel="PC1 · visualization only", ylabel="PC2 · visualization only")
     fig.tight_layout()
     fig.savefig(out / "segmentation.png", dpi=160)
     plt.close(fig)
@@ -363,7 +448,20 @@ def run(output_dir: str | Path = "artifacts") -> dict:
             "note": "Exploratory internal validation on synthetic data; not evidence of future customer performance.",
         },
         "data_quality": data_quality,
-        "generator": {"name": "three Gaussian prototype chunks", "n_per_segment": 40, "seed": SEED},
+        "generator": {"name": "three Gaussian prototype chunks", "n_per_segment": 40, "seed": SEED,
+                      "interpretation": "prototype recovery teaching sample; not observed customer behavior"},
+        "projection": {
+            "method": "PCA",
+            "components": ["pca_x", "pca_y"],
+            "explained_variance_ratio": [float(value) for value in pca.explained_variance_ratio_],
+            "use": "visualization-only projection of the four fitted feature dimensions",
+        },
+        "assignment_diagnostics": {
+            "distance": "nearest centroid distance in fitted StandardScaler/log1p + StandardScaler space",
+            "margin": "runner-up centroid distance minus nearest centroid distance",
+            "confidence": "1 - nearest distance / runner-up distance; geometry proxy, not a probability",
+            "labels": {"clear": ">= 0.55", "moderate": "0.30 to < 0.55", "ambiguous": "< 0.30"},
+        },
         "provenance": {
             "source_sha256": _sha256(Path(__file__)),
             "python": sys.version.split()[0],
@@ -374,9 +472,10 @@ def run(output_dir: str | Path = "artifacts") -> dict:
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
 
     hashed_names = ["summary.json", "baseline_scores.csv", "log1p_scores.csv",
-                    "validation_scores.csv", "customer_segments.csv", "segmentation.png"]
+                    "validation_scores.csv", "customer_segments.csv", "explorer_points.csv",
+                    "segmentation.png"]
     manifest = {
-        "manifest_version": 1,
+        "manifest_version": 2,
         "n_customers": len(raw),
         "features": FEATURES,
         "selected_k": selected_k,
