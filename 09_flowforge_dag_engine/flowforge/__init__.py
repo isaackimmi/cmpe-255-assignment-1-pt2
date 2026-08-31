@@ -1,5 +1,14 @@
 """A tiny, dependency-free DAG engine for data-science pipelines."""
 
-from .core import DAG, PipelineContext, Runner, Task
+from .core import Artifact, DAG, DAGError, DependencyError, PipelineContext, Runner, Task, TaskContext
 
-__all__ = ["DAG", "PipelineContext", "Runner", "Task"]
+__all__ = [
+    "Artifact",
+    "DAG",
+    "DAGError",
+    "DependencyError",
+    "PipelineContext",
+    "Runner",
+    "Task",
+    "TaskContext",
+]

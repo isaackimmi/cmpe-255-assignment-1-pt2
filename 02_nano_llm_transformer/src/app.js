@@ -2,9 +2,9 @@ const fallbackMetrics = {
   backend: "stdlib_char_ngram",
   seed: 255,
   train_chars: 288,
-  test_chars: 72,
-  loss: 3.0991,
-  perplexity: 22.1789,
+  test_chars: 36,
+  loss: 3.3023,
+  perplexity: 27.1741,
   sample: "user: explain a transformer\nassistant: A transformer\nassistant: A transformer"
 };
 
@@ -13,8 +13,8 @@ const responseLibrary = [
   { match: ["transformer", "attention"], answer: "A transformer uses attention to mix information across a sequence." },
   { match: ["concise", "short", "brief"], answer: "Small experiments make ideas easier to understand." },
   { match: ["hello", "hi", "hey"], answer: "Hello! I am Nano, a tiny language model." },
-  { match: ["corpus", "data", "dataset"], answer: "This experiment uses a seven-line synthetic chat corpus and an 80/20 chronological split." },
-  { match: ["perplexity", "loss", "metric"], answer: "The verified baseline reports held-out loss 3.0991 and perplexity 22.1789. Treat those as a sanity check, not a capability score." }
+  { match: ["corpus", "data", "dataset"], answer: "This experiment uses a seven-line synthetic chat corpus and an 80/10/10 chronological split." },
+  { match: ["perplexity", "loss", "metric"], answer: "The verified baseline reports held-out test loss 3.3023 and perplexity 27.1741. Treat those as a sanity check, not a capability score." }
 ];
 
 const $ = (selector) => document.querySelector(selector);

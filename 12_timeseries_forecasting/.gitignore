@@ -1,3 +1,10 @@
 outputs/
+!outputs/
+outputs/*
+!outputs/forecast.png
+!outputs/metrics.json
+!outputs/synthetic_monthly_series.csv
+!outputs/forecast_predictions.csv
+!outputs/forecast_horizon_*.png
 __pycache__/
 .pytest_cache/

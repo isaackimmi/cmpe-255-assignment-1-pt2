@@ -42,9 +42,9 @@
 
         <section class="stat-strip" aria-label="Dataset summary">
           <div class="stat-item"><span class="stat-label">Baskets analyzed</span><strong id="stat-transactions">24</strong><span class="stat-foot">checked-in transactions</span></div>
-          <div class="stat-item"><span class="stat-label">Distinct products</span><strong id="stat-items">5</strong><span class="stat-foot">bread · milk · eggs · coffee · jam</span></div>
+          <div class="stat-item"><span class="stat-label">Distinct products</span><strong id="stat-items">6</strong><span class="stat-foot" id="stat-items-foot">bread · butter · coffee · eggs · jam · milk</span></div>
           <div class="stat-item"><span class="stat-label">Frequent itemsets</span><strong id="stat-itemsets">18</strong><span class="stat-foot">at <span id="stat-support">25%</span> minimum support</span></div>
-          <div class="stat-item stat-highlight"><span class="stat-label">Best lift signal</span><strong id="stat-lift">1.33×</strong><span class="stat-foot" id="stat-lift-rule">eggs + coffee → milk</span></div>
+          <div class="stat-item stat-highlight"><span class="stat-label">Best lift signal</span><strong id="stat-lift">1.85×</strong><span class="stat-foot" id="stat-lift-rule">bread + jam → butter</span></div>
         </section>
 
         <section class="section-heading" id="patterns">
@@ -55,7 +55,7 @@
         <section class="content-grid">
           <article class="card chart-card">
             <div class="card-topline"><div><p class="card-kicker">Frequent itemsets</p><h3>Most supported combinations</h3></div><span class="live-tag"><span class="pulse-dot"></span> Live threshold</span></div>
-            <div class="chart-legend"><span><i class="legend-swatch"></i> Support in baskets</span><span>0% <span class="legend-divider"></span> 100%</span></div>
+            <div class="chart-legend"><span><i class="legend-swatch"></i> Support in baskets · count shown below</span><span>0% <span class="legend-divider"></span> 100%</span></div>
             <div id="support-chart" class="support-chart" role="img" aria-label="Horizontal bar chart of frequent itemset support"></div>
             <div class="chart-foot"><span>Source: <code>data/transactions.csv</code></span><span>n = <span id="chart-n">24</span> baskets</span></div>
           </article>
@@ -72,7 +72,7 @@
         <section class="threshold-section" aria-labelledby="threshold-title">
           <div class="threshold-intro"><p class="eyebrow"><span class="eyebrow-line"></span> Threshold lab</p><h2 id="threshold-title">Tune the definition of frequent</h2><p>Slide the minimum support to see which itemsets survive Apriori pruning. The rule cards update with the same local sample.</p></div>
           <div class="threshold-control card">
-            <div class="control-head"><div><span class="card-kicker">Minimum support</span><strong id="support-value">25%</strong></div><span class="control-hint">Higher = fewer, stronger patterns</span></div>
+            <div class="control-head"><div><span class="card-kicker">Minimum support</span><strong id="support-value">25%</strong></div><span class="control-hint">Higher = fewer, more prevalent patterns</span></div>
             <input id="support-slider" type="range" min="10" max="70" value="25" step="5" aria-label="Minimum support threshold">
             <div class="range-labels"><span>10%</span><span>35%</span><span>70%</span></div>
             <div class="control-result"><span class="result-number" id="threshold-count">18</span><span>frequent itemsets<br><small>currently visible</small></span></div>
@@ -85,7 +85,7 @@
         </section>
 
         <section class="explorer-section" id="explorer">
-          <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Basket explorer</p><h2>Put a basket under the lens</h2></div><p class="section-caption">Select a transaction to see its products and the strongest co-pick context available in this sample.</p></div>
+          <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Basket explorer</p><h2>Put a basket under the lens</h2></div><p class="section-caption">Select a transaction to see its products and candidate prevalence conditioned on any selected basket item.</p></div>
           <div class="explorer-grid">
             <article class="card basket-card">
               <div class="basket-select-row"><div><p class="card-kicker">Inspect transaction</p><h3 id="basket-title">Basket T001</h3></div><label class="select-wrap"><span class="sr-only">Select transaction</span><select id="basket-select"></select><span class="select-chevron">⌄</span></label></div>
@@ -94,9 +94,9 @@
               <div class="basket-id"><span class="id-dot"></span> <span id="basket-id-label">T001</span> <span>·</span> source row <span id="basket-row">01</span></div>
             </article>
             <article class="card context-card">
-              <div class="card-topline"><div><p class="card-kicker">Co-pick context</p><h3>What tends to travel with it?</h3></div><span class="context-label">Local sample</span></div>
+              <div class="card-topline"><div><p class="card-kicker">Candidate context</p><h3>What appears with any selected item?</h3></div><span class="context-label">Local sample</span></div>
               <div id="context-list" class="context-list"></div>
-              <p class="context-footnote">Bars show the share of this basket’s products that appear with each candidate across all 24 baskets.</p>
+              <p class="context-footnote">Bars show P(candidate | any selected basket item): candidate baskets / baskets containing at least one selected item.</p>
             </article>
           </div>
         </section>
@@ -122,6 +122,7 @@ open index.html</code></pre><p>Everything here is local and deterministic: no AP
 
       <footer class="footer"><span class="brand-small">basket<span class="brand-dot">.</span>signals</span><span>CMPE 255 · Project 04</span><span>Synthetic/local data · Offline by design</span></footer>
     </div>
+    <script src="data/transactions.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

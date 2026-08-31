@@ -42,7 +42,7 @@
             <div class="route route-three"><i></i><i></i><i></i><i></i></div>
             <div class="map-pin pin-start"><span></span></div>
             <div class="map-pin pin-end"><span></span></div>
-            <div class="hero-badge"><span class="badge-kicker">MODEL STATUS</span><strong>Chronological holdout</strong><span>80 / 20 split · no future leakage</span></div>
+            <div class="hero-badge"><span class="badge-kicker">MODEL STATUS</span><strong>Train-fit preprocessing</strong><span>80 / 20 chronological split · synthetic smoke test</span></div>
           </div>
         </section>
 
@@ -52,13 +52,13 @@
               <p class="eyebrow">01 / SCORECARD</p>
               <h2 id="scorecard-title">A fast read on model health.</h2>
             </div>
-            <p class="section-note">Loaded from <code>artifacts/metrics.json</code></p>
+            <p class="section-note">Synthetic smoke-test metrics · <code>artifacts/metrics.json</code></p>
           </div>
           <div class="kpi-grid" id="kpi-grid">
-            <article class="kpi-card kpi-featured skeleton-card"><span class="kpi-label">Model accuracy</span><strong>—</strong><span>Awaiting metrics</span></article>
+            <article class="kpi-card kpi-featured skeleton-card"><span class="kpi-label">R²</span><strong>—</strong><span>Awaiting synthetic metrics</span></article>
             <article class="kpi-card"><span class="kpi-label">Mean absolute error</span><strong>—</strong><span>minutes per trip</span></article>
             <article class="kpi-card"><span class="kpi-label">RMSE</span><strong>—</strong><span>minutes · holdout</span></article>
-            <article class="kpi-card"><span class="kpi-label">Test coverage</span><strong>—</strong><span>chronological rows</span></article>
+            <article class="kpi-card"><span class="kpi-label">Holdout rows</span><strong>—</strong><span>retained evaluation rows</span></article>
           </div>
         </section>
 
@@ -95,7 +95,7 @@
           <div class="timeline" id="timeline">
             <article class="timeline-step is-active"><span class="timeline-index">01</span><span class="timeline-node"></span><h3>Business<br />understanding</h3><p>Estimate duration for planning and dispatch analysis.</p></article>
             <article class="timeline-step"><span class="timeline-index">02</span><span class="timeline-node"></span><h3>Data<br />understanding</h3><p>Profile schema, nulls, duplicates, invalid values, and outliers.</p></article>
-            <article class="timeline-step"><span class="timeline-index">03</span><span class="timeline-node"></span><h3>Data<br />preparation</h3><p>Derive temporal features; impute feature gaps; exclude bad targets.</p></article>
+            <article class="timeline-step"><span class="timeline-index">03</span><span class="timeline-node"></span><h3>Data<br />preparation</h3><p>Derive temporal features; fit imputation on train rows; exclude bad targets.</p></article>
             <article class="timeline-step"><span class="timeline-index">04</span><span class="timeline-node"></span><h3>Modeling &<br />evaluation</h3><p>Fit a CPU-safe gradient booster on a chronological holdout.</p></article>
             <article class="timeline-step"><span class="timeline-index">05</span><span class="timeline-node"></span><h3>Deployment &<br />monitoring</h3><p>Run locally, then monitor drift, error slices, and latency.</p></article>
           </div>
@@ -109,13 +109,13 @@
               <p>The platform audits the raw sample before training. Findings are intentionally surfaced instead of buried in a notebook.</p>
               <div class="audit-summary" id="audit-summary"><span class="audit-summary-icon">✓</span><div><strong>Audit is loading</strong><span>Reading the saved report…</span></div></div>
             </div>
-            <div class="audit-table-wrap"><div class="audit-table" id="audit-table" role="table" aria-label="Data audit findings">
+            <div class="audit-table-wrap"><div class="audit-table" id="audit-table" role="table" aria-label="Complete data audit findings">
               <div class="audit-row audit-header" role="row"><span>Check</span><span>Observed</span><span>Signal</span></div>
               <div class="audit-row" role="row"><span>Missing distances</span><strong>—</strong><span class="signal signal-watch">Loading</span></div>
               <div class="audit-row" role="row"><span>Non-positive durations</span><strong>—</strong><span class="signal signal-watch">Loading</span></div>
               <div class="audit-row" role="row"><span>Duplicate trip IDs</span><strong>—</strong><span class="signal signal-good">Loading</span></div>
               <div class="audit-row" role="row"><span>IQR duration outliers</span><strong>—</strong><span class="signal signal-watch">Loading</span></div>
-              <div class="audit-row" role="row"><span>Missing required columns</span><strong>—</strong><span class="signal signal-good">Loading</span></div>
+              <div class="audit-row" role="row"><span>Complete audit categories</span><strong>—</strong><span class="signal signal-watch">Loading</span></div>
             </div></div>
           </div>
         </section>
@@ -125,8 +125,8 @@
             <div class="inference-copy">
               <p class="eyebrow">05 / LOCAL INFERENCE LAB</p>
               <h2 id="inference-title">What would this trip look like?</h2>
-              <p>Play with the model inputs and get a quick directional estimate in your browser. This is an illustrative client-side approximation for exploration.</p>
-              <div class="callout"><span class="callout-icon">i</span><p><strong>Illustrative only.</strong> The browser does not load <code>model.joblib</code>. For the saved Python model, use the CLI command in the run guide below. Never use this demo for dispatch, pricing, or safety decisions.</p></div>
+              <p>Play with the inputs and get a quick directional estimate in your browser. This is a separate toy calculator for exploration, not the evaluated saved model.</p>
+              <div class="callout"><span class="callout-icon">i</span><p><strong>Toy browser calculator.</strong> The browser does not load <code>model.joblib</code> or use zone inputs. For the evaluated Python model, use the CLI command in the run guide below. Never use this demo for dispatch, pricing, or safety decisions.</p></div>
             </div>
             <form class="inference-form" id="inference-form">
               <div class="form-heading"><span class="form-kicker">LOCAL ESTIMATE</span><span class="local-pill"><span></span> In-browser</span></div>

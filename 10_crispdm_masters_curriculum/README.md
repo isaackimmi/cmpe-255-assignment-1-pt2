@@ -1,6 +1,6 @@
-# Project 10: CRISP-DM Masters Curriculum
+# Project 10: Iris CRISP-DM walkthrough
 
-This is a lightweight, runnable end-to-end CRISP-DM demonstration for Assignment 1 Part 2. It uses the public, built-in `sklearn.datasets.load_iris` dataset so no download or credentials are needed.
+This is a bounded, runnable teaching implementation of all six CRISP-DM phases for one supervised classification task. It uses scikit-learn's built-in Iris sample, so it needs no download or credentials. It is not a complete implementation of the broader “masters curriculum” topics such as clustering, anomaly detection, association rules, LSH, quizzes, or synthesis; those topics are separate portfolio projects.
 
 ## Run
 
@@ -12,34 +12,49 @@ python3 src/crispdm_demo.py
 pytest -q
 ```
 
-The run writes `artifacts/crispdm_report.json` (phase-by-phase EDA, preparation, modeling, evaluation, and deployment notes) and `artifacts/iris_snapshot.csv`. Use `--output-dir path/to/output` to write elsewhere.
+The run writes:
 
-## Interactive curriculum dashboard
+- `artifacts/crispdm_report.json`: machine-readable phase notes, data-quality checks, CV/model comparison, uncertainty, runtime metadata, and hashes.
+- `artifacts/iris_snapshot.csv`: the exact local data snapshot used by the run.
+- `artifacts/model.joblib`: a versioned bundle containing the fitted pipeline and its inference contract.
 
-The project includes a responsive, JSON-backed dashboard in `index.html`. It turns the run report into six clickable CRISP-DM phase cards, a phase detail panel, dataset/model summary metrics, and a confusion-matrix evaluation view. The Iris teaching context and production limitations remain explicit in the UI.
+Use `--output-dir path/to/output` to write to another directory. The fixed seed is `42`; model selection uses repeated stratified CV on training rows only, while the fixed 30-row holdout is used once for final evaluation.
 
-After running the demo, serve this directory so the browser can fetch the report (opening `index.html` directly may block `fetch()` in some browsers):
+## Local inference
+
+After generating the artifacts, run a schema-validated prediction:
+
+```bash
+python3 src/inference.py \
+  --model-path artifacts/model.joblib \
+  --features 5.1 3.5 1.4 0.2
+```
+
+The contract requires the four features in this order: sepal length, sepal width, petal length, petal width. Values must be finite numeric centimeter measurements in the inclusive range `[0, 10]`. Invalid, missing, reordered, or out-of-range input is rejected; no imputation or silent reordering occurs.
+
+## Interactive dashboard
+
+Serve this directory so the browser can fetch the report (opening `index.html` directly may block `fetch()` in some browsers):
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Open <http://localhost:8000> and select any phase card or the matching item in the left curriculum map. Use **View JSON** to inspect the source artifact. The **Run the studio** panel includes the demo/test commands and the local-server command.
+Open <http://localhost:8000>. The six cards are a visual guide to this one supervised walkthrough, and the JSON report remains the source of truth. The dashboard shows the baseline/model evidence and the explicit deployment claim boundary.
 
-## CRISP-DM walkthrough
+## What the run demonstrates
 
-1. **Business understanding:** define a flower-classification objective and a 0.90 holdout-accuracy success criterion.
-2. **Data understanding / EDA:** load Iris, record dimensions, feature names, class balance, and missing-value count.
-3. **Data preparation:** use a reproducible stratified 80/20 split. Scaling is fit only on training data through a pipeline.
-4. **Modeling:** train `StandardScaler` plus `LogisticRegression`.
-5. **Evaluation:** report accuracy, confusion matrix, and per-class precision/recall/F1 on the untouched holdout set.
-6. **Deployment:** document a realistic next step and monitoring signals; the example deliberately stops before production deployment.
+1. **Business understanding:** define the classroom decision, stakeholders, constraints, and what the result cannot claim.
+2. **Data understanding:** validate schema, finite values, labels, ranges, duplicates, class balance, provenance, and a content hash.
+3. **Data preparation:** make a reproducible stratified split with a locked holdout and keep learned preprocessing inside each pipeline.
+4. **Modeling:** compare a majority baseline, scaled logistic regression, scaled k-nearest neighbors, and a shallow decision tree with 3×5-fold CV on training data only.
+5. **Evaluation:** report holdout accuracy, a 95% Wilson interval, baseline delta, confusion matrix, per-class scores/support, and failure cases.
+6. **Deployment:** save the fitted bundle, enforce the input contract, and document monitoring windows, actions, rollback, and the boundary between local inference and production approval.
 
-## Limitations
+## Claim boundary and limitations
 
-Iris is tiny, clean, and widely used for teaching, so this result does not establish production performance. The single holdout split has uncertainty, there is no external validation, drift analysis, cost-sensitive metric, model registry, or live API. A real project should confirm the business decision, collect representative data, use cross-validation and a final locked test set, review fairness and failure modes, and add operational monitoring.
-## Integration verification
+The model artifact supports local, schema-validated inference on Iris-like measurements only. A result such as `28/30` is split-specific evidence, not a production-performance claim. Iris is tiny, clean, and historically familiar; this project has no external validation, validated business cost matrix, fairness study, live service, or representative operational population. Before production use, replace the toy data with representative governed data and establish an externally validated acceptance rule.
 
-- **Prompt alignment:** Public Project 10 asks for a textbook CRISP-DM project with quizzes, EDA, clustering, anomaly detection, supervised learning, rules, LSH, and synthesis; the compact CRISP-DM walkthrough is implemented and extensions are documented.
-- **Results/artifacts:** Iris holdout accuracy 0.9333 on 30 test rows; JSON/CSV regenerated; pytest passed 3/3.
-- **Issue/resolution:** Built-in sklearn data avoided downloads; no claim is made that every listed advanced module is complete.
+## Reproducibility
+
+The report records Python, NumPy, scikit-learn, and joblib versions, the data SHA-256, model configuration fingerprint, artifact hashes, random seed, split protocol, and CV scores. Dependencies are pinned in `requirements.txt`. Run `pytest -q` to verify deterministic splitting, data contracts, report schema, baseline comparison, artifact hashes, and inference behavior.

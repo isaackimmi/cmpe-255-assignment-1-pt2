@@ -2,14 +2,78 @@
   "seed": 255,
   "n_customers": 120,
   "selected_k": 3,
-  "silhouette": 0.669557016704384,
-  "calinski_harabasz": 452.3425810380299,
-  "davies_bouldin": 0.46718882952008317,
+  "selected_preprocessing": "standard",
+  "silhouette": 0.6930526705991197,
+  "calinski_harabasz": 460.4326146785254,
+  "davies_bouldin": 0.4656126014594455,
+  "fit_metrics": {
+    "silhouette": 0.6930526705991197,
+    "calinski_harabasz": 460.4326146785254,
+    "davies_bouldin": 0.4656126014594455
+  },
+  "validation": {
+    "preprocessing": "standard",
+    "k": 3,
+    "validation_repeats": 12,
+    "train_fraction": 0.8,
+    "silhouette_mean": 0.6909703153644138,
+    "silhouette_std": 0.028974879752958288,
+    "calinski_harabasz_mean": 91.96269164649537,
+    "calinski_harabasz_std": 15.501466429895297,
+    "davies_bouldin_mean": 0.44561446179406355,
+    "davies_bouldin_std": 0.03793870373094456,
+    "stability_ari_mean": 1.0,
+    "stability_ari_std": 0.0,
+    "stability_ari_min": 1.0
+  },
   "features": [
     "annual_income_k",
     "spend_score",
     "purchase_frequency",
     "avg_order_value"
   ],
-  "preprocessing": "log1p income/AOV then StandardScaler"
+  "preprocessing": "selected by repeated held-out validation; compare standard and log1p variants",
+  "selection": {
+    "candidate_k": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "criterion": "highest mean held-out silhouette; stability ARI and lower k are tie-breakers",
+    "repeats": 12,
+    "train_fraction": 0.8,
+    "note": "Exploratory internal validation on synthetic data; not evidence of future customer performance."
+  },
+  "data_quality": {
+    "valid": true,
+    "errors": [],
+    "n_rows": 120,
+    "feature_schema": [
+      "annual_income_k",
+      "spend_score",
+      "purchase_frequency",
+      "avg_order_value"
+    ],
+    "missing_values": 0,
+    "duplicate_rows": 0
+  },
+  "generator": {
+    "name": "three Gaussian prototype chunks",
+    "n_per_segment": 40,
+    "seed": 255
+  },
+  "provenance": {
+    "source_sha256": "9b5f2aac1758e508a417e91d8349ea6432fff99f7162a64dfde7fbad529cb45c",
+    "python": "3.12.13",
+    "packages": {
+      "numpy": "1.26.4",
+      "pandas": "2.2.2",
+      "scikit-learn": "1.5.1",
+      "matplotlib": "3.9.2"
+    },
+    "scoring_path": "src.experiment.fit_segmenter + score_customers"
+  }
 }

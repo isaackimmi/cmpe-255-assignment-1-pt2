@@ -11,12 +11,13 @@ function formatNumber(value, digits = 0) {
 }
 
 function setKpis(metrics) {
+  const holdoutShare = formatPercent(metrics.test_fraction ?? (metrics.test_rows / metrics.retained_rows));
   $('#kpi-grid').innerHTML = `
-    <article class="kpi-card kpi-featured"><span class="kpi-label">Model accuracy</span><strong>${formatPercent(metrics.r2)}</strong><span>R² on chronological holdout</span></article>
+    <article class="kpi-card kpi-featured"><span class="kpi-label">R²</span><strong>${formatNumber(metrics.r2, 3)}</strong><span>coefficient of determination · synthetic holdout</span></article>
     <article class="kpi-card"><span class="kpi-label">Mean absolute error</span><strong>${formatNumber(metrics.mae_minutes, 3)}</strong><span>minutes per trip</span></article>
     <article class="kpi-card"><span class="kpi-label">RMSE</span><strong>${formatNumber(metrics.rmse_minutes, 3)}</strong><span>minutes · holdout</span></article>
-    <article class="kpi-card"><span class="kpi-label">Test coverage</span><strong>${formatNumber(metrics.test_rows)}</strong><span>of ${formatNumber(metrics.train_rows)} train rows</span></article>`;
-  $('#last-updated').textContent = `${formatNumber(metrics.test_rows)} holdout rows loaded`;
+    <article class="kpi-card"><span class="kpi-label">Holdout rows</span><strong>${formatNumber(metrics.test_rows)}</strong><span>of ${formatNumber(metrics.retained_rows)} retained · ${holdoutShare}</span></article>`;
+  $('#last-updated').textContent = `Synthetic smoke test · ${formatNumber(metrics.test_rows)} holdout rows`;
 }
 
 function signalFor(value, kind) {
@@ -25,21 +26,12 @@ function signalFor(value, kind) {
 }
 
 function setAudit(audit) {
-  const missingDistance = audit.null_counts?.distance_miles ?? 0;
-  const invalidDuration = audit.invalid_duration_count ?? 0;
-  const duplicateIds = audit.duplicate_trip_ids ?? 0;
-  const durationOutliers = audit.iqr_outlier_counts?.trip_duration_minutes ?? 0;
-  const missingColumns = audit.missing_columns?.length ?? 0;
-  const reviewed = missingDistance + invalidDuration + duplicateIds + durationOutliers + missingColumns;
-  const rows = [
-    ['Missing distances', missingDistance, signalFor(missingDistance)],
-    ['Non-positive durations', invalidDuration, signalFor(invalidDuration)],
-    ['Duplicate trip IDs', duplicateIds, signalFor(duplicateIds, 'good')],
-    ['IQR duration outliers', durationOutliers, signalFor(durationOutliers)],
-    ['Missing required columns', missingColumns, signalFor(missingColumns, 'good')],
-  ];
+  const categories = audit.finding_counts || [];
+  const reviewed = (audit.findings || []).length;
+  const activeCategories = categories.filter((entry) => entry.count > 0).length;
+  const rows = categories.map((entry) => [entry.label, entry.count, signalFor(entry.count)]);
   $('#audit-table').innerHTML = `<div class="audit-row audit-header" role="row"><span>Check</span><span>Observed</span><span>Signal</span></div>${rows.map(([label, value, signal]) => `<div class="audit-row" role="row"><span>${label}</span><strong>${formatNumber(value)}</strong>${signal}</div>`).join('')}`;
-  $('#audit-summary').innerHTML = `<span class="audit-summary-icon">${reviewed ? '!' : '✓'}</span><div><strong>${reviewed ? `${formatNumber(reviewed)} findings to review` : 'No audit findings'}</strong><span>${formatNumber(audit.rows)} raw rows · before modeling</span></div>`;
+  $('#audit-summary').innerHTML = `<span class="audit-summary-icon">${reviewed ? '!' : '✓'}</span><div><strong>${reviewed ? `${formatNumber(reviewed)} findings across ${formatNumber(activeCategories)} audit categories` : 'No audit findings'}</strong><span>${formatNumber(audit.rows)} raw rows · complete row-level audit</span></div>`;
 }
 
 function inlineMarkdown(text) {

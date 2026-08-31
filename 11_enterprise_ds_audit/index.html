@@ -63,7 +63,7 @@
               <div class="release-score" aria-label="Release status indicator"><span id="release-score-mark">!</span></div>
             </div>
             <div class="release-rule"><span></span><span></span><span></span><span></span><span></span></div>
-            <p class="release-footnote"><strong>Gate:</strong> remediate high-severity schema, identifier, and leakage findings before production scoring.</p>
+            <p class="release-footnote"><strong>Gate:</strong> resolve high-severity or inconclusive controls before production scoring.</p>
           </article>
           <div class="stat-grid">
             <article class="stat-card"><span class="stat-label">Checks evaluated</span><strong id="stat-checks">—</strong><span class="stat-trend neutral">audit scope</span></article>
@@ -96,7 +96,7 @@
           <div class="section-heading"><div><p class="eyebrow">04 / CONTROL FINDINGS</p><h2>Audit findings</h2></div><span class="section-caption" id="finding-count-label">— findings</span></div>
           <div class="filter-bar">
             <label class="search-field"><span aria-hidden="true">⌕</span><input id="finding-search" type="search" placeholder="Search checks or evidence" autocomplete="off" /></label>
-            <label class="select-field"><span>Status</span><select id="status-filter"><option value="all">All statuses</option><option value="FAIL">Failures</option><option value="WARN">Warnings</option><option value="PASS">Passed</option></select></label>
+            <label class="select-field"><span>Status</span><select id="status-filter"><option value="all">All statuses</option><option value="FAIL">Failures</option><option value="INCONCLUSIVE">Inconclusive</option><option value="WARN">Warnings</option><option value="PASS">Passed</option></select></label>
             <label class="select-field"><span>Severity</span><select id="severity-filter"><option value="all">All severities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
             <button class="clear-filter" id="clear-filters" type="button">Clear</button>
           </div>

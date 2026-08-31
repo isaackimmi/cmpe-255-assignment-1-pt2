@@ -19,12 +19,27 @@ function methodNames() {
 
 function renderSummary() {
   const names = methodNames();
+  if (!names.length) return;
   const best = names.reduce((winner, name) => metrics[name].roc_auc > metrics[winner].roc_auc ? name : winner, names[0]);
-  const anomalyRate = metrics[best].flagged ? metrics[best].flagged / 900 : 0;
+  const metadata = metrics.metadata || {};
+  const anomalyRate = Number(metadata.test_anomaly_rate || 0);
   $("#best-method").textContent = titleCase(best);
   $("#best-auc").textContent = formatScore(metrics[best].roc_auc);
   $("#prevalence").textContent = formatPct(anomalyRate);
   $("#method-count").textContent = names.length;
+  $("#budget-summary").textContent = metadata.alert_budget || 100;
+  $("#dataset-size").textContent = metadata.test_size || "—";
+  $("#dataset-size-rail").textContent = metadata.test_size || "—";
+  $("#anomaly-count").textContent = metadata.test_anomaly_count || "—";
+  $("#train-size").textContent = metadata.train_size || "—";
+  $("#calibration-size").textContent = metadata.calibration_size || "—";
+  $("#seed-label").textContent = metadata.seed ?? "—";
+  $("#seed-label-foot").textContent = metadata.seed ?? "—";
+  $("#run-id").textContent = String(metadata.seed ?? "—").padStart(3, "0");
+  const generated = metadata.generated_at_utc ? new Date(metadata.generated_at_utc) : null;
+  $("#run-time").textContent = generated && !Number.isNaN(generated.valueOf())
+    ? `GENERATED ${generated.toLocaleString()}`
+    : "GENERATED FROM ARTIFACT";
   updateSelected(best);
 }
 
@@ -34,8 +49,8 @@ function renderRows() {
     const item = metrics[name];
     const meta = METHOD_LABELS[name] || {};
     return `<div class="detector-row${name === selectedMethod ? " selected" : ""}" data-method="${name}" tabindex="0" role="button" aria-label="Select ${titleCase(name)}">
-      <div class="method-cell"><span class="method-rank">0${index + 1}</span><span class="method-dot"></span><span class="method-name">${meta.label || titleCase(name)} <span class="method-tag">${meta.short || ""}</span></span></div>
-      <span class="metric-number">${formatScore(item.roc_auc)}</span><span class="metric-number">${formatScore(item.average_precision)}</span><span class="metric-number">${formatScore(item.f1)}</span><span class="flag-pill">${item.flagged}</span>
+      <div class="method-cell"><span class="method-rank">${String(index + 1).padStart(2, "0")}</span><span class="method-dot"></span><span class="method-name">${meta.label || titleCase(name)} <span class="method-tag">${meta.short || ""}</span></span></div>
+      <span class="metric-number">${formatScore(item.roc_auc)}</span><span class="metric-number">${formatScore(item.average_precision)}</span><span class="metric-number">${formatScore(item.f1_at_k)}</span><span class="flag-pill">${item.flagged}</span>
     </div>`;
   }).join("");
   document.querySelectorAll(".detector-row").forEach((row) => {
@@ -47,49 +62,50 @@ function renderRows() {
 function renderCategoryBars() {
   const names = methodNames().sort((a, b) => metrics[b].roc_auc - metrics[a].roc_auc);
   $("#category-bars").innerHTML = names.map((name) => {
-    const label = titleCase(name);
     const values = metrics.category_recall[name];
-    return `<div class="bar-method"><div class="bar-method-head"><span>${label}</span><span>${METHOD_LABELS[name]?.short || ""}</span></div>${Object.keys(CATEGORY_LABELS).map((category) => `<div class="bar-group"><span class="bar-label">${CATEGORY_LABELS[category]}</span><span class="bar-track"><span class="bar-fill ${category}" style="width:${Math.max(2, values[category] * 100)}%"></span></span><span class="bar-value">${formatPct(values[category])}</span></div>`).join("")}</div>`;
+    return `<div class="bar-method"><div class="bar-method-head"><span>${titleCase(name)}</span><span>${METHOD_LABELS[name]?.short || ""}</span></div>${Object.keys(CATEGORY_LABELS).map((category) => `<div class="bar-group"><span class="bar-label">${CATEGORY_LABELS[category]}</span><span class="bar-track"><span class="bar-fill ${category}" style="width:${Math.max(2, values[category] * 100)}%"></span></span><span class="bar-value">${formatPct(values[category])}</span></div>`).join("")}</div>`;
   }).join("");
+}
+
+function thresholdPoint(name, percentile) {
+  return metrics.threshold_points?.[name]?.find((point) => point.percentile === percentile);
+}
+
+function operatingPoint(name, percentile, budget) {
+  return metrics.operating_points?.[name]?.[String(percentile)]?.[String(budget)];
 }
 
 function updateSelected(name) {
   if (!metrics?.[name]) return;
   selectedMethod = name;
   const item = metrics[name];
-  const recall = item.recall;
+  const best = methodNames().reduce((winner, method) => metrics[method].roc_auc > metrics[winner].roc_auc ? method : winner, methodNames()[0]);
   $("#selected-method").textContent = titleCase(name);
   $("#selected-pill").textContent = titleCase(name);
-  $("#insight-title").textContent = `${titleCase(name)} makes the clearest cut.`;
-  $("#insight-copy").textContent = name === "elliptic_envelope"
-    ? "The strongest aggregate result in this run: robust covariance captures the shifted cluster while keeping the fixed budget precise."
-    : `${METHOD_LABELS[name]?.note || "This detector"} produces a distinct ranking profile; inspect the category bars before trusting the aggregate score.`;
-  $("#queue-recall").textContent = formatPct(recall);
-  $("#queue-precision").textContent = formatPct(item.precision);
+  $("#insight-title").textContent = name === best ? `${titleCase(name)} leads holdout ROC-AUC.` : `${titleCase(name)} shows a distinct signal.`;
+  $("#insight-copy").textContent = name === best
+    ? "Highest ROC-AUC in this labeled synthetic holdout. Treat the result as a single-seed comparison, not a universal ranking."
+    : `${METHOD_LABELS[name]?.note || "This detector"} produces a distinct ranking profile; inspect category recall before trusting the aggregate score.`;
+  $("#queue-recall").textContent = formatPct(item.recall_at_k);
+  $("#queue-precision").textContent = formatPct(item.precision_at_k);
   renderRows();
   syncSimulation();
 }
 
 function syncSimulation() {
   if (!metrics?.[selectedMethod]) return;
-  const item = metrics[selectedMethod];
-  const threshold = Number($("#threshold").value) / 100;
+  const percentile = Number($("#threshold").value);
   const budget = Number($("#flag-budget").value);
-  const baselineBudget = Math.max(1, item.flagged || 100);
-  const thresholdFactor = 1 - Math.max(0, threshold - 0.70) * 0.8 + Math.max(0, 0.70 - threshold) * 0.25;
-  const budgetFactor = Math.min(1.2, Math.max(.45, budget / baselineBudget));
-  const projectedRecall = Math.min(.99, Math.max(.03, item.recall * thresholdFactor * Math.min(1.08, budgetFactor)));
-  const projectedPrecision = Math.min(.99, Math.max(.08, item.precision * (thresholdFactor * .72 + .28) * (budgetFactor > 1 ? 1 - (budgetFactor - 1) * .14 : 1 + (1 - budgetFactor) * .12)));
-  $("#threshold-output").textContent = threshold.toFixed(2);
-  $("#budget-output").textContent = `${budget} points`;
-  $("#budget-summary").textContent = budget;
-  $("#queue-flagged").textContent = budget;
-  $("#queue-recall").textContent = formatPct(projectedRecall);
-  $("#queue-precision").textContent = formatPct(projectedPrecision);
-  $("#queue-fill").style.width = `${Math.min(100, budget / 2)}%`;
-  $("#queue-note").textContent = budget === baselineBudget && threshold === .70
-    ? `At ${budget} flags, the UI mirrors the saved fixed-budget result. Move the controls to explore a directional trade-off.`
-    : `Illustrative preview: threshold ${threshold.toFixed(2)} and a ${budget}-point queue. The Python experiment is not rerun in the browser.`;
+  const point = operatingPoint(selectedMethod, percentile, budget);
+  const threshold = thresholdPoint(selectedMethod, percentile);
+  if (!point || !threshold) return;
+  $("#threshold-output").textContent = `${percentile}% clean calibration`;
+  $("#budget-output").textContent = `${budget} point cap`;
+  $("#queue-flagged").textContent = point.flagged;
+  $("#queue-recall").textContent = formatPct(point.recall);
+  $("#queue-precision").textContent = formatPct(point.precision);
+  $("#queue-fill").style.width = `${Math.min(100, (point.flagged / budget) * 100)}%`;
+  $("#queue-note").textContent = `Saved holdout replay: score ≥ ${threshold.threshold.toFixed(3)} (${percentile}th percentile of clean calibration), capped at ${budget} alerts. Labels are used only in this offline evaluation. `;
 }
 
 async function loadMetrics() {

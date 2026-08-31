@@ -34,11 +34,11 @@ function renderStats() {
   $('#test-stat').textContent = pretty(prep.test_rows);
   $('#missing-stat').textContent = pretty(data.missing_values);
   $('#dataset-name').textContent = data.dataset;
-  const threshold = report.business_understanding.success_criteria.match(/>=?\s*([\d.]+)/i)?.[1];
-  if (threshold) $('#threshold-stat').textContent = `≥ ${threshold}`;
-  const passed = threshold ? evaluation.accuracy >= Number(threshold) : true;
-  $('#evaluation-headline').textContent = passed ? 'Model clears the bar.' : 'Model needs another pass.';
-  $('.check-badge').textContent = passed ? '✓ PASS' : '↺ REVIEW';
+  const baseline = evaluation.majority_baseline;
+  const passed = Boolean(baseline && baseline.accuracy_delta > 0);
+  $('#threshold-stat').textContent = 'beats majority CV baseline';
+  $('#evaluation-headline').textContent = passed ? 'Model beats the baseline.' : 'Model needs another pass.';
+  $('.check-badge').textContent = passed ? '✓ BASELINE+' : '↺ REVIEW';
   $('.check-badge').classList.toggle('review-badge', !passed);
 }
 
@@ -46,7 +46,7 @@ function renderPhaseCards() {
   $('#phase-cards').innerHTML = phaseKeys.map((key) => {
     const meta = phaseMeta[key];
     const detail = report[key] || {};
-    const hint = key === 'business_understanding' ? 'objective' : key === 'data_understanding' ? `${detail.rows} rows · ${detail.missing_values} missing` : key === 'data_preparation' ? `${detail.train_rows} train · ${detail.test_rows} test` : key === 'modeling' ? detail.algorithm : key === 'evaluation' ? `${pct(detail.accuracy)} accuracy` : 'monitor after launch';
+    const hint = key === 'business_understanding' ? 'bounded classroom decision' : key === 'data_understanding' ? `${detail.rows} rows · ${detail.missing_values} missing` : key === 'data_preparation' ? `${detail.train_rows} train · ${detail.test_rows} test` : key === 'modeling' ? `${detail.selected_model} · CV selected` : key === 'evaluation' ? `${pct(detail.accuracy)} · ${detail.total} holdout` : 'validated local bundle';
     return `<button class="phase-card ${key === activePhase ? 'active' : ''}" data-phase="${key}" role="listitem" aria-pressed="${key === activePhase}"><span class="phase-card-index">${meta.number} / 06</span><h3>${meta.short}</h3><p>${esc(hint)}</p></button>`;
   }).join('');
 }
@@ -62,12 +62,12 @@ function detailMarkup(key) {
   const model = report.modeling;
   const evaluation = report.evaluation;
   const deployment = report.deployment;
-  if (key === 'business_understanding') return `<div class="detail-grid">${textItem('Objective', business.objective, true)}${textItem('Success criteria', business.success_criteria)}${item('Stakeholders', list(business.stakeholders))}${textItem('Working assumption', business.assumptions.join(' '), true)}</div>`;
-  if (key === 'data_understanding') return `<div class="detail-grid">${strongItem('Dataset', data.dataset)}${strongItem('Rows', pretty(data.rows))}${strongItem('Classes', data.classes.length)}${strongItem('Missing values', pretty(data.missing_values))}${item('Features', list(data.features), true)}${item('Class balance', list(Object.entries(data.class_counts).map(([name, count]) => `${name}: ${count}`)), true)}</div>`;
+  if (key === 'business_understanding') return `<div class="detail-grid">${textItem('Objective', business.objective, true)}${textItem('Decision', business.decision, true)}${textItem('Success criteria', business.success_criteria, true)}${item('Stakeholders', list(business.stakeholders))}${textItem('Claim boundary', business.error_costs, true)}</div>`;
+  if (key === 'data_understanding') return `<div class="detail-grid">${strongItem('Dataset', data.dataset)}${strongItem('Rows', pretty(data.rows))}${strongItem('Classes', data.classes.length)}${strongItem('Missing values', pretty(data.missing_values))}${strongItem('Duplicate feature rows', pretty(data.quality_checks.duplicate_feature_rows))}${item('Features', list(data.features), true)}${item('Class balance', list(Object.entries(data.class_counts).map(([name, count]) => `${name}: ${count}`)), true)}${textItem('Content hash', data.content_sha256, true)}</div>`;
   if (key === 'data_preparation') return `<div class="detail-grid">${strongItem('Training rows', pretty(prep.train_rows))}${strongItem('Test rows', pretty(prep.test_rows))}${textItem('Split strategy', prep.split)}${textItem('Preprocessing', prep.preprocessing, true)}<div class="teaching-callout wide">Scaling is fit inside the pipeline on training data only, keeping the holdout honest.</div></div>`;
-  if (key === 'modeling') return `<div class="detail-grid">${textItem('Chosen baseline', model.algorithm, true)}${textItem('Why it fits here', 'A scaled, regularized linear classifier is quick to run, easy to inspect, and strong enough to make the evaluation lesson meaningful.', true)}<div class="teaching-callout wide">The point is not to win a benchmark. It is to make a sound modeling choice that can be explained.</div></div>`;
-  if (key === 'evaluation') return `<div class="detail-grid">${strongItem('Accuracy', pct(evaluation.accuracy))}${strongItem('Holdout rows', pretty(evaluation.classification_report['weighted avg'].support))}${textItem('Readout', 'The confusion matrix shows perfect setosa separation, with one versicolor and one virginica crossing the boundary.', true)}${item('Per-class F1', list(data.classes.map((name) => `${name}: ${pct(evaluation.classification_report[name]['f1-score'])}`)), true)}</div>`;
-  return `<div class="detail-grid">${textItem('Next step', deployment.next_step, true)}${item('Monitor', list(deployment.monitoring), true)}<div class="teaching-callout wide">Deployment is a decision too: validate externally, package the pipeline, then observe it in use.</div></div>`;
+  if (key === 'modeling') return `<div class="detail-grid">${textItem('Selected model', model.selected_model, true)}${textItem('Protocol', model.selection_protocol, true)}${textItem('Selection metric', model.selection_metric)}${item('Candidates', list(model.candidates.map((candidate) => `${candidate.name}: ${pct(candidate.cv_accuracy_mean)}`)), true)}<div class="teaching-callout wide">CV touches training rows only; the fixed holdout stays out of model selection.</div></div>`;
+  if (key === 'evaluation') return `<div class="detail-grid">${strongItem('Accuracy', pct(evaluation.accuracy))}${strongItem('Holdout rows', pretty(evaluation.total))}${textItem('95% Wilson interval', `${pct(evaluation.accuracy_95_wilson_interval[0])}–${pct(evaluation.accuracy_95_wilson_interval[1])}`)}${textItem('Readout', `${evaluation.correct}/${evaluation.total} correct on this fixed holdout; this is split-specific evidence.`, true)}${item('Per-class F1', list(data.classes.map((name) => `${name}: ${pct(evaluation.classification_report[name]['f1-score'])}`)), true)}</div>`;
+  return `<div class="detail-grid">${textItem('Status', deployment.status, true)}${textItem('Inference', deployment.inference_command, true)}${textItem('Claim boundary', deployment.claim_boundary, true)}${item('Monitor', list(deployment.monitoring_plan.map((entry) => `${entry.signal} · ${entry.window}`)), true)}<div class="teaching-callout wide">The bundle is usable for local inference, but external validation is still required before production approval.</div></div>`;
 }
 
 function renderDetail() {

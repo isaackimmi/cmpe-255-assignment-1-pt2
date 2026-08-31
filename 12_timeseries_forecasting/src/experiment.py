@@ -7,8 +7,11 @@ deliberately explicit so that the example is safe to adapt for coursework.
 from __future__ import annotations
 
 import argparse
+import importlib.metadata
 import json
+import platform
 from pathlib import Path
+import subprocess
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -19,9 +22,18 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 SEASONAL_PERIOD = 12
 LAGS = (1, 2, 3, 6, 12)
+DATA_SEED = 7
+HORIZONS = (6, 12, 24, 36)
+MODEL_CONFIG = {
+    "max_iter": 180,
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 8,
+    "l2_regularization": 0.5,
+    "random_state": 7,
+}
 
 
-def make_dataset(n: int = 240, seed: int = 7) -> pd.DataFrame:
+def make_dataset(n: int = 240, seed: int = DATA_SEED) -> pd.DataFrame:
     """Return a deterministic monthly signal; no external download is needed."""
     rng = np.random.default_rng(seed)
     dates = pd.date_range("2000-01-01", periods=n, freq="MS")
@@ -53,6 +65,9 @@ def feature_matrix(values: np.ndarray, start: int, stop: int) -> tuple[np.ndarra
 
 
 def recursive_forecast(model, observed: np.ndarray, horizon: int) -> np.ndarray:
+    """Forecast recursively, feeding each prediction back as history."""
+    if horizon < 0:
+        raise ValueError("horizon must be non-negative")
     history = list(map(float, observed))
     predictions = []
     for _ in range(horizon):
@@ -63,16 +78,102 @@ def recursive_forecast(model, observed: np.ndarray, horizon: int) -> np.ndarray:
     return np.asarray(predictions)
 
 
-def seasonal_naive(values: np.ndarray, start: int, stop: int) -> np.ndarray:
-    """One-step seasonal baseline, allowed to use observations already known."""
-    return np.asarray([values[t - SEASONAL_PERIOD] for t in range(start, stop)])
+def seasonal_naive_forecast(
+    observed: np.ndarray,
+    horizon: int,
+    seasonal_period: int = SEASONAL_PERIOD,
+) -> np.ndarray:
+    """Closed-loop seasonal-naive forecast from one shared forecast origin.
+
+    After the first seasonal cycle, predictions—not actual future targets—are
+    appended to history. This makes the baseline comparable with the model's
+    recursive multi-step path.
+    """
+    if horizon < 0:
+        raise ValueError("horizon must be non-negative")
+    if seasonal_period <= 0:
+        raise ValueError("seasonal_period must be positive")
+    if len(observed) < seasonal_period:
+        raise ValueError("not enough history for seasonal-naive forecast")
+
+    history = list(map(float, observed))
+    predictions = []
+    for _ in range(horizon):
+        prediction = history[-seasonal_period]
+        predictions.append(prediction)
+        history.append(prediction)
+    return np.asarray(predictions)
 
 
 def metrics(actual: np.ndarray, predicted: np.ndarray) -> dict[str, float]:
+    actual = np.asarray(actual)
+    predicted = np.asarray(predicted)
+    if actual.size == 0 or predicted.size == 0:
+        raise ValueError("metrics require non-empty arrays")
+    if actual.shape != predicted.shape:
+        raise ValueError("actual and predicted arrays must have the same shape")
+    if not np.isfinite(actual).all() or not np.isfinite(predicted).all():
+        raise ValueError("metrics require finite arrays")
     return {
         "mae": float(mean_absolute_error(actual, predicted)),
         "rmse": float(np.sqrt(mean_squared_error(actual, predicted))),
     }
+
+
+def _package_version(package: str) -> str:
+    try:
+        return importlib.metadata.version(package)
+    except importlib.metadata.PackageNotFoundError:
+        return "unavailable"
+
+
+def _source_revision() -> str:
+    project_dir = Path(__file__).resolve().parents[1]
+    try:
+        revision = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=project_dir,
+            capture_output=True,
+            text=True,
+            check=False,
+        ).stdout.strip()
+    except OSError:
+        revision = ""
+    return revision or "unknown"
+
+
+def _block_metrics(actual: np.ndarray, baseline: np.ndarray, model: np.ndarray) -> dict:
+    return {
+        "baseline_seasonal_naive": metrics(actual, baseline),
+        "model_hist_gradient_boosting": metrics(actual, model),
+    }
+
+
+def _plot_forecast(
+    data: pd.DataFrame,
+    values: np.ndarray,
+    baseline: np.ndarray,
+    model: np.ndarray,
+    forecast_start: int,
+    forecast_end: int,
+    output_path: Path,
+    title_suffix: str = "",
+) -> None:
+    fig, ax = plt.subplots(figsize=(10, 4.8))
+    ax.plot(data.date, values, label="observed", color="#3949ab", linewidth=1.4)
+    forecast_dates = data.date.iloc[forecast_start:forecast_end]
+    forecast_length = len(forecast_dates)
+    ax.plot(forecast_dates, baseline[:forecast_length], label="seasonal naive", linestyle="--", color="#ef6c00")
+    ax.plot(forecast_dates, model[:forecast_length], label="gradient boosting", color="#00897b")
+    ax.axvline(data.date.iloc[forecast_start], color="black", alpha=0.35, linestyle=":", label="forecast origin")
+    test_start = int(len(values) * 0.85)
+    if forecast_start < test_start < forecast_end:
+        ax.axvline(data.date.iloc[test_start], color="#8d99ae", alpha=0.7, linestyle="--", label="test start")
+    ax.set(title=f"CPU-safe monthly time-series forecast{title_suffix}", xlabel="month", ylabel="value")
+    ax.legend(ncol=4, fontsize=8)
+    fig.tight_layout()
+    fig.savefig(output_path, dpi=140)
+    plt.close(fig)
 
 
 def run(output_dir: str | Path = "outputs") -> dict:
@@ -82,42 +183,111 @@ def run(output_dir: str | Path = "outputs") -> dict:
     values = data["value"].to_numpy()
     n = len(values)
     train_end, validation_end = int(n * 0.70), int(n * 0.85)
+    test_start = validation_end
+    validation_horizon = validation_end - train_end
+    test_horizon = n - test_start
     minimum = max(LAGS)
 
     X_train, y_train = feature_matrix(values, minimum, train_end)
-    model = HistGradientBoostingRegressor(
-        max_iter=180, learning_rate=0.05, max_leaf_nodes=8,
-        l2_regularization=0.5, random_state=7,
-    )
+    model = HistGradientBoostingRegressor(**MODEL_CONFIG)
     model.fit(X_train, y_train)
 
-    # Validation and test are forecast recursively: predictions, never future
-    # targets, become history after the forecast origin.
-    validation_pred = recursive_forecast(model, values[:train_end], validation_end - train_end)
-    test_pred = recursive_forecast(model, np.r_[values[:train_end], validation_pred], n - validation_end)
-    baseline_pred = seasonal_naive(values, validation_end, n)
-    actual = values[validation_end:]
+    # Both forecasters start at the same training boundary and run closed-loop
+    # through validation and test. Actual validation/test targets are retained
+    # only for scoring after forecasts are complete.
+    total_horizon = n - train_end
+    model_forecast = recursive_forecast(model, values[:train_end], total_horizon)
+    baseline_forecast = seasonal_naive_forecast(values[:train_end], total_horizon)
+    validation_actual = values[train_end:validation_end]
+    test_actual = values[test_start:]
+    validation_model = model_forecast[:validation_horizon]
+    validation_baseline = baseline_forecast[:validation_horizon]
+    test_model = model_forecast[validation_horizon:]
+    test_baseline = baseline_forecast[validation_horizon:]
+
+    horizon_metrics = {
+        str(horizon): _block_metrics(
+            test_actual[:horizon], test_baseline[:horizon], test_model[:horizon]
+        )
+        for horizon in HORIZONS
+        if horizon <= test_horizon
+    }
+    forecast_rows = pd.DataFrame(
+        {
+            "date": data.date.iloc[train_end:].dt.strftime("%Y-%m-%d").to_numpy(),
+            "split": ["validation"] * validation_horizon + ["test"] * test_horizon,
+            "actual": values[train_end:],
+            "baseline_seasonal_naive": baseline_forecast,
+            "model_hist_gradient_boosting": model_forecast,
+        }
+    )
+    forecast_rows.to_csv(output_dir / "forecast_predictions.csv", index=False)
+
+    forecast_artifacts = {}
+    full_forecast_end = n
+    _plot_forecast(
+        data, values, baseline_forecast, model_forecast, train_end,
+        full_forecast_end, output_dir / "forecast.png",
+        title_suffix=" · validation + test",
+    )
+    for horizon in horizon_metrics:
+        horizon_end = validation_end + int(horizon)
+        filename = f"forecast_horizon_{horizon}.png"
+        _plot_forecast(
+            data, values, baseline_forecast, model_forecast, train_end,
+            horizon_end, output_dir / filename,
+            title_suffix=f" · first {horizon} test months",
+        )
+        forecast_artifacts[horizon] = filename
+
     results = {
         "dataset_rows": n,
-        "split": {"train_end": train_end, "validation_end": validation_end, "test_start": validation_end},
-        "baseline_seasonal_naive": metrics(actual, baseline_pred),
-        "model_hist_gradient_boosting": metrics(actual, test_pred),
-        "leakage_control": "Chronological split; lag/rolling features use values before t; model test forecast is recursive.",
+        "split": {
+            "train_end": train_end,
+            "validation_end": validation_end,
+            "test_start": test_start,
+            "train_rows": train_end,
+            "validation_rows": validation_horizon,
+            "test_rows": test_horizon,
+        },
+        "forecast_protocol": {
+            "name": "closed_loop_multi_step",
+            "forecast_origin_index": train_end,
+            "forecast_origin": data.date.iloc[train_end].strftime("%Y-%m-%d"),
+            "history_through_index": train_end - 1,
+            "history_through": data.date.iloc[train_end - 1].strftime("%Y-%m-%d"),
+            "validation_horizon": validation_horizon,
+            "test_horizon": test_horizon,
+            "actual_intermediate_observations_used": False,
+            "predictions_feed_back_into_history": True,
+            "test_targets_used_as_inputs": False,
+        },
+        "validation": _block_metrics(validation_actual, validation_baseline, validation_model),
+        "test": _block_metrics(test_actual, test_baseline, test_model),
+        # Keep the original top-level metric keys as the full-test result for
+        # simple consumers, while providing explicit block/horizon semantics.
+        "baseline_seasonal_naive": metrics(test_actual, test_baseline),
+        "model_hist_gradient_boosting": metrics(test_actual, test_model),
+        "horizon_metrics": horizon_metrics,
+        "available_horizons": [int(horizon) for horizon in horizon_metrics],
+        "forecast_artifacts": forecast_artifacts,
+        "forecast_predictions_artifact": "forecast_predictions.csv",
+        "provenance": {
+            "data": {"generator": "make_dataset", "seed": DATA_SEED, "frequency": "MS"},
+            "model": {"estimator": "HistGradientBoostingRegressor", **MODEL_CONFIG},
+            "software": {
+                "python": platform.python_version(),
+                "numpy": _package_version("numpy"),
+                "pandas": _package_version("pandas"),
+                "scikit_learn": _package_version("scikit-learn"),
+                "matplotlib": _package_version("matplotlib"),
+            },
+            "source_revision": _source_revision(),
+        },
+        "leakage_control": "Chronological split; lag/rolling features use values before t; both forecasts share one closed-loop origin and never use actual validation/test targets as inputs.",
     }
     (output_dir / "metrics.json").write_text(json.dumps(results, indent=2) + "\n")
     data.to_csv(output_dir / "synthetic_monthly_series.csv", index=False)
-
-    fig, ax = plt.subplots(figsize=(10, 4.8))
-    ax.plot(data.date, values, label="observed", color="#3949ab", linewidth=1.4)
-    test_dates = data.date.iloc[validation_end:]
-    ax.plot(test_dates, baseline_pred, label="seasonal naive", linestyle="--", color="#ef6c00")
-    ax.plot(test_dates, test_pred, label="gradient boosting", color="#00897b")
-    ax.axvline(data.date.iloc[validation_end], color="black", alpha=0.35, linestyle=":", label="test start")
-    ax.set(title="CPU-safe monthly time-series forecast", xlabel="month", ylabel="value")
-    ax.legend(ncol=3, fontsize=8)
-    fig.tight_layout()
-    fig.savefig(output_dir / "forecast.png", dpi=140)
-    plt.close(fig)
     return results
 
 

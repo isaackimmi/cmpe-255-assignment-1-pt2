@@ -6,7 +6,7 @@ import sys
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from enterprise_audit import generate_sample, audit_dataset, write_report  # noqa: E402
+from enterprise_audit import LABEL_COLUMN, PREDICTION_TIME_COLUMN, SAFE_FEATURES, audit_dataset, generate_sample, write_report  # noqa: E402
 
 
 def main() -> int:
@@ -16,7 +16,7 @@ def main() -> int:
     report_dir.mkdir(exist_ok=True)
     csv_path = data_dir / "sample_customers.csv"
     generate_sample(csv_path, seed=255)
-    result = audit_dataset(csv_path, seed=255)
+    result = audit_dataset(csv_path, seed=255, prediction_time_column=PREDICTION_TIME_COLUMN, label_column=LABEL_COLUMN, feature_manifest=SAFE_FEATURES)
     write_report(result, report_dir / "audit_report.md", report_dir / "audit_results.json")
     print(result["summary"])
     print(f"Report: {report_dir / 'audit_report.md'}")

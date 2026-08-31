@@ -12,7 +12,7 @@ python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2
 pytest -q
 ```
 
-The default run creates `artifacts/metrics.json`, `artifacts/audit_report.json`, `artifacts/eda.png`, `artifacts/actual_vs_predicted.png`, `artifacts/crispdm_report.md`, and a fitted `artifacts/model.joblib`. The data is generated deterministically and is intentionally not a download of the full NYC TLC corpus.
+The default run creates `artifacts/metrics.json`, `artifacts/audit_report.json`, `artifacts/run_manifest.json`, `artifacts/eda.png`, `artifacts/actual_vs_predicted.png`, `artifacts/crispdm_report.md`, and a fitted `artifacts/model.joblib`. The data is generated deterministically and is intentionally not a download of the full NYC TLC corpus. Metrics are synthetic smoke-test metrics and are not evidence of real NYC taxi generalization.
 
 ## Dashboard UI
 
@@ -24,7 +24,7 @@ After generating the artifacts, serve the project root and open <http://localhos
 python -m http.server 8000
 ```
 
-The dashboard's browser estimate is intentionally illustrative because the saved scikit-learn `model.joblib` is used by the Python CLI, not loaded into the browser. Run the real saved-model inference with:
+The dashboard's browser estimate is intentionally a separate toy calculator because the saved scikit-learn `model.joblib` is used by the Python CLI, not loaded into the browser. It omits zone inputs and must not be compared with the scorecard. Run the evaluated saved-model inference with:
 
 ```bash
 python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2 --passengers 2
@@ -34,11 +34,12 @@ Stop the local server with `Ctrl-C` when finished.
 
 ## What is implemented
 
-- **Business understanding:** estimate trip duration in minutes for planning and dispatch analysis.
+- **Business understanding:** illustrate trip-duration estimation for an educational planning and audit demonstration.
 - **Data understanding/preparation:** deterministic NYC-like records with pickup/dropoff zones, time, passenger count, distance, and duration; derived temporal and route features.
-- **Audit:** schema, nulls, duplicate IDs, invalid values, and robust IQR outlier counts are reported before modeling.
-- **Modeling:** a scikit-learn histogram gradient-boosting regressor with a chronological 80/20 split, avoiding leakage from future trips.
-- **Evaluation:** MAE, RMSE, R², and a duration-within-5-minutes rate; plots make data shape and prediction quality inspectable.
+- **Audit:** schema, nulls, duplicate IDs, typed target-quality rules, field-specific validity checks, and IQR outlier observations are reported before modeling with row IDs, actions, and statuses.
+- **Modeling:** a scikit-learn histogram gradient-boosting regressor with a chronological 80/20 split; imputation statistics are fitted only on training rows and serialized with the model.
+- **Evaluation:** MAE, RMSE, R², and a duration-within-5-minutes rate; plots make data shape and prediction quality inspectable. The scorecard explicitly labels this as a synthetic smoke test.
+- **Reproducibility:** `run_manifest.json` records the command, seed, row argument, source/data hashes, git revision, runtime versions, feature contract, target policy, split rule, and population counts.
 - **Deployment:** `--infer` loads the saved model and returns a prediction for one trip as JSON.
 
 ## Explicit deviations
@@ -47,9 +48,9 @@ The original Project 13 prompt was not present in the provided checkout (nor was
 
 ## Reproducibility and limitations
 
-The generator seed, feature list, model parameters, split rule, and audit thresholds are recorded in the report. This is an educational audit platform: synthetic distributions may be simpler than real traffic, random missingness is injected only to exercise audit handling, and predictions should not be used for dispatch, pricing, or safety decisions without real-data validation, monitoring, privacy review, and retraining.
+The generator seed, feature list, model parameters, split rule, and audit thresholds are recorded in `artifacts/run_manifest.json`; the report summarizes the same run. This is an educational audit platform: synthetic distributions may be simpler than real traffic, random missingness is injected only to exercise audit handling, and predictions should not be used for dispatch, pricing, or safety decisions without real-data validation, monitoring, privacy review, and retraining.
 ## Integration verification
 
 - **Prompt alignment:** Public Project 13 asks for enterprise CRISP-DM taxi auditing, EDA, explainability, model comparison, inference APIs, and MLOps; the compact audit/training/inference subset is implemented.
-- **Results/artifacts:** 955/239 chronological split; MAE 2.794 minutes, RMSE 3.622, R² 0.892, 84.5% within five minutes; pipeline/inference/pytest passed 4/4.
+- **Results/artifacts:** The generated artifacts are traceable through `run_manifest.json`; reported scores are synthetic smoke-test results only.
 - **Issue/resolution:** Full TLC data, hosted service, SHAP, load testing, and multi-model autoresearch were not run because this checkout is CPU-safe CLI scope.

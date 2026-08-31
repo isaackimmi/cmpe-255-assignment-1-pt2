@@ -1,9 +1,28 @@
 {
   "dataset": "sklearn breast cancer",
+  "dataset_loader": "sklearn.datasets.load_breast_cancer",
+  "dataset_hash_sha256": "9fe7845fe04f4fb81933daf78607f39beea8ac04d6e31cf6834aa25e5e96056f",
   "n_samples": 569,
   "n_features": 30,
+  "development_samples": 455,
+  "final_test_samples": 114,
   "train_samples": 455,
   "test_samples": 114,
   "random_seed": 255,
-  "test_size": 0.2
+  "test_size": 0.2,
+  "target_name": "target",
+  "target_names": {
+    "0": "malignant",
+    "1": "benign"
+  },
+  "target_class_counts": {
+    "0": 212,
+    "1": 357
+  },
+  "positive_class": {
+    "label": 1,
+    "name": "benign"
+  },
+  "selection_protocol": "2x5-fold repeated stratified CV on development data",
+  "final_evaluation_protocol": "Selected model refit on all development data; final holdout scored once"
 }

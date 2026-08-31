@@ -1,9 +1,9 @@
 const modules = {
-  clean: { number: '01', kicker: 'INGESTION + VALIDATION', title: 'Clean the signal', description: 'Before a model sees the data, the lab makes the input trustworthy: it removes the duplicate customer, converts numeric fields, and fills one missing value with a median.', result: () => `${state.metrics.data_quality.clean_rows} clean rows`, why: 'reliable inputs', icon: '01' },
-  explore: { number: '02', kicker: 'EDA + CORRELATION', title: 'Explore relationships', description: 'A quick pass over means and correlations reveals the shape of the fixture: usage rises with renewal and moves inversely with support tickets.', result: () => `${formatNumber(state.metrics.eda.usage_renewal_correlation)} usage / renewal`, why: 'find the signal', icon: '02' },
-  predict: { number: '03', kicker: 'LINEAR REGRESSION', title: 'Predict usage', description: 'Tenure becomes a simple explanatory feature for monthly usage. The held-out rows keep the result honest enough to inspect.', result: () => `MAE ${formatNumber(state.metrics.regression.mae)}`, why: 'test a baseline', icon: '03' },
-  classify: { number: '04', kicker: 'RULE-BASED BASELINE', title: 'Classify renewal', description: 'A transparent rule marks customers with at least 45 usage and no more than two support tickets as likely to renew.', result: () => `${formatPercent(state.metrics.classification.accuracy)} accuracy`, why: 'make assumptions visible', icon: '04' },
-  cluster: { number: '05', kicker: 'K-MEANS CLUSTERING', title: 'Find customer groups', description: 'Two compact groups emerge from monthly usage and support tickets: a higher-usage, lower-ticket cohort and a more support-heavy cohort.', result: () => `${state.metrics.clustering.k} customer groups`, why: 'segment the context', icon: '05' },
+  clean: { number: '01', kicker: 'INGESTION + VALIDATION', title: 'Clean the signal', description: 'Before analysis, the lab validates the schema, numeric domains, plans, labels, and duplicate policy. Missing values are imputed only where an analysis explicitly needs them.', result: () => `${state.metrics.data_quality.clean_rows} validated rows`, why: 'reliable inputs', icon: '01' },
+  explore: { number: '02', kicker: 'EDA + CORRELATION', title: 'Explore relationships', description: 'Observed usage values show descriptive association with renewal and support tickets. The correlations are not causal evidence and exclude the missing usage target.', result: () => `${formatNumber(state.metrics.eda.usage_renewal_correlation)} association`, why: 'find the signal', icon: '02' },
+  predict: { number: '03', kicker: 'LINEAR REGRESSION', title: 'Predict usage', description: 'Tenure becomes a simple explanatory feature for monthly usage. A seeded shuffled holdout is scored only on observed test targets; the training-only mean is the baseline.', result: () => `MAE ${formatNumber(state.metrics.regression.mae)}`, why: 'test a baseline', icon: '03' },
+  classify: { number: '04', kicker: 'RULE-BASED BASELINE', title: 'Classify renewal', description: 'A fixed, transparent rule marks customers with at least 45 usage and no more than two support tickets as likely to renew, then compares it with a majority-class baseline on a stratified holdout.', result: () => `${formatPercent(state.metrics.classification.accuracy)} held-out`, why: 'make assumptions visible', icon: '04' },
+  cluster: { number: '05', kicker: 'SCALED K-MEANS', title: 'Find customer groups', description: 'Z-score scaling prevents monthly usage from overwhelming support tickets. Candidate k values, silhouette separation, inertia, and repeated initializations make the two-group choice inspectable.', result: () => `${state.metrics.clustering.k} customer groups`, why: 'segment the context', icon: '05' },
 };
 
 const state = { metrics: null, summary: null };
@@ -18,7 +18,7 @@ function renderMetrics() {
   document.querySelectorAll('.module-button').forEach((button) => { button.disabled = false; });
   setText('#pulse-value', quality.clean_rows);
   setText('#quality-value', `${quality.clean_rows}/${quality.raw_rows}`);
-  setText('#quality-note', `${quality.duplicates_removed} duplicate · ${quality.missing_values_imputed} imputed`);
+  setText('#quality-note', `${quality.duplicates_removed} duplicate · ${quality.missing_values_imputed} imputed for analysis`);
   setText('#correlation-value', formatNumber(eda.usage_renewal_correlation));
   setText('#accuracy-value', formatPercent(classification.accuracy));
   setText('#mae-value', formatNumber(regression.mae));
@@ -61,7 +61,7 @@ function selectChart(chart) {
   image.alt = isCluster ? 'Customer health clustering scatter plot' : 'Scatter plot of tenure versus monthly usage';
   image.src = isCluster ? 'artifacts/customer_clusters.svg' : 'artifacts/tenure_usage.svg';
   setText('#chart-title', isCluster ? 'Customer health clusters' : 'Tenure × monthly usage');
-  setText('#chart-caption', isCluster ? 'Two groups separate customers by usage intensity and support burden.' : 'Renewed customers trend toward longer tenure and higher monthly usage.');
+  setText('#chart-caption', isCluster ? 'Z-score-scaled k-means is shown in original units; colors identify cluster labels.' : 'Observed values show association between tenure and usage; this is not causal evidence.');
 }
 
 function markChartLoaded() { $('#chart-image').parentElement.classList.add('loaded'); }

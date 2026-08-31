@@ -3,15 +3,128 @@
   "split": {
     "train_end": 168,
     "validation_end": 204,
-    "test_start": 204
+    "test_start": 204,
+    "train_rows": 168,
+    "validation_rows": 36,
+    "test_rows": 36
+  },
+  "forecast_protocol": {
+    "name": "closed_loop_multi_step",
+    "forecast_origin_index": 168,
+    "forecast_origin": "2014-01-01",
+    "history_through_index": 167,
+    "history_through": "2013-12-01",
+    "validation_horizon": 36,
+    "test_horizon": 36,
+    "actual_intermediate_observations_used": false,
+    "predictions_feed_back_into_history": true,
+    "test_targets_used_as_inputs": false
+  },
+  "validation": {
+    "baseline_seasonal_naive": {
+      "mae": 1.4823945231593312,
+      "rmse": 1.7049212360309565
+    },
+    "model_hist_gradient_boosting": {
+      "mae": 1.441108507349281,
+      "rmse": 1.7619906159520344
+    }
+  },
+  "test": {
+    "baseline_seasonal_naive": {
+      "mae": 2.7223321516232577,
+      "rmse": 2.9414878141672616
+    },
+    "model_hist_gradient_boosting": {
+      "mae": 2.3014631208788807,
+      "rmse": 2.7191701132811787
+    }
   },
   "baseline_seasonal_naive": {
-    "mae": 0.7677633427987847,
-    "rmse": 0.9971312157700278
+    "mae": 2.7223321516232577,
+    "rmse": 2.9414878141672616
   },
   "model_hist_gradient_boosting": {
     "mae": 2.3014631208788807,
     "rmse": 2.7191701132811787
   },
-  "leakage_control": "Chronological split; lag/rolling features use values before t; model test forecast is recursive."
+  "horizon_metrics": {
+    "6": {
+      "baseline_seasonal_naive": {
+        "mae": 2.403841614299061,
+        "rmse": 2.7992628469337872
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.0405898109811003,
+        "rmse": 3.24146500249124
+      }
+    },
+    "12": {
+      "baseline_seasonal_naive": {
+        "mae": 2.2434975988949737,
+        "rmse": 2.578930778928155
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.1778140230246037,
+        "rmse": 2.4834949088076703
+      }
+    },
+    "24": {
+      "baseline_seasonal_naive": {
+        "mae": 2.4087290532691865,
+        "rmse": 2.669944137936601
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.158885388166706,
+        "rmse": 2.530249233514775
+      }
+    },
+    "36": {
+      "baseline_seasonal_naive": {
+        "mae": 2.7223321516232577,
+        "rmse": 2.9414878141672616
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.3014631208788807,
+        "rmse": 2.7191701132811787
+      }
+    }
+  },
+  "available_horizons": [
+    6,
+    12,
+    24,
+    36
+  ],
+  "forecast_artifacts": {
+    "6": "forecast_horizon_6.png",
+    "12": "forecast_horizon_12.png",
+    "24": "forecast_horizon_24.png",
+    "36": "forecast_horizon_36.png"
+  },
+  "forecast_predictions_artifact": "forecast_predictions.csv",
+  "provenance": {
+    "data": {
+      "generator": "make_dataset",
+      "seed": 7,
+      "frequency": "MS"
+    },
+    "model": {
+      "estimator": "HistGradientBoostingRegressor",
+      "max_iter": 180,
+      "learning_rate": 0.05,
+      "max_leaf_nodes": 8,
+      "l2_regularization": 0.5,
+      "random_state": 7
+    },
+    "software": {
+      "python": "3.12.13",
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "scikit_learn": "1.9.0",
+      "matplotlib": "3.11.1"
+    },
+    "source_revision": "8de4635"
+  },
+  "leakage_control": "Chronological split; lag/rolling features use values before t; both forecasts share one closed-loop origin and never use actual validation/test targets as inputs."
 }

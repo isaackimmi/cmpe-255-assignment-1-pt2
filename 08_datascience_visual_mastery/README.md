@@ -3,9 +3,9 @@
 An offline-friendly, GitHub Pages-ready mini curriculum for beginner data-science students. The page is designed as a polished learning UI: a responsive lesson rail, progress cues, clear math callouts, live simulation panels, metric cards, quizzes, and interview prompts. It teaches four ideas with live, deterministic simulations:
 
 1. **Naive Bayes** — update a prior with evidence and see the posterior move.
-2. **Model evaluation** — change a threshold and inspect the confusion matrix, precision/recall, ROC point, and a simple cost matrix.
+2. **Model evaluation** — change a threshold and inspect the confusion matrix, precision/recall, ROC curve/AUC, and an explicit cost matrix.
 3. **Derivatives and gradient descent** — visualize a tangent slope and watch a parameter descend a quadratic loss.
-4. **Chain rule and backpropagation** — step through a tiny two-layer computation graph and see each local derivative multiply into a gradient.
+4. **Chain rule and backpropagation** — step through a tiny one-neuron affine computation graph and see each local derivative multiply into a gradient.
 
 Every lesson includes an intuition paragraph, the governing math, a live interaction, a check-your-understanding quiz, and interview questions. The page has no network dependency, external fonts, or build step; it can be opened directly as `index.html` or deployed to GitHub Pages.
 
@@ -27,14 +27,15 @@ open index.html                    # macOS; or double-click it
 
 The visual language is intentionally self-contained in `index.html`: system fonts, inline CSS, and inline SVG keep screenshots deterministic and GitHub Pages deployment simple.
 
-The plot command creates four snapshots in `artifacts/` (PNG when Matplotlib is installed, otherwise dependency-free SVG). The browser page uses inline SVG so it remains portable; the snapshots are audit-friendly views of the same concepts.
+The plot command creates four snapshots in `artifacts/` (PNG when Matplotlib is installed, otherwise dependency-free SVG). The browser page uses inline SVG so it remains portable; the snapshots use concept-specific labels, values, and geometry so they remain audit-friendly without optional plotting packages.
 
 ## Project layout
 
 - `index.html` — responsive static interactive curriculum; suitable for GitHub Pages and screenshot capture.
+- `app.js` — browser-side simulations kept separate from the page shell for readable, testable parity with the Python calculations.
 - `src/concepts.py` — pure-Python reference calculations used by the page design and tests.
 - `src/generate_plots.py` — deterministic plot/screenshot generator.
-- `tests/test_concepts.py` — numerical invariants, edge cases, and artifact tests.
+- `tests/test_concepts.py` — numerical invariants, edge cases, ROC-AUC, and concept-specific artifact tests.
 - `artifacts/` — generated plots and `manifest.json`.
 
 ## Reproducibility and responsible interpretation

@@ -3,57 +3,175 @@
     "raw_rows": 24,
     "clean_rows": 23,
     "duplicates_removed": 1,
-    "missing_values_imputed": 1
+    "missing_values_by_column": {
+      "tenure_months": 0,
+      "monthly_usage": 1,
+      "support_tickets": 0
+    },
+    "missing_values_imputed": 1,
+    "validation": "schema, finite numeric values, nonnegative domains, known plans, binary labels, and identical-duplicate policy"
   },
   "eda": {
-    "usage_mean": 53.02173913043478,
-    "usage_renewal_correlation": 0.6512660342771502,
-    "usage_ticket_correlation": -0.9031219505283399
+    "usage_mean_observed": 52.86363636363637,
+    "observed_usage_rows": 22,
+    "usage_renewal_correlation": 0.7309070091318596,
+    "usage_ticket_correlation": -0.9250023950384503,
+    "interpretation": "descriptive association, not causal evidence"
   },
   "regression": {
     "feature": "tenure_months",
     "target": "monthly_usage",
-    "train_rows": 16,
-    "test_rows": 7,
-    "mae": 4.380432873825621,
-    "rmse": 7.870662856507256
+    "evaluation": "single seeded shuffled holdout",
+    "seed": 255,
+    "test_fraction": 0.3,
+    "train_rows": 15,
+    "train_candidate_rows": 16,
+    "test_candidate_rows": 7,
+    "scored_rows": 7,
+    "missing_train_targets_excluded": 1,
+    "missing_test_targets_excluded": 0,
+    "train_feature_imputed": {
+      "tenure_months": 0
+    },
+    "test_feature_imputed": {
+      "tenure_months": 0
+    },
+    "mae": 2.062497633143564,
+    "rmse": 2.324813220379236,
+    "r2": 0.9847862177691813,
+    "mean_baseline_mae": 15.571428571428571,
+    "mean_baseline_rmse": 18.848182094142878
   },
   "classification": {
+    "evaluation": "single seeded stratified holdout",
+    "seed": 255,
+    "test_fraction": 0.3,
+    "train_rows": 16,
+    "test_rows": 7,
     "rule": "usage >= 45 and support_tickets <= 2",
     "threshold": 45,
-    "accuracy": 0.8260869565217391,
+    "threshold_source": "fixed domain rule; not tuned on this fixture",
+    "train_feature_imputed": {
+      "monthly_usage": 0,
+      "support_tickets": 0
+    },
+    "test_feature_imputed": {
+      "monthly_usage": 1,
+      "support_tickets": 0
+    },
+    "accuracy": 0.7142857142857143,
     "precision": 1.0,
-    "recall": 0.7777777777777778,
+    "recall": 0.6,
+    "f1": 0.7499999999999999,
+    "specificity": 1.0,
+    "balanced_accuracy": 0.8,
     "confusion_matrix": [
       [
-        5,
+        2,
         0
       ],
       [
-        4,
-        14
+        2,
+        3
       ]
-    ]
+    ],
+    "n": 7,
+    "majority_baseline_class": 1,
+    "majority_baseline_accuracy": 0.7142857142857143
   },
   "clustering": {
     "k": 2,
+    "selection": "highest silhouette among candidate k values 1-4",
     "features": [
       "monthly_usage",
       "support_tickets"
     ],
+    "scaling": "z-score, fit on all clean rows for descriptive clustering",
     "cluster_sizes": [
       9,
       14
     ],
     "centers": [
       [
-        33.666666666666664,
-        3.2222222222222223
+        35.05555555555556,
+        3.4444444444444446
       ],
       [
-        65.46428571428571,
-        0.5
+        64.57142857142857,
+        0.3571428571428572
       ]
+    ],
+    "scaled_centers": [
+      [
+        -0.9945748748691623,
+        1.0647030255719723
+      ],
+      [
+        0.6393695624158902,
+        -0.6844519450105536
+      ]
+    ],
+    "inertia": 14.613303937335267,
+    "silhouette": 0.5463277835696762,
+    "converged": true,
+    "iterations": 2,
+    "n_init": 20,
+    "initialization_inertia_range": [
+      14.613303937335267,
+      14.797367597742728
+    ],
+    "candidate_k": [
+      {
+        "k": 1,
+        "inertia": 46.0,
+        "silhouette": 0.0,
+        "n_init": 20,
+        "converged": true,
+        "initialization_inertia_range": [
+          46.0,
+          46.0
+        ]
+      },
+      {
+        "k": 2,
+        "inertia": 14.613303937335267,
+        "silhouette": 0.5463277835696762,
+        "n_init": 20,
+        "converged": true,
+        "initialization_inertia_range": [
+          14.613303937335267,
+          14.797367597742728
+        ]
+      },
+      {
+        "k": 3,
+        "inertia": 6.27764966447317,
+        "silhouette": 0.5174855497219734,
+        "n_init": 20,
+        "converged": true,
+        "initialization_inertia_range": [
+          6.27764966447317,
+          6.651650745235168
+        ]
+      },
+      {
+        "k": 4,
+        "inertia": 4.538000077294872,
+        "silhouette": 0.49838237527855156,
+        "n_init": 20,
+        "converged": true,
+        "initialization_inertia_range": [
+          4.538000077294872,
+          5.566322911323265
+        ]
+      }
     ]
+  },
+  "reproducibility": {
+    "seed": 255,
+    "test_fraction": 0.3,
+    "cluster_iterations": 100,
+    "cluster_n_init": 20,
+    "input_sha256": "3f58189541122eff9dd2e41f362ca12fabc4b18792803a5e1191dd5f8f57479b"
   }
 }

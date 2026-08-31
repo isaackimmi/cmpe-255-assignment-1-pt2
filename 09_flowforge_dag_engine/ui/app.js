@@ -10,18 +10,28 @@ const TASKS = [
     output: "[{age: 22, score: 81}, {age: null, score: 74}, …]",
   },
   {
-    name: "clean_data",
+    name: "validate_data",
     number: "02",
+    type: "quality gate",
+    kind: "VALIDATE",
+    depends: "load_data",
+    produces: "validated rows",
+    description: "Checks required fields, numeric types, ranges, and non-empty input before transformation.",
+    output: "schema ✓ · 3 rows · score range ✓",
+  },
+  {
+    name: "clean_data",
+    number: "03",
     type: "transform",
     kind: "TRANSFORM",
-    depends: "load_data",
+    depends: "validate_data",
     produces: "list[dict]",
-    description: "Fills missing values so downstream tasks receive a usable table.",
+    description: "Applies the documented missing-age policy while preserving legitimate zero values.",
     output: "[{age: 22, score: 81}, {age: 0, score: 74}, …]",
   },
   {
     name: "summarize",
-    number: "03",
+    number: "04",
     type: "analyze",
     kind: "ANALYZE",
     depends: "clean_data",
@@ -31,13 +41,13 @@ const TASKS = [
   },
   {
     name: "report",
-    number: "04",
+    number: "05",
     type: "output",
     kind: "OUTPUT",
     depends: "summarize",
     produces: "str",
     description: "Turns the summary into a concise, human-readable result.",
-    output: '"Processed 3 rows; mean score=83.3"',
+    output: '"Processed 3 rows; mean score=83.3; run seed=255"',
   },
 ];
 
@@ -125,7 +135,7 @@ function setRunCopy() {
     graphStatus.innerHTML = "<b></b> Demo complete";
     graphStatus.classList.add("done");
     timelineTitle.textContent = "All dependencies resolved";
-    runResult.innerHTML = '<span class="result-icon">✦</span><span><strong>Run complete.</strong> Four tasks finished in stable topological order.</span>';
+    runResult.innerHTML = '<span class="result-icon">✦</span><span><strong>Run complete.</strong> Five tasks finished in stable topological order.</span>';
     runButton.innerHTML = '<span class="button-icon" aria-hidden="true">↻</span> Replay demo';
     runButton.classList.remove("running");
   } else if (running) {

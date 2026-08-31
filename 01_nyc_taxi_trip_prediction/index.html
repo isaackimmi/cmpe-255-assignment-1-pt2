@@ -36,11 +36,11 @@
             <a class="text-link" href="#method">See the workflow <span>↓</span></a>
           </div>
         </div>
-        <div class="hero-orbit" aria-label="Experiment result: model MAE 82 seconds">
+        <div class="hero-orbit" aria-label="Experiment result: model MAE 81.732 seconds">
           <div class="orbit orbit-one"></div>
           <div class="orbit orbit-two"></div>
           <div class="orbit-dot dot-a"></div><div class="orbit-dot dot-b"></div><div class="orbit-dot dot-c"></div>
-          <div class="hero-stat"><span>MODEL MAE</span><strong><b data-metric="model-mae">82.045</b><small> sec</small></strong><p>44.5% below baseline</p></div>
+          <div class="hero-stat"><span>MODEL MAE</span><strong><b data-metric="model-mae">81.732</b><small> sec</small></strong><p><b data-metric="improvement">43.1</b>% below baseline</p></div>
         </div>
       </section>
 
@@ -50,22 +50,22 @@
           <p class="section-note">The linear model on a log-transformed target is the strongest checked-in result. All figures below are loaded from <code>outputs/metrics.json</code>.</p>
         </div>
         <div class="metric-grid">
-          <article class="metric-card accent-card"><span class="card-label">MODEL MAE</span><strong><span data-metric="model-mae">82.045</span><small> sec</small></strong><p>average absolute error</p><span class="card-index">01</span></article>
-          <article class="metric-card"><span class="card-label">BASELINE MAE</span><strong><span data-metric="baseline-mae">147.927</span><small> sec</small></strong><p>median-duration baseline</p><span class="card-index">02</span></article>
-          <article class="metric-card"><span class="card-label">IMPROVEMENT</span><strong><span data-metric="improvement">44.5</span><small>%</small></strong><p>lower MAE vs baseline</p><span class="card-index">03</span></article>
-          <article class="metric-card"><span class="card-label">MODEL R²</span><strong data-metric="r2">0.6874</strong><p>variance explained</p><span class="card-index">04</span></article>
+          <article class="metric-card accent-card"><span class="card-label">MODEL MAE</span><strong><span data-metric="model-mae">81.732</span><small> sec</small></strong><p>average absolute error</p><span class="card-index">01</span></article>
+          <article class="metric-card"><span class="card-label">BASELINE MAE</span><strong><span data-metric="baseline-mae">143.727</span><small> sec</small></strong><p>median-duration baseline</p><span class="card-index">02</span></article>
+          <article class="metric-card"><span class="card-label">IMPROVEMENT</span><strong><span data-metric="improvement">43.1</span><small>%</small></strong><p>lower MAE vs baseline</p><span class="card-index">03</span></article>
+          <article class="metric-card"><span class="card-label">MODEL R²</span><strong data-metric="r2">0.6630</strong><p>variance explained</p><span class="card-index">04</span></article>
         </div>
-        <div class="insight-strip"><span class="signal-icon">↗</span><p><strong>What changed?</strong> The model uses pickup time, passenger count, coordinates, and engineered distance features to move from a single median guess to a trip-specific estimate.</p><span class="dataset-meta"><b data-metric="rows">6,000</b> cleaned rows <i></i> <b data-metric="split">4,800 / 1,200</b> train / test</span></div>
+        <div class="insight-strip"><span class="signal-icon">↗</span><p><strong>What changed?</strong> The model uses pickup time, passenger count, coordinates, and engineered distance features to move from a single median guess to a trip-specific estimate.</p><span class="dataset-meta"><b data-metric="rows">5,939</b> cleaned rows <i></i> <b data-metric="split">4,752 / 1,187</b> train / test</span></div>
       </section>
 
       <section class="section-wrap section-block split-section">
         <article class="comparison-panel panel">
           <div class="panel-heading"><div><p class="eyebrow">02 / performance</p><h2>Less error, more signal.</h2></div><span class="panel-tag">MAE · seconds</span></div>
           <div class="comparison-chart" aria-label="Comparison of baseline and model mean absolute error">
-            <div class="comparison-row"><div class="compare-label"><span>Median baseline</span><strong data-metric="baseline-mae">147.927</strong></div><div class="bar-track"><span class="bar bar-baseline" style="width: 100%"></span></div></div>
-            <div class="comparison-row"><div class="compare-label"><span>Log-target linear model</span><strong data-metric="model-mae">82.045</strong></div><div class="bar-track"><span class="bar bar-model" style="width: 55.46%"></span></div></div>
+            <div class="comparison-row"><div class="compare-label"><span>Median baseline</span><strong data-metric="baseline-mae">143.727</strong></div><div class="bar-track"><span class="bar bar-baseline" style="width: 100%"></span></div></div>
+            <div class="comparison-row"><div class="compare-label"><span>Log-target linear model</span><strong data-metric="model-mae">81.732</strong></div><div class="bar-track"><span class="bar bar-model" style="width: 56.87%"></span></div></div>
           </div>
-          <div class="comparison-callout"><strong>44.5%</strong><span>MAE reduction</span><p>The model cuts typical error by nearly a minute against a single-number baseline.</p></div>
+          <div class="comparison-callout"><strong><b data-metric="improvement">43.1</b>%</strong><span>MAE reduction</span><p>The model reduces MAE by <b data-metric="mae-delta">61.995</b> seconds against the global median baseline in this run.</p></div>
           <div class="legend"><span><i class="legend-dot baseline"></i> baseline</span><span><i class="legend-dot model"></i> model</span></div>
         </article>
 
@@ -103,7 +103,7 @@
               <svg id="estimate-chart" viewBox="0 0 520 132" role="img" aria-label="Illustrative duration estimate chart"></svg>
             </div>
             <div class="result-foot"><span><b id="distance-value">2.1</b> mi route</span><span><b id="context-value">rush-hour</b> context</span></div>
-            <div class="disclaimer"><span>i</span><p><strong>Illustrative by design.</strong> This browser calculation mirrors the synthetic generator’s directional relationships; it does not load model weights or make a production prediction.</p></div>
+            <div class="disclaimer"><span>i</span><p><strong>Illustrative by design.</strong> This browser calculation is a deterministic, no-noise visualization of the synthetic generator’s directional relationships; it does not load model weights or make a production prediction.</p></div>
           </div>
         </div>
       </section>
@@ -115,7 +115,7 @@
           <article class="timeline-step"><span class="step-number">02</span><div class="step-line"></div><h3>Data<br />understanding</h3><p>Use NYC-like trip rows with coordinates, timestamps, passengers, and vendor.</p></article>
           <article class="timeline-step"><span class="step-number">03</span><div class="step-line"></div><h3>Data<br />preparation</h3><p>Clean coordinates and durations; derive time, distance, and delta features.</p></article>
           <article class="timeline-step active"><span class="step-number">04</span><div class="step-line"></div><h3>Modeling</h3><p>Fit a regularized linear model on <code>log1p</code> duration after a time split.</p></article>
-          <article class="timeline-step"><span class="step-number">05</span><div class="step-line"></div><h3>Evaluation</h3><p>Compare MAE, RMSE, and R² against the median baseline.</p></article>
+          <article class="timeline-step"><span class="step-number">05</span><div class="step-line"></div><h3>Evaluation</h3><p>Compare MAE, RMSE, and R² against global, recent, and hour-conditioned baselines across chronological folds.</p></article>
           <article class="timeline-step"><span class="step-number">06</span><div class="step-line"></div><h3>Deployment</h3><p>Expose artifacts in this static UI and keep the Python run path intact.</p></article>
         </div>
       </section>

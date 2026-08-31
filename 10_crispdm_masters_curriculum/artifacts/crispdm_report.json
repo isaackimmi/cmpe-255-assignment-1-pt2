@@ -1,17 +1,39 @@
 {
+  "report_schema_version": "2.0",
+  "runtime": {
+    "python": "3.12.8",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "numpy": "2.5.2",
+    "scikit_learn": "1.9.0",
+    "joblib": "1.5.2"
+  },
+  "random_state": 42,
   "business_understanding": {
-    "objective": "Classify Iris flowers from four measured attributes.",
-    "success_criteria": "Holdout accuracy >= 0.90 and a documented evaluation.",
+    "scope": "Bounded Iris supervised-classification walkthrough",
+    "objective": "Classify an Iris flower from four measured attributes.",
+    "decision": "A student analyst uses the predicted species to demonstrate an auditable classification workflow; no production or clinical decision is implied.",
+    "success_criteria": "Beat the majority-class baseline in training-only repeated stratified CV, then report the fixed holdout result with uncertainty and class-level support.",
     "stakeholders": [
       "student analyst",
       "course reviewer"
     ],
+    "operational_constraints": [
+      "Four numeric measurements in centimeters",
+      "Local, deterministic execution with no network dependency",
+      "Reject malformed or out-of-domain inputs before inference"
+    ],
+    "error_costs": "All class errors are treated as educationally important; no real-world cost matrix has been validated.",
     "assumptions": [
-      "The labeled sample is representative of the intended use."
+      "The bundled Iris sample is representative only of this classroom exercise.",
+      "The fixed holdout is selected before model fitting and is used once for final reporting."
     ]
   },
   "data_understanding": {
     "dataset": "sklearn.datasets.load_iris",
+    "provenance": "Bundled with the installed scikit-learn package; no network download.",
+    "dataset_version": "1.9.0",
+    "license_note": "Review scikit-learn and the upstream UCI Iris terms before redistribution.",
+    "content_sha256": "8c47bf68259b17207146cca6a2ccf6a01a88323ac3eea1e4e8ec5908190b44e9",
     "rows": 150,
     "features": [
       "sepal length (cm)",
@@ -29,19 +51,177 @@
       "setosa": 50,
       "versicolor": 50,
       "virginica": 50
+    },
+    "quality_checks": {
+      "schema_valid": true,
+      "finite_values": true,
+      "invalid_labels": 0,
+      "duplicate_feature_rows": 1,
+      "duplicate_row_instances": 1,
+      "feature_min": [
+        4.3,
+        2.0,
+        1.0,
+        0.1
+      ],
+      "feature_max": [
+        7.9,
+        4.4,
+        6.9,
+        2.5
+      ],
+      "feature_units": "cm",
+      "label_values": [
+        0,
+        1,
+        2
+      ]
     }
   },
   "data_preparation": {
     "train_rows": 120,
     "test_rows": 30,
-    "split": "80/20 stratified holdout",
-    "preprocessing": "StandardScaler fit inside a pipeline on training data only"
+    "split": "Fixed 80/20 stratified holdout; selected before fitting and used once for final evaluation.",
+    "train_test_overlap_rows": 0,
+    "preprocessing": "StandardScaler is fit inside each candidate pipeline on each training fold only.",
+    "input_contract": {
+      "feature_names": [
+        "sepal length (cm)",
+        "sepal width (cm)",
+        "petal length (cm)",
+        "petal width (cm)"
+      ],
+      "units": "cm",
+      "dtype": "finite real number",
+      "required_count": 4,
+      "allowed_range_per_feature": [
+        0.0,
+        10.0
+      ],
+      "invalid_input_policy": "Reject with ValueError; do not impute or reorder caller-provided values."
+    }
   },
   "modeling": {
-    "algorithm": "StandardScaler + multinomial LogisticRegression"
+    "selection_protocol": "3 repeats of 5-fold stratified CV on training rows only",
+    "selection_metric": "accuracy",
+    "tie_breaking": "Candidate declaration order after mean CV accuracy",
+    "candidates": [
+      {
+        "name": "majority_class",
+        "algorithm": "DummyClassifier",
+        "cv_scores": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "cv_accuracy_mean": 0.33333333333333326,
+        "cv_accuracy_std": 5.551115123125783e-17,
+        "cv_accuracy_min": 0.3333333333333333,
+        "cv_accuracy_max": 0.3333333333333333
+      },
+      {
+        "name": "logistic_regression",
+        "algorithm": "StandardScaler + LogisticRegression",
+        "cv_scores": [
+          0.9583333333333334,
+          1.0,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          1.0,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          1.0,
+          1.0,
+          0.9166666666666666
+        ],
+        "cv_accuracy_mean": 0.9583333333333334,
+        "cv_accuracy_std": 0.030429030972509243,
+        "cv_accuracy_min": 0.9166666666666666,
+        "cv_accuracy_max": 1.0
+      },
+      {
+        "name": "knn",
+        "algorithm": "Pipeline",
+        "cv_scores": [
+          0.9583333333333334,
+          1.0,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9583333333333334,
+          1.0,
+          0.9583333333333334,
+          0.9166666666666666
+        ],
+        "cv_accuracy_mean": 0.9555555555555557,
+        "cv_accuracy_std": 0.023895347964007312,
+        "cv_accuracy_min": 0.9166666666666666,
+        "cv_accuracy_max": 1.0
+      },
+      {
+        "name": "decision_tree",
+        "algorithm": "DecisionTreeClassifier",
+        "cv_scores": [
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9166666666666666,
+          1.0,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          0.875,
+          0.9583333333333334,
+          1.0,
+          1.0,
+          0.875
+        ],
+        "cv_accuracy_mean": 0.9472222222222223,
+        "cv_accuracy_std": 0.03868996743662257,
+        "cv_accuracy_min": 0.875,
+        "cv_accuracy_max": 1.0
+      }
+    ],
+    "selected_model": "logistic_regression",
+    "algorithm": "StandardScaler + multinomial LogisticRegression",
+    "model_fingerprint": "8dda7cb399fc1d00e59d2edcb28412a9e5d19e3b5b7450692e53272b0ef59213",
+    "baseline_cv_accuracy": 0.33333333333333326,
+    "selected_cv_accuracy": 0.9583333333333334,
+    "beats_baseline_in_cv": true
   },
   "evaluation": {
     "accuracy": 0.9333333333333333,
+    "correct": 28,
+    "total": 30,
+    "accuracy_95_wilson_interval": [
+      0.7867618227892791,
+      0.9815233646723066
+    ],
     "confusion_matrix": [
       [
         10,
@@ -91,14 +271,71 @@
         "f1-score": 0.9333333333333333,
         "support": 30.0
       }
+    },
+    "failure_cases": [
+      {
+        "row_number_in_holdout": 23,
+        "actual_class": "virginica",
+        "predicted_class": "versicolor"
+      },
+      {
+        "row_number_in_holdout": 25,
+        "actual_class": "versicolor",
+        "predicted_class": "virginica"
+      }
+    ],
+    "majority_baseline": {
+      "accuracy": 0.3333333333333333,
+      "correct": 10,
+      "accuracy_delta": 0.6000000000000001
     }
   },
   "deployment": {
-    "next_step": "Package the fitted pipeline behind a prediction API after external validation.",
-    "monitoring": [
-      "input ranges",
-      "class distribution",
-      "accuracy on reviewed labels"
-    ]
+    "status": "Local inference artifact produced; not production approved.",
+    "model_artifact": "model.joblib",
+    "inference_command": "python3 src/inference.py --model-path artifacts/model.joblib --features 5.1 3.5 1.4 0.2",
+    "input_contract": {
+      "feature_names": [
+        "sepal length (cm)",
+        "sepal width (cm)",
+        "petal length (cm)",
+        "petal width (cm)"
+      ],
+      "units": "cm",
+      "dtype": "finite real number",
+      "required_count": 4,
+      "allowed_range_per_feature": [
+        0.0,
+        10.0
+      ],
+      "invalid_input_policy": "Reject with ValueError; do not impute or reorder caller-provided values."
+    },
+    "monitoring_plan": [
+      {
+        "signal": "input validation failures",
+        "window": "daily",
+        "action": "inspect caller/schema changes before accepting traffic"
+      },
+      {
+        "signal": "feature range and class distribution drift",
+        "window": "weekly",
+        "action": "compare with the checked-in training snapshot"
+      },
+      {
+        "signal": "accuracy on reviewed labels",
+        "window": "monthly or every 100 reviewed rows",
+        "action": "retrain and re-run the locked evaluation if it falls below the CV-informed expectation"
+      }
+    ],
+    "rollback": "Keep the previous model bundle and restore it if a reviewed evaluation or contract check fails.",
+    "claim_boundary": "This artifact supports local, schema-validated inference on Iris-like measurements only; it does not establish external or production performance."
+  },
+  "artifacts": {
+    "iris_snapshot.csv": {
+      "sha256": "76188fc8f820b97004a4635c0bd8d01f7dbb7f6756058d07bb56a34a135d1e85"
+    },
+    "model.joblib": {
+      "sha256": "267d5182d3510d5b3f35c05b52bfc493c0621f00a287f117279d1ae597b1ec4c"
+    }
   }
 }

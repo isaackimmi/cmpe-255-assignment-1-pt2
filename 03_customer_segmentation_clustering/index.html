@@ -49,16 +49,16 @@
 
       <section class="metric-strip shell" aria-label="Selected run metrics">
         <div class="metric metric-featured"><span class="metric-label">Selected model</span><strong id="selected-model">K-Means · k=—</strong><small id="run-size">— customers · seed —</small></div>
-        <div class="metric"><span class="metric-label">Silhouette <span class="help" title="Higher is better; used as the primary selection criterion.">?</span></span><strong id="silhouette">—</strong><small>primary selection signal</small></div>
-        <div class="metric"><span class="metric-label">Calinski–Harabasz <span class="help" title="Higher values generally indicate dense, well-separated clusters.">?</span></span><strong id="calinski">—</strong><small>separation / compactness</small></div>
-        <div class="metric"><span class="metric-label">Davies–Bouldin <span class="help" title="Lower values generally indicate better separation.">?</span></span><strong id="davies">—</strong><small>lower is better</small></div>
+        <div class="metric"><span class="metric-label">Held-out silhouette <span class="help" title="Mean silhouette on repeated holdout rows; exploratory on synthetic data.">?</span></span><strong id="silhouette">—</strong><small id="silhouette-note">validation mean ± uncertainty</small></div>
+        <div class="metric"><span class="metric-label">Stability ARI <span class="help" title="Adjusted Rand index across repeated fitted partitions; higher means more stable memberships.">?</span></span><strong id="stability">—</strong><small id="stability-note">agreement across repeats</small></div>
+        <div class="metric"><span class="metric-label">Full-sample silhouette</span><strong id="fit-silhouette">—</strong><small id="fit-note">descriptive diagnostic only</small></div>
       </section>
 
       <section class="section shell" id="profiles">
         <div class="section-heading">
           <div>
             <p class="eyebrow">What the model found</p>
-            <h2>Three profiles, one useful starting point.</h2>
+            <h2 id="profile-heading">Heuristic profiles, one useful starting point.</h2>
           </div>
           <div class="controls">
             <label class="control-label" for="feature-select">Compare feature</label>
@@ -90,14 +90,14 @@
         </div>
         <div class="evidence-grid">
           <div class="panel score-panel">
-            <div class="panel-heading"><div><h3>Improved preprocessing</h3><p>log1p income + order value → StandardScaler</p></div><span class="mini-badge">k = 2–7</span></div>
-            <div class="score-table-wrap"><table class="score-table"><thead><tr><th>k</th><th>Silhouette</th><th>CH</th><th>DB</th></tr></thead><tbody id="score-body"><tr><td colspan="4">Loading scores…</td></tr></tbody></table></div>
-            <div class="legend-line"><span class="legend-swatch selected-swatch"></span>selected run <span class="legend-copy">higher silhouette is preferred</span></div>
+            <div class="panel-heading"><div><h3>Exploratory validation</h3><p>Repeated 80/20 holdouts · means ± standard deviation</p></div><span class="mini-badge">k = 2–7</span></div>
+            <div class="score-table-wrap"><table class="score-table"><thead><tr><th>Variant</th><th>k</th><th>Held-out silhouette</th><th>Stability ARI</th></tr></thead><tbody id="score-body"><tr><td colspan="4">Loading scores…</td></tr></tbody></table></div>
+            <div class="legend-line"><span class="legend-swatch selected-swatch"></span>selected run <span class="legend-copy">internal validation, not business evidence</span></div>
           </div>
           <figure class="panel plot-panel">
             <div class="panel-heading"><div><h3>Segmentation artifact</h3><p>Selection curve + PCA projection exported by the Python run</p></div><span class="mini-badge">artifact</span></div>
-            <div class="plot-frame"><img src="artifacts/segmentation.png" alt="Two-panel plot showing silhouette scores by k and a PCA customer map with three clusters" /></div>
-            <figcaption>Visual diagnostics only: PCA compresses the four feature dimensions into two axes.</figcaption>
+            <div class="plot-frame"><img src="artifacts/segmentation.png" alt="Two-panel plot showing held-out silhouette validation by k and a PCA customer map" /></div>
+            <figcaption>Exploratory diagnostics only: PCA compresses the four feature dimensions into two axes.</figcaption>
           </figure>
         </div>
       </section>

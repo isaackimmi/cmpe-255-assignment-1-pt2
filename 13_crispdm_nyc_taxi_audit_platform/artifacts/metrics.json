@@ -1,9 +1,24 @@
 {
+  "evaluation_type": "synthetic_smoke_test",
+  "data_source": "deterministic in-memory NYC-like generator",
+  "raw_rows": 1200,
+  "retained_rows": 1194,
+  "excluded_target_rows": 6,
   "train_rows": 955,
   "test_rows": 239,
-  "mae_minutes": 2.794,
-  "rmse_minutes": 3.622,
+  "test_fraction": 0.2002,
+  "mae_minutes": 2.79,
+  "rmse_minutes": 3.624,
   "r2": 0.892,
-  "within_5_minutes_rate": 0.845,
-  "split": "chronological 80/20"
+  "within_5_minutes_rate": 0.841,
+  "split": "chronological 80/20; preprocessing fitted on training rows only",
+  "target_policy": {
+    "field": "trip_duration_minutes",
+    "missing": "exclude",
+    "non_numeric": "exclude",
+    "non_finite": "exclude",
+    "non_positive": "exclude",
+    "maximum_minutes": 180.0,
+    "above_maximum": "exclude"
+  }
 }

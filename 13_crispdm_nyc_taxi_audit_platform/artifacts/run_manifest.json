@@ -1,0 +1,87 @@
+{
+  "manifest_version": 1,
+  "command": [
+    "run_platform.py",
+    "--output",
+    "artifacts",
+    "--rows",
+    "1200",
+    "--seed",
+    "255"
+  ],
+  "source": {
+    "data_source": "synthetic",
+    "description": "Deterministic NYC-like fixture; not downloaded TLC data",
+    "data_hash_sha256": "ce8e97906f49d643fbe0cc9fb19546f2babae425d1db7c64a22fefd47be0af3f",
+    "source_hash_sha256": "3e5749aa5e8fc23874ecee1ab7a1dca45e287952381bfffca08624fbd63c7390",
+    "git_revision": "8de463527ee123c0af1f08f0320a11995f02f728"
+  },
+  "runtime": {
+    "python": "3.14.7",
+    "packages": {
+      "joblib": "1.5.3",
+      "matplotlib": "3.11.1",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.0"
+    }
+  },
+  "configuration": {
+    "rows_argument": 1200,
+    "seed": 255,
+    "features": [
+      "pickup_hour",
+      "weekday",
+      "is_rush_hour",
+      "passenger_count",
+      "distance_miles",
+      "pickup_zone",
+      "dropoff_zone"
+    ],
+    "numeric_features": [
+      "pickup_hour",
+      "weekday",
+      "is_rush_hour",
+      "passenger_count",
+      "distance_miles"
+    ],
+    "categorical_features": [
+      "pickup_zone",
+      "dropoff_zone"
+    ],
+    "model": {
+      "type": "HistGradientBoostingRegressor",
+      "max_iter": 120,
+      "max_leaf_nodes": 15,
+      "learning_rate": 0.07,
+      "random_state": 255
+    },
+    "split": "sort by pickup_datetime; first 80% train; final 20% holdout",
+    "target_policy": {
+      "field": "trip_duration_minutes",
+      "missing": "exclude",
+      "non_numeric": "exclude",
+      "non_finite": "exclude",
+      "non_positive": "exclude",
+      "maximum_minutes": 180.0,
+      "above_maximum": "exclude"
+    },
+    "distance_policy": {
+      "maximum_miles": 100.0,
+      "invalid_values": "coerce to missing and impute in fitted training pipeline"
+    }
+  },
+  "population": {
+    "raw_rows": 1200,
+    "retained_rows": 1194,
+    "excluded_target_rows": 6,
+    "excluded_target_trip_ids": [
+      1,
+      212,
+      423,
+      634,
+      845,
+      1056
+    ]
+  }
+}

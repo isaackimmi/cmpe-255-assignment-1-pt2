@@ -1,12 +1,157 @@
 {
+  "schema_version": 2,
+  "run_id": "20260831T063550Z",
+  "command": [
+    "/private/tmp/cmpe255-project07-venv/bin/python",
+    "src/run_experiment.py",
+    "--no-autogluon",
+    "--output-dir",
+    "artifacts"
+  ],
   "backend": "sklearn_fallback",
+  "requested_backend": "sklearn_only",
+  "attempted_backend": [
+    "sklearn"
+  ],
+  "backend_status": {
+    "sklearn": "completed",
+    "autogluon": "disabled"
+  },
+  "failure_type": {
+    "autogluon": null
+  },
   "autogluon_note": "AutoGluon disabled by caller",
   "random_seed": 255,
-  "ranking_metric": "roc_auc",
+  "ranking_metric": "cv_roc_auc_mean",
+  "selection_scope": "development_cv",
+  "final_evaluation_scope": "final_holdout",
   "models": [
     "logistic_regression",
     "extra_trees",
     "hist_gradient_boosting",
     "random_forest"
-  ]
+  ],
+  "selected_model": "logistic_regression",
+  "final_metrics_artifact": "final_metrics.json",
+  "cv_splits": 5,
+  "cv_repeats": 2,
+  "autogluon_settings": {
+    "presets": "medium_quality",
+    "time_limit_seconds": 60,
+    "num_cpus": 1,
+    "random_seed": 255
+  },
+  "model_parameters": {
+    "logistic_regression": {
+      "memory": null,
+      "steps": [
+        [
+          "standardscaler",
+          "StandardScaler()"
+        ],
+        [
+          "logisticregression",
+          "LogisticRegression(max_iter=1000, random_state=255)"
+        ]
+      ],
+      "transform_input": null,
+      "verbose": false,
+      "standardscaler": "StandardScaler()",
+      "logisticregression": "LogisticRegression(max_iter=1000, random_state=255)",
+      "standardscaler__copy": true,
+      "standardscaler__with_mean": true,
+      "standardscaler__with_std": true,
+      "logisticregression__C": 1.0,
+      "logisticregression__class_weight": null,
+      "logisticregression__dual": false,
+      "logisticregression__fit_intercept": true,
+      "logisticregression__intercept_scaling": 1,
+      "logisticregression__l1_ratio": 0.0,
+      "logisticregression__max_iter": 1000,
+      "logisticregression__n_jobs": null,
+      "logisticregression__penalty": "deprecated",
+      "logisticregression__random_state": 255,
+      "logisticregression__solver": "lbfgs",
+      "logisticregression__tol": 0.0001,
+      "logisticregression__verbose": 0,
+      "logisticregression__warm_start": false
+    },
+    "random_forest": {
+      "bootstrap": true,
+      "ccp_alpha": 0.0,
+      "class_weight": null,
+      "criterion": "gini",
+      "max_depth": 8,
+      "max_features": "sqrt",
+      "max_leaf_nodes": null,
+      "max_samples": null,
+      "min_impurity_decrease": 0.0,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "monotonic_cst": null,
+      "n_estimators": 120,
+      "n_jobs": 1,
+      "oob_score": false,
+      "random_state": 255,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "extra_trees": {
+      "bootstrap": false,
+      "ccp_alpha": 0.0,
+      "class_weight": null,
+      "criterion": "gini",
+      "max_depth": 10,
+      "max_features": "sqrt",
+      "max_leaf_nodes": null,
+      "max_samples": null,
+      "min_impurity_decrease": 0.0,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "monotonic_cst": null,
+      "n_estimators": 120,
+      "n_jobs": 1,
+      "oob_score": false,
+      "random_state": 255,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "hist_gradient_boosting": {
+      "categorical_features": "from_dtype",
+      "class_weight": null,
+      "early_stopping": "auto",
+      "interaction_cst": null,
+      "l2_regularization": 0.0,
+      "learning_rate": 0.1,
+      "loss": "log_loss",
+      "max_bins": 255,
+      "max_depth": null,
+      "max_features": 1.0,
+      "max_iter": 100,
+      "max_leaf_nodes": 15,
+      "min_samples_leaf": 20,
+      "monotonic_cst": null,
+      "n_iter_no_change": 10,
+      "random_state": 255,
+      "scoring": "loss",
+      "tol": 1e-07,
+      "validation_fraction": 0.1,
+      "verbose": 0,
+      "warm_start": false
+    }
+  },
+  "environment": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "processor": "arm",
+    "packages": {
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "scikit_learn": "1.9.0",
+      "autogluon_tabular": null
+    },
+    "fit_time_note": "Wall-clock training time is environment-specific; CV values are means across folds."
+  }
 }

@@ -63,6 +63,10 @@ Rendered UI screenshots are stored in [`ui_screenshots/`](ui_screenshots/). They
 - [Comparison report](COMPARISON_REPORT.md)
 - [Video script](VIDEO_SCRIPT.md)
 
+## Data-science robustness review
+
+Each project includes a reviewer-authored [`DS_REVIEW.md`](00_dynamic_todo_workspace/DS_REVIEW.md) with evidence-backed findings. The review pass was implemented on this same branch: leakage boundaries, held-out evaluation, input validation, reproducibility metadata, artifact contracts, and dashboard claims were strengthened where applicable. Review reports remain alongside each project so the reasoning and limitations are auditable.
+
 ## Reproducibility
 
 Each project README contains its own setup and execution instructions. Projects use small or synthetic datasets when the original data, hardware, or external service is impractical; those deviations are documented explicitly.

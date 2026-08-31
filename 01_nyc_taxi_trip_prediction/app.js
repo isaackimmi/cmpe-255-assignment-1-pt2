@@ -1,10 +1,10 @@
 const fallbackMetrics = {
-  rows_after_cleaning: 6000,
-  train_rows: 4800,
-  test_rows: 1200,
-  baseline_median_seconds: 577,
-  baseline: { mae_seconds: 147.927, rmse_seconds: 184.25, r2: -0.0065 },
-  linear_log_target: { mae_seconds: 82.045, rmse_seconds: 102.688, r2: 0.6874 },
+  rows_after_cleaning: 5939,
+  train_rows: 4752,
+  test_rows: 1187,
+  baseline_median_seconds: 576,
+  baseline: { mae_seconds: 143.727, rmse_seconds: 176.635, r2: -0.0033 },
+  linear_log_target: { mae_seconds: 81.732, rmse_seconds: 102.373, r2: 0.663 },
   source: "deterministic synthetic NYC-like fallback"
 };
 
@@ -19,13 +19,17 @@ function renderMetrics(next) {
   const model = metrics.linear_log_target;
   const baseline = metrics.baseline;
   const improvement = ((baseline.mae_seconds - model.mae_seconds) / baseline.mae_seconds) * 100;
+  const maeDelta = baseline.mae_seconds - model.mae_seconds;
   setMetric("model-mae", formatNumber(model.mae_seconds));
   setMetric("baseline-mae", formatNumber(baseline.mae_seconds));
   setMetric("improvement", improvement.toFixed(1));
   setMetric("r2", Number(model.r2).toFixed(4));
   setMetric("rows", Number(metrics.rows_after_cleaning).toLocaleString());
   setMetric("split", `${Number(metrics.train_rows).toLocaleString()} / ${Number(metrics.test_rows).toLocaleString()}`);
+  setMetric("mae-delta", formatNumber(maeDelta));
   $all("[data-source]").forEach((node) => { node.textContent = metrics.source || fallbackMetrics.source; });
+  const heroOrbit = document.querySelector(".hero-orbit");
+  if (heroOrbit) heroOrbit.setAttribute("aria-label", `Experiment result: model MAE ${formatNumber(model.mae_seconds)} seconds`);
   const baselineBar = document.querySelector(".bar-baseline");
   const modelBar = document.querySelector(".bar-model");
   if (baselineBar && modelBar) {

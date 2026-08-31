@@ -1,6 +1,6 @@
 # Project 00 — Dynamic Todo Workspace
 
-A lightweight runnable workspace for planning data-science-agent work. It combines a project queue, dataset context, task filtering, progress summaries, and a small agent activity feed in one local-first web app.
+A lightweight runnable workspace for planning data-science-agent work. It combines a project queue, illustrative dataset context, task filtering, plan progress summaries, and a small demo activity log in one local-first web app.
 
 ## Run locally
 
@@ -19,18 +19,24 @@ The app also works by opening `index.html` directly, although some browsers rest
 - Add, complete, and delete tasks.
 - Filter the queue by status, priority, and search text.
 - Keep a selected workspace brief visible while tasks are edited.
-- View dataset metadata, workflow stages, progress, and agent activity.
+- View illustrative dataset context, workflow stages, progress, and demo activity.
 - Seeded example tasks demonstrate a typical CRISP-DM/data-science-agent loop.
 - Responsive layout for desktop and narrow screens.
 - Polished dashboard presentation with CRISP-DM stage progress, accessible focus states, reduced-motion support, and local static-server compatibility.
 
 ## Tests
 
-The pure task/state helpers are covered with Node's built-in test runner:
+The pure task/state helpers and workflow summary are covered with Node's built-in test runner:
 
 ```bash
 node --test tests/state.test.js
 ```
+
+## Demo-data boundary
+
+This checkout does not contain `retail_orders.parquet`, a profiling report, forecasting code, model output, or evaluation artifacts. The dataset card, workflow, and agent-check button therefore describe planned or simulated work. No displayed quality score, confidence percentage, time-saved estimate, forecast, leakage check, or model metric is a measured result.
+
+Tasks and the activity log are stored in browser local storage when available. Stored tasks are validated on load: safe numeric-string IDs are migrated to numbers, duplicate or malformed records are discarded, and missing metadata is normalized safely. The footer reports when browser storage is unavailable.
 
 ## Documented deviations
 
@@ -47,5 +53,5 @@ The original Project 00 prompt referenced by the assignment was not available in
 ## Integration verification
 
 - **Prompt alignment:** Public Project 00 asks for a modern dynamic todo application; this covers local task queue, filtering, persistence, responsive UI, and seeded workspace context.
-- **Results/artifacts:** `index.html`, `styles.css`, and `src/` are the visual artifact; Node tests passed 4/4.
+- **Results/artifacts:** `index.html`, `styles.css`, and `src/` are the visual artifact; Node tests cover 11 state/workflow cases.
 - **Issue/resolution:** Dependency-free local-first design intentionally omits authentication, multi-user sync, and deployment.

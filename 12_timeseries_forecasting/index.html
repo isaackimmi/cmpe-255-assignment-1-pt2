@@ -39,14 +39,14 @@
         <section class="metric-section section-grid" aria-labelledby="metric-heading">
           <div class="section-intro">
             <p class="eyebrow"><span class="eyebrow-line"></span> OUTCOME SNAPSHOT</p>
-            <h2 id="metric-heading">Baseline leads<br />this test window.</h2>
+            <h2 id="metric-heading"><span id="outcomeHeading">Aligned results</span><br />for this test window.</h2>
             <p>Metrics are loaded from <code>outputs/metrics.json</code>, not hard-coded into the interface.</p>
-            <div class="winner-note"><span class="check-icon">✓</span><span><strong>Seasonal naive</strong> is the lower-error reference on this run.</span></div>
+            <div class="winner-note"><span class="check-icon">✓</span><span><strong id="winnerName">—</strong> <span id="winnerText">is the lower-error forecaster on this run.</span></span></div>
           </div>
           <div class="metric-grid" id="metrics" aria-live="polite">
             <article class="metric-card baseline-card"><div class="metric-card-head"><span class="metric-kicker"><span class="legend-dot orange"></span> BASELINE</span><span class="metric-tag">REFERENCE</span></div><h3>Seasonal naive</h3><div class="metric-row"><div><span class="metric-label">MAE</span><strong id="baselineMae">—</strong></div><div><span class="metric-label">RMSE</span><strong id="baselineRmse">—</strong></div></div><div class="metric-card-foot"><span>12-month lag</span><span class="better-badge" id="baselineBadge">best on run</span></div></article>
             <article class="metric-card model-card"><div class="metric-card-head"><span class="metric-kicker"><span class="legend-dot teal"></span> MODEL</span><span class="metric-tag">FIXED CONFIG</span></div><h3>Hist. gradient boosting</h3><div class="metric-row"><div><span class="metric-label">MAE</span><strong id="modelMae">—</strong></div><div><span class="metric-label">RMSE</span><strong id="modelRmse">—</strong></div></div><div class="metric-card-foot"><span>recursive forecast</span><span class="neutral-badge" id="modelBadge">test result</span></div></article>
-            <article class="delta-card"><div class="metric-card-head"><span class="metric-kicker">RELATIVE VIEW</span><span class="metric-tag dark-tag">MAE</span></div><h3>Reference advantage</h3><strong class="delta-value" id="deltaValue">—</strong><p>lower error for seasonal naive vs. the fixed model configuration</p><div class="delta-bar" aria-hidden="true"><span id="deltaBar"></span></div></article>
+            <article class="delta-card"><div class="metric-card-head"><span class="metric-kicker">RELATIVE VIEW</span><span class="metric-tag dark-tag">MAE</span></div><h3 id="deltaHeading">Relative difference</h3><strong class="delta-value" id="deltaValue">—</strong><p id="deltaDescription">lower error for the winning forecaster on the selected lens</p><div class="delta-bar" aria-hidden="true"><span id="deltaBar"></span></div></article>
           </div>
         </section>
 
@@ -55,17 +55,17 @@
           <div class="forecast-layout">
             <div class="chart-card">
               <div class="chart-toolbar"><div class="chart-legend"><span><i class="legend-line observed"></i>Observed</span><span><i class="legend-line baseline"></i>Seasonal naive</span><span><i class="legend-line model"></i>Gradient boosting</span></div><span class="test-window">TEST WINDOW · <b id="testWindow">36 MONTHS</b></span></div>
-              <div class="chart-frame"><img src="outputs/forecast.png" alt="Observed monthly values with seasonal-naive and gradient-boosting forecasts; a dotted line marks the test start." /></div>
-              <div class="chart-caption"><span><b class="caption-marker"></b> Dotted boundary = first unseen test timestamp</span><span class="mono">forecast.png · source artifact</span></div>
+              <div class="chart-frame"><img id="forecastImage" src="outputs/forecast.png" alt="Observed monthly values with aligned seasonal-naive and gradient-boosting forecasts; dotted lines mark the forecast origin and test start." /></div>
+              <div class="chart-caption"><span><b class="caption-marker"></b> Dotted boundary = forecast origin · dashed = test start</span><span class="mono" id="forecastArtifact">forecast.png · source artifact</span></div>
             </div>
             <aside class="control-card" aria-labelledby="horizon-heading">
               <div class="control-card-head"><span class="control-icon">⌁</span><span class="mini-label">VIEW CONTROL</span></div>
               <h3 id="horizon-heading">Planning horizon</h3>
-              <p class="control-intro">Choose a lens for the held-out window. This control reframes the review only; it does not run a new forecast.</p>
+              <p class="control-intro">Choose a slice of the held-out window. The studio selects matching predictions and metrics emitted by the offline run.</p>
               <div class="horizon-options" role="group" aria-label="Illustrative planning horizon"><button class="horizon-button" type="button" data-horizon="6">06 <span>mo</span></button><button class="horizon-button active" type="button" data-horizon="12">12 <span>mo</span></button><button class="horizon-button" type="button" data-horizon="24">24 <span>mo</span></button><button class="horizon-button" type="button" data-horizon="36">36 <span>mo</span></button></div>
               <div class="horizon-readout"><span class="mini-label">SELECTED LENS</span><strong id="horizonLabel">12 months · one seasonal cycle</strong><span id="horizonDescription">Illustrative planning view across a complete annual pattern.</span></div>
               <div class="horizon-rail" aria-hidden="true"><span id="horizonMarker"></span></div>
-              <div class="illustrative-note"><span>i</span><span><strong>Illustrative interaction.</strong> Connect this selector to a Python backend before treating it as a new prediction.</span></div>
+              <div class="illustrative-note"><span>i</span><span><strong>Illustrative artifact lens.</strong> This selects stored predictions; it does not run new inference. Connect a Python backend before presenting newly generated forecasts.</span></div>
             </aside>
           </div>
         </section>
@@ -89,7 +89,7 @@
 
         <section class="runbook-section section-grid" id="runbook" aria-labelledby="runbook-heading">
           <div class="runbook-copy"><p class="eyebrow"><span class="eyebrow-line"></span> REPRODUCIBILITY</p><h2 id="runbook-heading">Run it.<br /><em>Inspect it.</em></h2><p>The dashboard is a lightweight static companion to the experiment. Regenerate the evidence, then refresh this page to review the new artifacts.</p><div class="runbook-links"><a class="text-link" href="outputs/metrics.json">Open metrics JSON <span aria-hidden="true">↗</span></a><a class="text-link" href="outputs/synthetic_monthly_series.csv">Open source series <span aria-hidden="true">↗</span></a></div></div>
-          <div class="code-card"><div class="code-card-head"><span class="terminal-dots"><i></i><i></i><i></i></span><span>terminal</span><span class="mono">project-12</span></div><div class="command-block"><span class="prompt">$</span><code>python -m src.experiment --output-dir outputs</code></div><div class="command-block"><span class="prompt">$</span><code>pytest -q</code><span class="command-result">4 passed</span></div><div class="code-divider"></div><p class="code-foot"><span class="status-dot"></span> Artifacts: <code>metrics.json</code> <code>forecast.png</code> <code>synthetic_monthly_series.csv</code></p></div>
+          <div class="code-card"><div class="code-card-head"><span class="terminal-dots"><i></i><i></i><i></i></span><span>terminal</span><span class="mono">project-12</span></div><div class="command-block"><span class="prompt">$</span><code>python -m src.experiment --output-dir outputs</code></div><div class="command-block"><span class="prompt">$</span><code>pytest -q</code><span class="command-result">suite verified</span></div><div class="code-divider"></div><p class="code-foot"><span class="status-dot"></span> Artifacts: <code>metrics.json</code> <code>forecast_predictions.csv</code> <code>forecast_horizon_*.png</code></p></div>
         </section>
       </main>
       <footer class="footer"><span>PROJECT 12 · TIME-SERIES FORECASTING</span><span>Evidence-led by design <span class="footer-mark">✳</span></span></footer>

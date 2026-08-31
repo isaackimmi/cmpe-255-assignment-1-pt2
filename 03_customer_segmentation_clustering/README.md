@@ -4,7 +4,7 @@ An end-to-end, reproducible customer-segmentation experiment based on the origin
 
 ## Result
 
-The experiment selects **k=3** using the maximum silhouette score over k=2…7. The selected model is K-Means with 25 initializations and seed 255. It compares a baseline `StandardScaler` pipeline with the improvement `log1p` on annual income and average order value followed by `StandardScaler`; this makes monetary skew less dominant. The selected run writes metrics, assignments, a PCA visualization, and a JSON model card to `artifacts/`.
+The experiment predeclares candidate **k=2…7** and compares `StandardScaler` with a `log1p` monetary-feature variant. Each candidate is fit on 12 repeated 80/20 train/validation splits; the reported selection signal is mean held-out silhouette, with adjusted Rand index (ARI) stability as a tie-breaker. Full-sample silhouette, Calinski–Harabasz, and Davies–Bouldin values are retained as descriptive diagnostics, not performance estimates. The selected run writes validation distributions, assignments, a PCA visualization, a manifest, and a JSON model card to `artifacts/`.
 
 ## Reproduce
 
@@ -14,11 +14,11 @@ python3 -m src.experiment
 python3 -m pytest -q
 ```
 
-Expected outputs include `artifacts/segmentation.png`, `summary.json`, and the three CSV reports. The data generator creates 120 customers across three intentionally interpretable prototypes (budget/infrequent, frequent/high-spend, and affluent/premium); it is not a claim about real customer behavior.
+Expected outputs include `artifacts/segmentation.png`, `summary.json`, `manifest.json`, and four CSV reports. The data generator creates 120 customers across three intentionally interpretable prototypes (budget/infrequent, frequent/high-spend, and affluent/premium); it is not a claim about real customer behavior.
 
 ## Interactive dashboard
 
-The project includes a dependency-free browser dashboard in `index.html`. It loads `artifacts/summary.json`, `artifacts/improved_scores.csv`, and `artifacts/customer_segments.csv` at runtime, so run the experiment first if the artifacts are missing or stale.
+The project includes a dependency-free browser dashboard in `index.html`. It loads the summary, both preprocessing score tables, validation scores, assignments, plot, and manifest at runtime. The UI checks schemas, row counts, selected-model metadata, and SHA-256 hashes before showing a verified status; run the experiment first if artifacts are missing or stale.
 
 From this directory, run:
 
@@ -34,10 +34,10 @@ Then open [http://localhost:8000](http://localhost:8000). Use the segment filter
 
 1. **Business understanding:** identify actionable customer groups for differentiated offers.
 2. **Data understanding:** inspect four numeric behavioral/value features; the generator documents distributions and bounds.
-3. **Data preparation:** clip impossible synthetic values, apply log1p to skew-prone monetary fields, then standardize. No target is used and no labels enter preprocessing.
-4. **Modeling:** fit K-Means for k=2…7 with deterministic initialization.
-5. **Evaluation:** use silhouette (primary), Calinski–Harabasz, Davies–Bouldin, a PCA projection, and a preprocessing comparison.
-6. **Deployment/use:** export a segment assignment table for downstream campaign design; refit the scaler and K-Means together on production data.
+3. **Data preparation:** validate the feature contract, optionally apply log1p to the two monetary fields, then fit `StandardScaler` on each training split. No target is used and no labels enter preprocessing.
+4. **Modeling:** fit K-Means for the predeclared k=2…7 candidates with 25 initializations.
+5. **Evaluation:** use repeated held-out silhouette means and uncertainty, partition stability via ARI, descriptive full-sample metrics, a PCA projection, and a measured preprocessing comparison.
+6. **Deployment/use:** use the exported table only for hypothesis generation; `fit_segmenter()` and `score_customers()` provide a paired preprocessing/model scoring path for future observed data.
 
 ## Limitations and responsible use
 
@@ -45,12 +45,12 @@ This is a teaching experiment, not a production segmentation. The synthetic clus
 
 ## Project layout
 
-- `src/experiment.py` — data generation, preprocessing, model selection, metrics, and plots.
-- `tests/test_experiment.py` — reproducibility, selection, and artifact tests.
+- `src/experiment.py` — data contract, preprocessing, repeated validation, stability, scoring, and artifact checks.
+- `tests/test_experiment.py` — reproducibility, validation, scoring, and artifact-content tests.
 - `artifacts/` — generated outputs (created by the run command).
 - `reports/` — reserved for a future full research report.
 ## Integration verification
 
 - **Prompt alignment:** Public Project 03 asks for clustering with CRISP-DM and a dashboard; clustering, preprocessing comparison, evaluation, and reporting are implemented offline.
-- **Results/artifacts:** k=3, silhouette 0.6696, Calinski–Harabasz 452.34, Davies–Bouldin 0.4672; run and pytest passed 3/3.
+- **Results/artifacts:** the selected k and preprocessing are based on repeated held-out validation; the manifest and Python validator cross-check artifact schemas, hashes, and metric agreement.
 - **Issue/resolution:** Kaggle data/dashboard dependencies were replaced with deterministic synthetic data and compact artifacts.

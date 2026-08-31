@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from src.platform import run_pipeline, infer_duration
@@ -27,7 +28,7 @@ def main() -> None:
                                 args.passengers, args.pickup_zone, args.dropoff_zone)
         print(json.dumps(result, indent=2))
     else:
-        result = run_pipeline(args.output, rows=args.rows, seed=args.seed)
+        result = run_pipeline(args.output, rows=args.rows, seed=args.seed, command=sys.argv)
         print(json.dumps(result, indent=2))
 
 

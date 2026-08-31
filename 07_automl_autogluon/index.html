@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="AutoML model comparison dashboard for the Project 07 breast-cancer classification experiment." />
-    <title>ModelBench | AutoML leaderboard</title>
+    <meta name="description" content="Auditable model comparison dashboard for the Project 07 breast-cancer classification experiment." />
+    <title>ModelBench | Validation leaderboard</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="app.js" defer></script>
   </head>
@@ -25,8 +25,8 @@
       <main id="top">
         <section class="hero section-wrap">
           <div class="hero-copy">
-            <p class="eyebrow">PROJECT 07 / TABULAR AUTOML</p>
-            <h1>Find the model that<br /><em>earns the handoff.</em></h1>
+            <p class="eyebrow">PROJECT 07 / TABULAR MODEL COMPARISON</p>
+            <h1>Find the model that<br /><em>earns final evaluation.</em></h1>
             <p class="hero-lede">A transparent, CPU-safe comparison of classification models on the scikit-learn breast-cancer dataset.</p>
             <div class="hero-actions">
               <a class="button button-primary" href="#leaderboard">Explore leaderboard <span aria-hidden="true">↓</span></a>
@@ -37,9 +37,9 @@
             <div class="orbit orbit-outer"></div>
             <div class="orbit orbit-inner"></div>
             <div class="orbit-core"><span>ROC<br /><strong>AUC</strong></span></div>
-            <span class="orbit-tag tag-top">MODEL<br /><strong>SEARCH</strong></span>
-            <span class="orbit-tag tag-right">TEST-SET<br /><strong>PROOF</strong></span>
-            <span class="orbit-tag tag-bottom">REPRODUCIBLE<br /><strong>SEED 255</strong></span>
+            <span class="orbit-tag tag-top">DEVELOPMENT<br /><strong>CV</strong></span>
+            <span class="orbit-tag tag-right">LOCKED<br /><strong>HOLDOUT</strong></span>
+            <span class="orbit-tag tag-bottom">REPRODUCIBLE<br /><strong>MANIFEST</strong></span>
           </div>
         </section>
 
@@ -77,19 +77,19 @@
               <div class="stat-foot" id="leader-foot">Ranked by ROC-AUC</div>
             </article>
             <article class="stat-card">
-              <div class="stat-label">BEST ROC-AUC</div>
+              <div class="stat-label">DEV CV ROC-AUC</div>
               <div class="stat-value" id="best-auc">—</div>
-              <div class="stat-foot">Holdout test score</div>
+              <div class="stat-foot">Best development-CV score</div>
             </article>
             <article class="stat-card">
-              <div class="stat-label">BEST ACCURACY</div>
+              <div class="stat-label">FINAL HOLDOUT ROC-AUC</div>
               <div class="stat-value" id="best-accuracy">—</div>
-              <div class="stat-foot">Correct classifications</div>
+              <div class="stat-foot">Selected model, evaluated once</div>
             </article>
             <article class="stat-card">
               <div class="stat-label">MODELS EVALUATED</div>
               <div class="stat-value" id="model-count">—</div>
-              <div class="stat-foot" id="model-count-foot">Across the configured search</div>
+              <div class="stat-foot" id="model-count-foot">Across the configured comparison</div>
             </article>
           </div>
           <div class="dataset-facts" id="dataset-facts" aria-label="Dataset facts"></div>
@@ -102,9 +102,9 @@
               <h2>Leaderboard</h2>
             </div>
             <div class="metric-legend" aria-label="Leaderboard metrics">
-              <span><i class="legend-swatch swatch-auc"></i>ROC-AUC</span>
-              <span><i class="legend-swatch swatch-accuracy"></i>Accuracy</span>
-              <span><i class="legend-swatch swatch-time"></i>Fit time</span>
+              <span><i class="legend-swatch swatch-auc"></i>Dev CV ROC-AUC</span>
+              <span><i class="legend-swatch swatch-accuracy"></i>CV accuracy</span>
+              <span><i class="legend-swatch swatch-time"></i>CV fit time</span>
             </div>
           </div>
           <div class="leaderboard-layout">
@@ -123,7 +123,7 @@
                 </select>
               </div>
               <div class="detail-divider"></div>
-              <div id="model-detail" class="model-detail-empty">Select a leaderboard card to inspect its test-set profile.</div>
+              <div id="model-detail" class="model-detail-empty">Select a leaderboard card to inspect its development-CV profile.</div>
             </aside>
           </div>
         </section>
@@ -132,7 +132,7 @@
           <div class="insight-copy">
             <p class="eyebrow">READ THE SIGNAL</p>
             <h2>One metric, three<br /><em>decision lenses.</em></h2>
-            <p>ROC-AUC is the ranking signal for this run. Accuracy shows the operating-point result, while fit time makes the cost of iteration visible.</p>
+            <p>Mean development-CV ROC-AUC is the selection signal. Standard deviation shows variability, while fit time makes iteration cost visible.</p>
             <div class="insight-callout"><span aria-hidden="true">↗</span><span>Higher ROC-AUC wins. Lower fit time wins.</span></div>
           </div>
           <div class="comparison-chart" id="comparison-chart" aria-label="Model metric comparison chart"></div>
@@ -142,17 +142,17 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">METHOD / CRISP-DM</p>
-              <h2>From question to handoff</h2>
+            <h2>From question to decision</h2>
             </div>
             <p class="section-caption">A compact view of the experiment lifecycle.</p>
           </div>
           <div class="workflow-track">
             <article class="workflow-step workflow-complete"><span class="step-number">01</span><span class="step-icon">⌁</span><h3>Business<br />understanding</h3><p>Choose a model that can rank malignant vs. benign cases reliably.</p></article>
             <article class="workflow-step workflow-complete"><span class="step-number">02</span><span class="step-icon">◌</span><h3>Data<br />understanding</h3><p>Inspect 569 rows, 30 numeric features, and a binary target.</p></article>
-            <article class="workflow-step workflow-complete"><span class="step-number">03</span><span class="step-icon">◇</span><h3>Data<br />preparation</h3><p>Use a stratified, reproducible 80/20 train-test split.</p></article>
+            <article class="workflow-step workflow-complete"><span class="step-number">03</span><span class="step-icon">◇</span><h3>Data<br />preparation</h3><p>Lock a stratified 20% final holdout; keep development rows separate.</p></article>
             <article class="workflow-step workflow-complete"><span class="step-number">04</span><span class="step-icon">✣</span><h3>Modeling</h3><p>Compare four CPU-safe sklearn estimators; AutoGluon is optional.</p></article>
-            <article class="workflow-step workflow-complete"><span class="step-number">05</span><span class="step-icon">◒</span><h3>Evaluation</h3><p>Rank only on untouched test ROC-AUC, with accuracy and fit time.</p></article>
-            <article class="workflow-step workflow-next"><span class="step-number">06</span><span class="step-icon">↗</span><h3>Deployment</h3><p>Review the winning model, then validate with repeated CV before production.</p></article>
+            <article class="workflow-step workflow-complete"><span class="step-number">05</span><span class="step-icon">◒</span><h3>Evaluation</h3><p>Rank on repeated development CV, then score the selected model on the final holdout once.</p></article>
+            <article class="workflow-step workflow-next"><span class="step-number">06</span><span class="step-icon">↗</span><h3>Deployment</h3><p>Review the locked result and operating point before any production decision.</p></article>
           </div>
         </section>
 
@@ -166,7 +166,7 @@
             <article class="command-card"><span class="command-index">01</span><h3>Install</h3><code>python3 -m pip install -r requirements.txt</code><p>Optional: add AutoGluon separately when the environment supports it.</p></article>
             <article class="command-card"><span class="command-index">02</span><h3>Run fallback</h3><code>python3 src/run_experiment.py --no-autogluon</code><p>Fast, deterministic sklearn comparison for CPU-only environments.</p></article>
             <article class="command-card"><span class="command-index">03</span><h3>Serve UI</h3><code>python3 -m http.server 8000</code><p>Open <span class="inline-code">http://localhost:8000</span> in your browser.</p></article>
-            <article class="command-card command-card-test"><span class="command-index">04</span><h3>Test</h3><code>python3 -m pytest -q</code><p>Verifies reproducibility and ranked artifact output.</p></article>
+            <article class="command-card command-card-test"><span class="command-index">04</span><h3>Test</h3><code>python3 -m pytest -q</code><p>Verifies split roles, CV selection, final holdout separation, and metadata.</p></article>
           </div>
         </section>
       </main>

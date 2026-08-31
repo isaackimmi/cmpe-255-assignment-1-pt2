@@ -1,35 +1,7 @@
-/* Browser-side companion to analysis.py. It intentionally embeds the checked-in
-   CSV so index.html works offline when opened directly from the file system. */
-const transactionCsv = `transaction_id,items
-T001,"bread;milk;eggs"
-T002,"bread;milk;butter"
-T003,"bread;milk;eggs;butter"
-T004,"bread;jam;butter"
-T005,"milk;eggs;coffee"
-T006,"bread;milk;eggs"
-T007,"bread;milk;butter;coffee"
-T008,"bread;jam;butter"
-T009,"milk;eggs;coffee"
-T010,"bread;milk;eggs;coffee"
-T011,"bread;milk;butter"
-T012,"bread;jam;butter;coffee"
-T013,"milk;eggs"
-T014,"bread;milk;eggs;butter"
-T015,"bread;milk;coffee"
-T016,"bread;jam;butter"
-T017,"milk;eggs;coffee"
-T018,"bread;milk;eggs"
-T019,"bread;milk;butter;coffee"
-T020,"bread;jam;butter;coffee"
-T021,"milk;eggs;coffee"
-T022,"bread;milk;eggs;butter"
-T023,"bread;milk;coffee"
-T024,"bread;jam;butter"`;
-
-const transactions = transactionCsv.trim().split('\n').slice(1).map((line) => {
-  const [id, itemText] = line.split(',"');
-  return { id, items: new Set(itemText.replace(/"$/, '').split(';')) };
-});
+/* Browser-side companion to analysis.py. transactions.js is generated from
+   data/transactions.csv so this page remains offline without a second data
+   source to edit by hand. */
+const transactions = window.TRANSACTION_ROWS.map(({ id, items }) => ({ id, items: new Set(items) }));
 
 const itemUniverse = [...new Set(transactions.flatMap(({ items }) => [...items]))].sort();
 const initialSupport = 0.25;
@@ -40,6 +12,7 @@ const pct = (value) => `${Math.round(value * 100)}%`;
 const metric = (value) => value.toFixed(2);
 const setKey = (items) => [...items].sort().join('|');
 const setLabel = (items) => [...items].sort().join(' + ');
+const countFor = (itemset) => transactions.filter(({ items }) => [...itemset].every((item) => items.has(item))).length;
 
 function getSupport(itemset) {
   return transactions.filter(({ items }) => [...itemset].every((item) => items.has(item))).length / transactions.length;
@@ -66,7 +39,7 @@ function apriori(minSupport) {
   let size = 1;
   while (candidates.length) {
     const current = candidates.filter((candidate) => getSupport(candidate) >= minSupport - 1e-10);
-    current.forEach((itemset) => frequent.set(setKey(itemset), { items: itemset, support: getSupport(itemset) }));
+    current.forEach((itemset) => frequent.set(setKey(itemset), { items: itemset, support: getSupport(itemset), count: countFor(itemset) }));
     size += 1;
     const next = new Map();
     combinations(itemUniverse, size).forEach((items) => {
@@ -89,7 +62,16 @@ function associationRules(frequent) {
       const consequentSupport = frequent.get(setKey(consequent))?.support ?? getSupport(consequent);
       const confidence = itemsetSupport / antecedentSupport;
       const lift = confidence / consequentSupport;
-      if (confidence >= minConfidence) rules.push({ antecedent, consequent, support: itemsetSupport, confidence, lift });
+      if (confidence >= minConfidence) rules.push({
+        antecedent,
+        consequent,
+        support: itemsetSupport,
+        supportCount: countFor(items),
+        antecedentCount: countFor(antecedent),
+        consequentCount: countFor(consequent),
+        confidence,
+        lift,
+      });
     });
   });
   return rules.sort((a, b) => b.lift - a.lift || b.confidence - a.confidence || setLabel(a.antecedent).localeCompare(setLabel(b.antecedent)));
@@ -98,6 +80,7 @@ function associationRules(frequent) {
 function renderStats(frequent, rules, support) {
   $('#stat-transactions').textContent = transactions.length;
   $('#stat-items').textContent = itemUniverse.length;
+  $('#stat-items-foot').textContent = itemUniverse.join(' · ');
   $('#stat-itemsets').textContent = frequent.size;
   $('#stat-support').textContent = pct(support);
   $('#threshold-count').textContent = frequent.size;
@@ -109,15 +92,15 @@ function renderStats(frequent, rules, support) {
 
 function renderChart(frequent) {
   const top = [...frequent.values()].sort((a, b) => b.support - a.support || setLabel(a.items).localeCompare(setLabel(b.items))).slice(0, 8);
-  $('#support-chart').innerHTML = top.length ? top.map(({ items, support }) => `
-    <div class="chart-row"><span class="chart-label" title="${setLabel(items)}">${setLabel(items)}</span><span class="bar-track"><span class="bar-fill" style="width:${support * 100}%"></span></span><span class="chart-value">${pct(support)}</span></div>`).join('') : '<p class="empty-state">No itemsets clear this threshold.</p>';
+  $('#support-chart').innerHTML = top.length ? top.map(({ items, support, count }) => `
+    <div class="chart-row"><span class="chart-label" title="${setLabel(items)}">${setLabel(items)}</span><span class="bar-track"><span class="bar-fill" style="width:${support * 100}%"></span></span><span class="chart-value">${pct(support)}<small>${count}/${transactions.length}</small></span></div>`).join('') : '<p class="empty-state">No itemsets clear this threshold.</p>';
 }
 
 function renderRules(rules) {
   const visible = rules.slice(0, 8);
   $('#rule-count').textContent = `${visible.length} rule${visible.length === 1 ? '' : 's'} shown`;
   $('#rules-grid').innerHTML = visible.length ? visible.map((rule, index) => `
-    <article class="rule-card"><span class="rule-rank">0${index + 1} / ${setLabel(rule.antecedent).length > 20 ? 'compound' : 'clear signal'}</span><div class="rule-arrow"><span class="rule-side">${setLabel(rule.antecedent)}</span><br><span aria-hidden="true">→</span> <span class="rule-side right">${setLabel(rule.consequent)}</span></div><div class="rule-metrics"><div class="rule-metric"><span>Support</span><strong>${pct(rule.support)}</strong></div><div class="rule-metric"><span>Confidence</span><strong>${pct(rule.confidence)}</strong></div><div class="rule-metric"><span>Lift</span><strong>${metric(rule.lift)}×</strong></div></div></article>`).join('') : '<div class="card empty-state">No rules meet 60% confidence at this support threshold. Lower the threshold to reveal more candidates.</div>';
+    <article class="rule-card"><span class="rule-rank">0${index + 1} / ${setLabel(rule.antecedent).length > 20 ? 'compound' : 'clear signal'}</span><div class="rule-arrow"><span class="rule-side">${setLabel(rule.antecedent)}</span><br><span aria-hidden="true">→</span> <span class="rule-side right">${setLabel(rule.consequent)}</span></div><div class="rule-metrics"><div class="rule-metric"><span>Support</span><strong>${pct(rule.support)}<small>${rule.supportCount}/${transactions.length}</small></strong></div><div class="rule-metric"><span>Confidence</span><strong>${pct(rule.confidence)}<small>${rule.supportCount}/${rule.antecedentCount}</small></strong></div><div class="rule-metric"><span>Lift</span><strong>${metric(rule.lift)}×</strong></div></div></article>`).join('') : '<div class="card empty-state">No rules meet 60% confidence at this support threshold. Lower the prevalence threshold to reveal more candidates.</div>';
 }
 
 function renderThreshold() {
@@ -144,12 +127,12 @@ function renderBasket(id) {
   $('#basket-id-label').textContent = basket.id;
   $('#basket-row').textContent = String(basketIndex + 1).padStart(2, '0');
 
+  const withBasketItem = transactions.filter(({ items }) => [...basket.items].some((basketItem) => items.has(basketItem)));
   const context = itemUniverse.filter((item) => !basket.items.has(item)).map((item) => {
-    const withCandidate = transactions.filter(({ items }) => items.has(item));
-    const coPickCount = withCandidate.filter(({ items }) => [...basket.items].some((basketItem) => items.has(basketItem))).length;
-    return { item, share: withCandidate.length ? coPickCount / withCandidate.length : 0 };
-  }).sort((a, b) => b.share - a.share);
-  $('#context-list').innerHTML = context.map(({ item, share }) => `<div class="context-row"><span class="context-product">${item}</span><span class="context-track"><span class="context-fill" style="width:${share * 100}%"></span></span><span class="context-percent">${pct(share)}</span></div>`).join('');
+    const candidateCount = withBasketItem.filter(({ items }) => items.has(item)).length;
+    return { item, candidateCount, denominator: withBasketItem.length, share: withBasketItem.length ? candidateCount / withBasketItem.length : 0 };
+  }).sort((a, b) => b.share - a.share || a.item.localeCompare(b.item));
+  $('#context-list').innerHTML = context.map(({ item, candidateCount, denominator, share }) => `<div class="context-row"><span class="context-product">${item}</span><span class="context-track"><span class="context-fill" style="width:${share * 100}%"></span></span><span class="context-percent">${pct(share)}<small>${candidateCount}/${denominator}</small></span></div>`).join('');
 }
 
 function init() {

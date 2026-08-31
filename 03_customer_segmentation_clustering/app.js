@@ -8,9 +8,9 @@ const featureLabels = {
 const phaseContent = {
   business: ["01 / BUSINESS UNDERSTANDING", "Turn cluster output into a decision surface.", "Identify actionable customer groups for differentiated offers while keeping the experiment’s assumptions explicit.", "A segment is a conversation starter, not a verdict about a person."],
   data: ["02 / DATA UNDERSTANDING", "Start with a small, legible customer universe.", "The run creates 120 synthetic retail customers across three intentionally interpretable prototypes and four numeric behavioral/value features.", "The data is generated, bounded, and reproducible — not observed customer behavior."],
-  prep: ["03 / DATA PREPARATION", "Shape the signals before measuring distance.", "Impossible synthetic values are clipped; income and average order value receive log1p before all four features are standardized.", "Preprocessing changes what ‘similar’ means, so it belongs in the story."],
-  model: ["04 / MODELING", "Let K-Means test a small range of shapes.", "K-Means is fit for k=2 through 7 with 25 initializations and seed 255. The selected assignments are exported with the raw feature values.", "The cluster IDs are labels, not rankings — their names here are interpretive aids."],
-  evaluate: ["05 / EVALUATION", "Prefer signal that is compact and separated.", "Silhouette is the primary selection metric; Calinski–Harabasz and Davies–Bouldin add context. PCA is used only to make the four-dimensional result visible.", "Internal metrics do not establish campaign lift, stability, fairness, or causality."],
+  prep: ["03 / DATA PREPARATION", "Shape the signals before measuring distance.", "Impossible synthetic values are clipped; the run compares StandardScaler with an optional log1p transform for income and average order value.", "Preprocessing changes what ‘similar’ means, so it belongs in the story."],
+  model: ["04 / MODELING", "Let K-Means test a small range of shapes.", "K-Means is fit for the predeclared k=2 through 7 candidates with 25 initializations. The selected assignments are exported with the raw feature values.", "The cluster IDs are labels, not rankings — their names here are interpretive aids."],
+  evaluate: ["05 / EVALUATION", "Check signal beyond one fitted sample.", "Candidates are compared with repeated held-out splits; partition stability is summarized with adjusted Rand index. Full-sample metrics remain descriptive diagnostics.", "Synthetic-data validation is exploratory and does not establish campaign lift, future performance, fairness, or causality."],
   deploy: ["06 / DEPLOYMENT / USE", "Carry the assignment into a careful next step.", "Use the exported segment table as a starting point for campaign hypotheses, then validate on real longitudinal transactions and monitor drift.", "Never use these teaching segments to deny service or infer sensitive traits."]
 };
 
@@ -30,9 +30,9 @@ function parseCsv(text) {
 function profileName(means, profiles) {
   const frequencyLeader = profiles.reduce((best, profile) => profile.means.purchase_frequency > best.means.purchase_frequency ? profile : best, profiles[0]);
   const aovLeader = profiles.reduce((best, profile) => profile.means.avg_order_value > best.means.avg_order_value ? profile : best, profiles[0]);
-  if (means.cluster === frequencyLeader.means.cluster) return ["Power shoppers", "High intent · high value", "Protect loyalty and reward cadence"];
-  if (means.cluster === aovLeader.means.cluster) return ["Premium occasionals", "High basket · selective cadence", "Build high-touch moments"];
-  return ["Value starters", "Entry value · growth headroom", "Create a path to repeat"];
+  if (means.cluster === frequencyLeader.means.cluster) return ["High-frequency heuristic", "Frequent in this toy sample", "Hypothesis only · test retention messaging"];
+  if (means.cluster === aovLeader.means.cluster) return ["High-order-value heuristic", "Larger baskets in this toy sample", "Hypothesis only · test value messaging"];
+  return ["Lower-frequency heuristic", "Lower observed frequency in this toy sample", "Hypothesis only · validate a growth path"];
 }
 
 function buildProfiles(assignments) {
@@ -53,11 +53,16 @@ function buildProfiles(assignments) {
 
 function renderMetrics(summary) {
   $("#hero-k").textContent = summary.selected_k;
+  const prepLabel = summary.selected_preprocessing === "log1p" ? "log1p + StandardScaler" : "StandardScaler";
   $("#selected-model").textContent = `K-Means · k=${summary.selected_k}`;
-  $("#run-size").textContent = `${summary.n_customers} customers · seed ${summary.seed}`;
-  $("#silhouette").textContent = formatNumber(summary.silhouette, 4);
-  $("#calinski").textContent = formatNumber(summary.calinski_harabasz, 2);
-  $("#davies").textContent = formatNumber(summary.davies_bouldin, 4);
+  $("#run-size").textContent = `${prepLabel} · ${summary.n_customers} synthetic customers`;
+  $("#silhouette").textContent = formatNumber(summary.validation.silhouette_mean, 4);
+  $("#silhouette-note").textContent = `held-out mean ± ${formatNumber(summary.validation.silhouette_std, 4)}`;
+  $("#stability").textContent = formatNumber(summary.validation.stability_ari_mean, 4);
+  $("#stability-note").textContent = `ARI range ≥ ${formatNumber(summary.validation.stability_ari_min, 4)}`;
+  $("#fit-silhouette").textContent = formatNumber(summary.fit_metrics.silhouette, 4);
+  $("#fit-note").textContent = "full-sample descriptive only";
+  $("#profile-heading").textContent = `${summary.selected_k} heuristic profiles, one useful starting point.`;
 }
 
 function renderFilters(profiles) {
@@ -85,8 +90,45 @@ function renderProfiles(profiles) {
   }).join("");
 }
 
-function renderScores(scores, selectedK) {
-  $("#score-body").innerHTML = scores.map((row) => `<tr class="${Number(row.k) === Number(selectedK) ? "selected" : ""}"><td>${row.k}</td><td>${formatNumber(row.silhouette, 4)}</td><td>${formatNumber(row.calinski_harabasz, 1)}</td><td>${formatNumber(row.davies_bouldin, 3)}</td></tr>`).join("");
+function renderScores(scores, selectedK, selectedPreprocessing) {
+  $("#score-body").innerHTML = scores.map((row) => `<tr class="${Number(row.k) === Number(selectedK) && row.preprocessing === selectedPreprocessing ? "selected" : ""}"><td>${row.preprocessing === "log1p" ? "log1p" : "standard"}</td><td>${row.k}</td><td>${formatNumber(row.silhouette_mean, 4)} ± ${formatNumber(row.silhouette_std, 4)}</td><td>${formatNumber(row.stability_ari_mean, 4)}</td></tr>`).join("");
+}
+
+async function sha256Hex(buffer) {
+  const digest = await crypto.subtle.digest("SHA-256", buffer);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function parseJson(buffer) {
+  return JSON.parse(new TextDecoder().decode(buffer));
+}
+
+async function validateDashboardArtifacts({ summary, baselineText, log1pText, validationText, assignmentsText, manifest, hashes }) {
+  const baseline = parseCsv(baselineText);
+  const log1p = parseCsv(log1pText);
+  const validation = parseCsv(validationText);
+  const assignments = parseCsv(assignmentsText);
+  const expectedFeatures = summary.features || [];
+  const assignmentKeys = assignments.length ? Object.keys(assignments[0]) : [];
+  const clusters = [...new Set(assignments.map((row) => Number(row.cluster)))].sort((a, b) => a - b);
+  const expectedClusters = Array.from({ length: Number(summary.selected_k) }, (_, index) => index);
+  if (manifest.n_customers !== summary.n_customers || manifest.selected_k !== summary.selected_k ||
+      JSON.stringify(manifest.features) !== JSON.stringify(expectedFeatures) ||
+      assignments.length !== Number(summary.n_customers) ||
+      JSON.stringify(assignmentKeys) !== JSON.stringify([...expectedFeatures, "cluster"]) ||
+      JSON.stringify(clusters) !== JSON.stringify(expectedClusters) ||
+      baseline.length !== 6 || log1p.length !== 6 || validation.length !== 12) {
+    throw new Error("Artifact metadata, schema, or row-count consistency check failed.");
+  }
+  const selectedRows = validation.filter((row) => row.preprocessing === summary.selected_preprocessing && Number(row.k) === Number(summary.selected_k));
+  if (selectedRows.length !== 1 || !Number.isFinite(selectedRows[0].silhouette_mean) || !Number.isFinite(selectedRows[0].stability_ari_mean) ||
+      Math.abs(selectedRows[0].silhouette_mean - Number(summary.validation.silhouette_mean)) > 1e-9 ||
+      Math.abs(selectedRows[0].stability_ari_mean - Number(summary.validation.stability_ari_mean)) > 1e-9) {
+    throw new Error("Selected validation result is missing or invalid.");
+  }
+  for (const [name, expected] of Object.entries(manifest.hashes || {})) {
+    if (!hashes[name] || hashes[name] !== expected) throw new Error(`Manifest hash mismatch: ${name}`);
+  }
 }
 
 function setupPhases() {
@@ -102,20 +144,35 @@ function setupPhases() {
 
 async function loadDashboard() {
   try {
-    const [summaryResponse, scoresResponse, assignmentsResponse] = await Promise.all([
+    const [summaryResponse, baselineResponse, log1pResponse, validationResponse, assignmentsResponse, manifestResponse, plotResponse] = await Promise.all([
       fetch("artifacts/summary.json"),
-      fetch("artifacts/improved_scores.csv"),
-      fetch("artifacts/customer_segments.csv")
+      fetch("artifacts/baseline_scores.csv"),
+      fetch("artifacts/log1p_scores.csv"),
+      fetch("artifacts/validation_scores.csv"),
+      fetch("artifacts/customer_segments.csv"),
+      fetch("artifacts/manifest.json"),
+      fetch("artifacts/segmentation.png")
     ]);
-    if (![summaryResponse, scoresResponse, assignmentsResponse].every((response) => response.ok)) throw new Error("One or more artifacts could not be loaded.");
-    const [summary, scoresText, assignmentsText] = await Promise.all([summaryResponse.json(), scoresResponse.text(), assignmentsResponse.text()]);
+    const responses = [summaryResponse, baselineResponse, log1pResponse, validationResponse, assignmentsResponse, manifestResponse, plotResponse];
+    if (!responses.every((response) => response.ok)) throw new Error("One or more artifacts could not be loaded.");
+    const buffers = await Promise.all(responses.map((response) => response.arrayBuffer()));
+    const [summaryBuffer, baselineBuffer, log1pBuffer, validationBuffer, assignmentsBuffer, manifestBuffer, plotBuffer] = buffers;
+    const summary = parseJson(summaryBuffer);
+    const manifest = parseJson(manifestBuffer);
+    const artifactNames = ["summary.json", "baseline_scores.csv", "log1p_scores.csv", "validation_scores.csv", "customer_segments.csv", "segmentation.png"];
+    const hashes = Object.fromEntries(await Promise.all(artifactNames.map(async (name, index) => [name, await sha256Hex(buffers[index === 5 ? 6 : index])])));
+    const baselineText = new TextDecoder().decode(baselineBuffer);
+    const log1pText = new TextDecoder().decode(log1pBuffer);
+    const validationText = new TextDecoder().decode(validationBuffer);
+    const assignmentsText = new TextDecoder().decode(assignmentsBuffer);
+    await validateDashboardArtifacts({ summary, baselineText, log1pText, validationText, assignmentsText, manifest, hashes });
     const profiles = buildProfiles(parseCsv(assignmentsText));
     renderMetrics(summary);
     renderFilters(profiles);
     renderProfiles(profiles);
-    renderScores(parseCsv(scoresText), summary.selected_k);
+    renderScores(parseCsv(validationText), summary.selected_k, summary.selected_preprocessing);
     $("#feature-select").addEventListener("change", (event) => { state.feature = event.target.value; renderProfiles(profiles); });
-    $("#app-status").textContent = "Artifacts loaded · run verified";
+    $("#app-status").textContent = "Artifacts loaded · manifest verified";
   } catch (error) {
     $("#app-status").textContent = "Artifact load failed";
     $("#profile-grid").innerHTML = `<div class="loading-card"><strong>Could not load the generated artifacts.</strong><br />Serve this directory with <code>python3 -m http.server 8000</code>, then open <code>http://localhost:8000</code>.</div>`;

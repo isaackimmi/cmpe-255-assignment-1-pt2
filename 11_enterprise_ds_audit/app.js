@@ -1,8 +1,8 @@
 const $ = (selector) => document.querySelector(selector);
 const state = { result: null, report: "", checks: [], filters: { search: "", status: "all", severity: "all" } };
 
-const icons = { schema: "⌗", missingness: "◒", duplicate_identifiers: "⊕", leakage_risk: "◌", reproducibility: "⌁", model_quality: "◈" };
-const labels = { schema: "Schema", missingness: "Missingness", duplicate_identifiers: "Identifiers", leakage_risk: "Leakage risk", reproducibility: "Reproducibility", model_quality: "Model quality" };
+const icons = { schema: "⌗", missingness: "◒", duplicate_identifiers: "⊕", domain_validity: "⌖", leakage_risk: "◌", reproducibility: "⌁", model_quality: "◈" };
+const labels = { schema: "Schema", missingness: "Missingness", duplicate_identifiers: "Identifiers", domain_validity: "Domain validity", leakage_risk: "Leakage risk", reproducibility: "Reproducibility", model_quality: "Model quality" };
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
 const checkFor = (name) => state.checks.find((check) => check.name === name);
 const countBy = (items, key, value) => items.filter((item) => item[key] === value).length;
@@ -22,13 +22,14 @@ function parseJsonDetail(check) {
 function renderStats() {
   const { checks } = state;
   const fails = countBy(checks, "status", "FAIL");
+  const inconclusive = countBy(checks, "status", "INCONCLUSIVE");
   const warnings = countBy(checks, "status", "WARN");
   const high = countBy(checks, "severity", "high");
   $("#stat-checks").textContent = checks.length;
-  $("#stat-fails").textContent = fails;
+  $("#stat-fails").textContent = fails + inconclusive;
   $("#stat-warnings").textContent = warnings;
   $("#stat-high").textContent = high;
-  $("#nav-finding-count").textContent = fails + warnings;
+  $("#nav-finding-count").textContent = fails + warnings + inconclusive;
   $("#finding-count-label").textContent = `${checks.length} controls evaluated`;
   $("#release-summary").textContent = state.result.summary || "Audit decision loaded.";
   $("#report-date").textContent = `AUDIT RUN · ${formatDate(state.result.generated_at_utc)}`;
@@ -67,6 +68,12 @@ function renderModelQuality() {
   const quality = state.result.model_quality || {};
   const model = quality.model || {};
   const baseline = quality.majority_baseline || {};
+  if (!["PASS", "WARN"].includes(quality.status)) {
+    $("#model-score").textContent = "—";
+    $("#model-delta").textContent = quality.status || "INCONCLUSIVE";
+    $("#metric-bars").innerHTML = `<p class="panel-note">${escapeHtml(quality.reason || "Model evaluation was not completed.")}</p>`;
+    return;
+  }
   const score = Number(model.balanced_accuracy || 0);
   const baselineScore = Number(baseline.balanced_accuracy || 0);
   const delta = score - baselineScore;
@@ -88,14 +95,15 @@ function renderFindings() {
 function renderDetails() {
   const schema = checkFor("schema"); const missing = checkFor("missingness"); const leakage = checkFor("leakage_risk"); const repro = checkFor("reproducibility");
   for (const [name, check] of [["schema", schema], ["missingness", missing], ["leakage", leakage], ["repro", repro]]) { const status = $(`#${name}-status`); if (status && check) { status.textContent = check.status; status.className = `mini-status ${check.status}`; } }
-  const schemaDetail = schema?.detail || "No schema evidence available.";
-  const rowMatch = schemaDetail.match(/^(\d+) rows/); const parseMatch = schemaDetail.match(/parse_errors=([^;]+)/); const missingMatch = schemaDetail.match(/missing=([^;]+)/); const extraMatch = schemaDetail.match(/extra=([^;]+)/);
-  $("#schema-detail").innerHTML = `<dl class="detail-list"><div class="detail-item"><dt>Rows inspected</dt><dd>${escapeHtml(rowMatch?.[1] || "—")}</dd></div><div class="detail-item"><dt>Required columns</dt><dd>9 / 9 present</dd></div><div class="detail-item"><dt>Parse errors</dt><dd>${escapeHtml(parseMatch?.[1] || "none")}</dd></div><div class="detail-item"><dt>Missing / extra</dt><dd>${escapeHtml(missingMatch?.[1] || "[]")} / ${escapeHtml(extraMatch?.[1] || "[]")}</dd></div></dl>`;
-  $("#leakage-detail").innerHTML = `<div class="detail-copy"><strong>Prediction-time safety</strong><p>${escapeHtml(leakage?.detail || "No leakage evidence available.")}</p></div><div class="detail-list"><div class="detail-item"><dt>Outcome timestamp</dt><dd>Review required</dd></div><div class="detail-item"><dt>Free-text field</dt><dd>Manual review</dd></div></div>`;
-  const rates = parseMissingness(missing?.detail || ""); const entries = Object.entries(rates).sort((a, b) => b[1] - a[1]);
+  const schemaEvidence = schema?.evidence || {};
+  $("#schema-detail").innerHTML = `<dl class="detail-list"><div class="detail-item"><dt>Rows inspected</dt><dd>${escapeHtml(schemaEvidence.rows_inspected ?? "—")}</dd></div><div class="detail-item"><dt>Required columns</dt><dd>${escapeHtml(`${(schemaEvidence.required_columns || []).length - (schemaEvidence.missing_columns || []).length} / ${(schemaEvidence.required_columns || []).length || 9} present`)}</dd></div><div class="detail-item"><dt>Row errors</dt><dd>${escapeHtml(schemaEvidence.row_error_count ?? "0")}</dd></div><div class="detail-item"><dt>Missing / extra</dt><dd>${escapeHtml(schemaEvidence.missing_columns || "[]")} / ${escapeHtml(schemaEvidence.extra_columns || "[]")}</dd></div></dl>`;
+  const leakageEvidence = leakage?.evidence || {};
+  const offending = leakageEvidence.offending_features || [];
+  $("#leakage-detail").innerHTML = `<div class="detail-copy"><strong>Prediction-time safety</strong><p>${escapeHtml(leakage?.detail || "No leakage evidence available.")}</p></div><div class="detail-list"><div class="detail-item"><dt>Feature manifest</dt><dd>${escapeHtml((leakageEvidence.feature_manifest || []).join(", ") || "—")}</dd></div><div class="detail-item"><dt>Offending features</dt><dd>${escapeHtml(offending.map((item) => item.column).join(", ") || "none")}</dd></div><div class="detail-item"><dt>Excluded suspicious</dt><dd>${escapeHtml((leakageEvidence.excluded_suspicious_columns || []).join(", ") || "none")}</dd></div></div>`;
+  const rates = missing?.evidence?.null_rates || {}; const entries = Object.entries(rates).sort((a, b) => b[1] - a[1]);
   $("#missingness-detail").innerHTML = `<div class="null-profile">${entries.map(([name, value]) => `<div class="null-row"><span>${escapeHtml(name)}</span><div class="null-track"><span style="width:${value * 100}%"></span></div><code>${pct(value)}</code></div>`).join("")}</div>`;
   const reproData = state.result.reproducibility || parseJsonDetail(repro); const hash = String(reproData.input_sha256 || "");
-  $("#repro-detail").innerHTML = `<dl class="detail-list"><div class="detail-item"><dt>Seed</dt><dd>${escapeHtml(reproData.seed || "—")}</dd></div><div class="detail-item"><dt>Runtime</dt><dd>Python ${escapeHtml(reproData.python || "—")}</dd></div><div class="detail-item"><dt>Split</dt><dd>${escapeHtml(reproData.split || "—")}</dd></div><div class="detail-item"><dt>Input SHA-256</dt><dd>${escapeHtml(hash ? `${hash.slice(0, 12)}…` : "—")}</dd></div></dl>`;
+  $("#repro-detail").innerHTML = `<dl class="detail-list"><div class="detail-item"><dt>Seed</dt><dd>${escapeHtml(reproData.seed || "—")}</dd></div><div class="detail-item"><dt>Runtime</dt><dd>Python ${escapeHtml(reproData.python || "—")}</dd></div><div class="detail-item"><dt>Rerun match</dt><dd>${escapeHtml(String(reproData.rerun_match ?? "—"))}</dd></div><div class="detail-item"><dt>Input SHA-256</dt><dd>${escapeHtml(hash ? `${hash.slice(0, 12)}…` : "—")}</dd></div><div class="detail-item"><dt>Canonical SHA-256</dt><dd>${escapeHtml(String(reproData.canonical_result_sha256 || "—").slice(0, 12))}…</dd></div></dl>`;
 }
 
 function wireFilters() {

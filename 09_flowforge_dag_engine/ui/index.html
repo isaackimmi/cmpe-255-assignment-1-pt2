@@ -58,7 +58,7 @@
                 <div class="code-line"><span>02</span><span><b class="syntax-blue">dag</b>.<b class="syntax-green">add_task</b>(<b class="syntax-orange">"load_data"</b>)</span></div>
                 <div class="code-line"><span>03</span><span><b class="syntax-blue">dag</b>.<b class="syntax-green">add_task</b>(<b class="syntax-orange">"clean_data"</b>, depends_on=[…])</span></div>
                 <div class="code-line"><span>04</span><span><b class="syntax-blue">Runner</b>(<b class="syntax-blue">dag</b>).<b class="syntax-green">run</b>()</span></div>
-                <div class="engine-result"><span class="result-arrow">→</span><span id="hero-order">load_data → clean_data → summarize → report</span></div>
+                <div class="engine-result"><span class="result-arrow">→</span><span id="hero-order">load_data → validate_data → clean_data → summarize → report</span></div>
               </div>
             </div>
             <div class="floating-stat stat-tasks"><span class="stat-number">04</span><span>tasks</span></div>
@@ -87,14 +87,17 @@
                 <button class="task-node node-source" data-task="load_data" type="button" aria-label="Inspect load_data task">
                   <span class="node-index">01</span><span class="node-icon">↳</span><span class="node-name">load_data</span><span class="node-kind">SOURCE</span><span class="node-status" data-status>Ready</span>
                 </button>
+                <button class="task-node node-validate" data-task="validate_data" type="button" aria-label="Inspect validate_data task">
+                  <span class="node-index">02</span><span class="node-icon">✓</span><span class="node-name">validate_data</span><span class="node-kind">VALIDATE</span><span class="node-status" data-status>Waiting</span>
+                </button>
                 <button class="task-node node-clean" data-task="clean_data" type="button" aria-label="Inspect clean_data task">
-                  <span class="node-index">02</span><span class="node-icon">⌁</span><span class="node-name">clean_data</span><span class="node-kind">TRANSFORM</span><span class="node-status" data-status>Waiting</span>
+                  <span class="node-index">03</span><span class="node-icon">⌁</span><span class="node-name">clean_data</span><span class="node-kind">TRANSFORM</span><span class="node-status" data-status>Waiting</span>
                 </button>
                 <button class="task-node node-summary" data-task="summarize" type="button" aria-label="Inspect summarize task">
-                  <span class="node-index">03</span><span class="node-icon">◒</span><span class="node-name">summarize</span><span class="node-kind">ANALYZE</span><span class="node-status" data-status>Waiting</span>
+                  <span class="node-index">04</span><span class="node-icon">◒</span><span class="node-name">summarize</span><span class="node-kind">ANALYZE</span><span class="node-status" data-status>Waiting</span>
                 </button>
                 <button class="task-node node-report" data-task="report" type="button" aria-label="Inspect report task">
-                  <span class="node-index">04</span><span class="node-icon">↗</span><span class="node-name">report</span><span class="node-kind">OUTPUT</span><span class="node-status" data-status>Waiting</span>
+                  <span class="node-index">05</span><span class="node-icon">↗</span><span class="node-name">report</span><span class="node-kind">OUTPUT</span><span class="node-status" data-status>Waiting</span>
                 </button>
               </div>
               <div class="graph-legend"><span><i class="legend-dot dot-complete"></i> completed</span><span><i class="legend-dot dot-active"></i> running</span><span><i class="legend-dot dot-waiting"></i> waiting</span><span class="legend-tip">Click a node for task details</span></div>
@@ -109,12 +112,12 @@
                 <div><span>Produces</span><strong id="inspector-produces">list[dict]</strong></div>
               </div>
               <div class="output-preview"><div class="output-label"><span>Latest output</span><span class="output-state" id="output-state">ready</span></div><code id="inspector-output">awaiting demo run</code></div>
-              <div class="inspector-footer"><span id="inspector-step">Step 1 of 4</span><span class="inspector-arrow" aria-hidden="true">→</span></div>
+              <div class="inspector-footer"><span id="inspector-step">Step 1 of 5</span><span class="inspector-arrow" aria-hidden="true">→</span></div>
             </aside>
           </div>
 
           <div class="timeline-panel panel">
-            <div class="timeline-header"><div><span class="panel-kicker">Execution order</span><h3 id="timeline-title">The runner is ready</h3></div><span class="timeline-count" id="timeline-count">0 / 4 complete</span></div>
+            <div class="timeline-header"><div><span class="panel-kicker">Execution order</span><h3 id="timeline-title">The runner is ready</h3></div><span class="timeline-count" id="timeline-count">0 / 5 complete</span></div>
             <div class="timeline" id="timeline"></div>
             <div class="run-result" id="run-result"><span class="result-icon">✦</span><span>Press <strong>Run demo</strong> to replay the same stable order the Python runner produces.</span></div>
           </div>
@@ -124,9 +127,10 @@
           <div class="section-heading"><div class="eyebrow">02 / Pipeline story</div><h2>From rows to a readable result.</h2><p>Each task does one thing, and the edges tell the runner exactly when that thing is allowed to happen.</p></div>
           <div class="story-grid">
             <article class="story-card story-blue"><div class="story-number">01</div><div class="story-icon">↳</div><h3>Ingest</h3><p><code>load_data</code> returns three observations as plain Python dictionaries.</p><span class="story-output">3 raw rows</span></article>
-            <article class="story-card story-yellow"><div class="story-number">02</div><div class="story-icon">⌁</div><h3>Clean</h3><p><code>clean_data</code> fills the missing age so downstream work receives a usable table.</p><span class="story-output">null → 0</span></article>
-            <article class="story-card story-pink"><div class="story-number">03</div><div class="story-icon">◒</div><h3>Analyze</h3><p><code>summarize</code> counts rows and calculates the mean score for the cohort.</p><span class="story-output">mean score 83.3</span></article>
-            <article class="story-card story-green"><div class="story-number">04</div><div class="story-icon">↗</div><h3>Publish</h3><p><code>report</code> turns the summary into a concise, human-readable pipeline result.</p><span class="story-output">report ready</span></article>
+            <article class="story-card story-yellow"><div class="story-number">02</div><div class="story-icon">✓</div><h3>Validate</h3><p><code>validate_data</code> gates malformed, out-of-range, and empty inputs before cleaning.</p><span class="story-output">quality gate ✓</span></article>
+            <article class="story-card story-pink"><div class="story-number">03</div><div class="story-icon">⌁</div><h3>Clean</h3><p><code>clean_data</code> imputes only missing ages, leaving a real zero untouched.</p><span class="story-output">None → 0</span></article>
+            <article class="story-card story-purple"><div class="story-number">04</div><div class="story-icon">◒</div><h3>Analyze</h3><p><code>summarize</code> counts rows and calculates the mean score for the cohort.</p><span class="story-output">mean score 83.3</span></article>
+            <article class="story-card story-green"><div class="story-number">05</div><div class="story-icon">↗</div><h3>Publish</h3><p><code>report</code> includes the summary and the reproducibility seed in a concise result.</p><span class="story-output">report ready</span></article>
           </div>
           <div class="principle-callout"><span class="callout-mark">∴</span><p><strong>Why a DAG?</strong> The graph makes ordering, reproducibility, and intermediate outputs explicit—so a notebook’s hidden cell order becomes a system you can inspect.</p><span class="callout-line"></span></div>
         </section>
@@ -134,7 +138,7 @@
         <section class="run-locally" id="run-locally">
           <div class="section-heading"><div class="eyebrow">03 / Run locally</div><h2>Try the real engine.</h2><p>The visualizer is intentionally lightweight. Run the Python implementation to verify the source of truth in your terminal.</p></div>
           <div class="local-grid">
-            <div class="terminal-card panel"><div class="terminal-top"><span class="window-dots"><i></i><i></i><i></i></span><span>terminal</span><span class="terminal-path">09_flowforge_dag_engine</span></div><div class="terminal-body"><div><span class="prompt">$</span> python examples/basic_pipeline.py</div><div class="terminal-muted">Execution order: <span>load_data → clean_data → summarize → report</span></div><div class="terminal-success">Processed 3 rows; mean score=83.3</div><div class="terminal-spacer"></div><div><span class="prompt">$</span> python -m unittest discover -s tests -v</div><div class="terminal-muted">Ran 6 tests in 0.00s</div><div class="terminal-success">OK</div></div></div>
+            <div class="terminal-card panel"><div class="terminal-top"><span class="window-dots"><i></i><i></i><i></i></span><span>terminal</span><span class="terminal-path">09_flowforge_dag_engine</span></div><div class="terminal-body"><div><span class="prompt">$</span> python examples/basic_pipeline.py</div><div class="terminal-muted">Execution order: <span>load_data → validate_data → clean_data → summarize → report</span></div><div class="terminal-success">Processed 3 rows; mean score=83.3; run seed=255</div><div class="terminal-spacer"></div><div><span class="prompt">$</span> python -m unittest discover -s tests -v</div><div class="terminal-muted">Run the focused contract, lineage, and quality-gate tests</div><div class="terminal-success">OK</div></div></div>
             <div class="instructions-card"><div class="instruction-step"><span>01</span><div><strong>Launch the UI</strong><p>From this project directory, run <code>python -m http.server 8000</code>.</p></div></div><div class="instruction-step"><span>02</span><div><strong>Open the companion</strong><p>Visit <code>http://localhost:8000/ui/</code> in your browser.</p></div></div><div class="instruction-step"><span>03</span><div><strong>Replay the pipeline</strong><p>Click Run demo, then select nodes to inspect each output.</p></div></div><a class="readme-link" href="../README.md">Read the full README <span aria-hidden="true">↗</span></a></div>
           </div>
         </section>

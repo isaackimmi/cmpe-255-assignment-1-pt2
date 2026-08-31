@@ -1,69 +1,318 @@
 {
-  "dataset": "/Users/isaackim/Desktop/MSSE DS/Fall 2026/CMPE 255/HW/cmpe-255-assignment-1-pt2/11_enterprise_ds_audit/artifacts/sample_customers.csv",
-  "generated_at_utc": "2026-08-31T05:35:35Z",
+  "dataset": "11_enterprise_ds_audit/artifacts/sample_customers.csv",
+  "generated_at_utc": "2026-08-31T06:42:09Z",
+  "policy_version": "2026.08.1",
   "checks": [
     {
       "name": "schema",
       "status": "FAIL",
       "severity": "high",
-      "detail": "41 rows; missing=[]; extra=[]; parse_errors=['row 8 monthly_spend']"
+      "detail": "41 rows; missing=[]; extra=[]; row_errors=1",
+      "evidence": {
+        "rows_inspected": 41,
+        "header": [
+          "customer_id",
+          "snapshot_date",
+          "tenure_months",
+          "monthly_spend",
+          "support_tickets_90d",
+          "plan",
+          "churned",
+          "churn_confirmed_at",
+          "internal_note"
+        ],
+        "required_columns": [
+          "churn_confirmed_at",
+          "churned",
+          "customer_id",
+          "internal_note",
+          "monthly_spend",
+          "plan",
+          "snapshot_date",
+          "support_tickets_90d",
+          "tenure_months"
+        ],
+        "missing_columns": [],
+        "extra_columns": [],
+        "duplicate_headers": [],
+        "row_errors": [
+          {
+            "row": 8,
+            "reason": "parse",
+            "fields": [
+              "monthly_spend: missing value"
+            ]
+          }
+        ],
+        "row_error_count": 1
+      },
+      "rule_version": "2026.08.1"
     },
     {
       "name": "missingness",
       "status": "FAIL",
       "severity": "medium",
-      "detail": "null_rates={'customer_id': 0.0, 'snapshot_date': 0.0, 'tenure_months': 0.0, 'monthly_spend': 0.0244, 'support_tickets_90d': 0.0, 'plan': 0.0, 'churned': 0.0, 'churn_confirmed_at': 0.7561, 'internal_note': 0.9756}; threshold=0.05"
+      "detail": "null_rates={'customer_id': 0.0, 'snapshot_date': 0.0, 'tenure_months': 0.0, 'monthly_spend': 0.0244, 'support_tickets_90d': 0.0, 'plan': 0.0, 'churned': 0.0, 'churn_confirmed_at': 0.7561, 'internal_note': 0.9756}; violations=['monthly_spend']",
+      "evidence": {
+        "null_rates": {
+          "customer_id": 0.0,
+          "snapshot_date": 0.0,
+          "tenure_months": 0.0,
+          "monthly_spend": 0.0244,
+          "support_tickets_90d": 0.0,
+          "plan": 0.0,
+          "churned": 0.0,
+          "churn_confirmed_at": 0.7561,
+          "internal_note": 0.9756
+        },
+        "null_counts": {
+          "customer_id": 0,
+          "snapshot_date": 0,
+          "tenure_months": 0,
+          "monthly_spend": 1,
+          "support_tickets_90d": 0,
+          "plan": 0,
+          "churned": 0,
+          "churn_confirmed_at": 31,
+          "internal_note": 40
+        },
+        "denominator": 41,
+        "policy": {
+          "customer_id": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "snapshot_date": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "tenure_months": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "monthly_spend": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "support_tickets_90d": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "plan": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "churned": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "churn_confirmed_at": {
+            "allow_null": true,
+            "max_rate": 1.0
+          },
+          "internal_note": {
+            "allow_null": true,
+            "max_rate": 1.0
+          }
+        },
+        "violations": {
+          "monthly_spend": {
+            "count": 1,
+            "rate": 0.0244,
+            "allow_null": false,
+            "max_rate": 0.0
+          }
+        }
+      },
+      "rule_version": "2026.08.1"
     },
     {
       "name": "duplicate_identifiers",
       "status": "FAIL",
       "severity": "high",
-      "detail": "duplicate_customer_ids=['C0001']"
+      "detail": "duplicate_key_values=[['C0001', '2025-01-02']]; exact_duplicate_rows=1; excluded=1",
+      "evidence": {
+        "grain": "customer_snapshot",
+        "duplicate_key": [
+          "customer_id",
+          "snapshot_date"
+        ],
+        "duplicate_key_values": [
+          [
+            "C0001",
+            "2025-01-02"
+          ]
+        ],
+        "exact_duplicate_rows": 1,
+        "exact_duplicate_samples": [
+          {
+            "churn_confirmed_at": "2025-01-07",
+            "churned": "1",
+            "customer_id": "C0001",
+            "internal_note": null,
+            "monthly_spend": "62.06",
+            "plan": "pro",
+            "snapshot_date": "2025-01-02",
+            "support_tickets_90d": "5",
+            "tenure_months": "10"
+          }
+        ],
+        "valid_multi_snapshot_customer_ids": [
+          "C0001"
+        ],
+        "excluded_row_count": 1
+      },
+      "rule_version": "2026.08.1"
+    },
+    {
+      "name": "domain_validity",
+      "status": "INCONCLUSIVE",
+      "severity": "high",
+      "detail": "0 domain violation(s) across 41 typed rows",
+      "evidence": {
+        "violation_count": 0,
+        "violations": [],
+        "rows_checked": 41
+      },
+      "rule_version": "2026.08.1"
     },
     {
       "name": "leakage_risk",
-      "status": "FAIL",
+      "status": "PASS",
+      "severity": "low",
+      "detail": "features=['tenure_months', 'monthly_spend', 'support_tickets_90d', 'plan']; offending=0; excluded_suspicious=['customer_id', 'churned', 'churn_confirmed_at']",
+      "evidence": {
+        "prediction_time_column": "snapshot_date",
+        "label_column": "churned",
+        "feature_manifest": [
+          "tenure_months",
+          "monthly_spend",
+          "support_tickets_90d",
+          "plan"
+        ],
+        "safe_feature_allowlist": [
+          "tenure_months",
+          "monthly_spend",
+          "support_tickets_90d",
+          "plan"
+        ],
+        "invalid_contract": [],
+        "offending_features": [],
+        "excluded_suspicious_columns": [
+          "customer_id",
+          "churned",
+          "churn_confirmed_at"
+        ]
+      },
+      "rule_version": "2026.08.1"
+    },
+    {
+      "name": "model_quality",
+      "status": "INCONCLUSIVE",
       "severity": "high",
-      "detail": "churn_confirmed_at is populated from the outcome window and must not be available at prediction time; internal_note may contain outcome/cancellation language and requires review"
+      "detail": "status=INCONCLUSIVE; reason=model evaluation blocked until schema and domain validation pass; test_rows=0",
+      "evidence": {
+        "status": "INCONCLUSIVE",
+        "reason": "model evaluation blocked until schema and domain validation pass",
+        "excluded_rows": {
+          "invalid_input": 1
+        }
+      },
+      "rule_version": "2026.08.1"
     },
     {
       "name": "reproducibility",
       "status": "PASS",
       "severity": "low",
-      "detail": "{\"input_sha256\": \"7372a7fd43364c9e5d2b6120b3cf2d42da5de65918e2128ad18e226dbd951a04\", \"python\": \"3.14.7\", \"seed\": 255, \"split\": \"first 70% train / final 30% holdout by snapshot_date\"}"
-    },
-    {
-      "name": "model_quality",
-      "status": "PASS",
-      "severity": "medium",
-      "detail": "{\"majority_baseline\": {\"accuracy\": 0.6667, \"balanced_accuracy\": 0.5, \"f1\": 0, \"precision\": 0, \"recall\": 0.0}, \"model\": {\"accuracy\": 0.6667, \"balanced_accuracy\": 0.75, \"f1\": 0.6667, \"precision\": 0.5, \"recall\": 1.0}, \"test_rows\": 12, \"ticket_threshold\": 2, \"train_rows\": 26}"
+      "detail": "canonical_hash=46a6cc1a7db2d5a568a9df12faf1913f8101f1d61106b0a613b0258d67a52d53; rerun_match=True; source_hash=c1157cd99846\u2026",
+      "evidence": {
+        "policy_version": "2026.08.1",
+        "seed": 255,
+        "input_sha256": "7372a7fd43364c9e5d2b6120b3cf2d42da5de65918e2128ad18e226dbd951a04",
+        "source_sha256": "c1157cd9984626a27b36998c85637a1542c05d9ca0e32d086a58d77edb7a07ce",
+        "configuration_sha256": "50e7f454f31fbb969756b852608ce113f7979e725bea30b71531e8d082620089",
+        "dependency_lock_sha256": "none",
+        "repository_revision": "8de463527ee123c0af1f08f0320a11995f02f728",
+        "python": "3.14.7",
+        "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+        "split": "time-ordered temporal holdouts",
+        "split_manifest": {
+          "grain": "customer_snapshot",
+          "primary_window": "final_holdout",
+          "train_date_bounds": [],
+          "test_date_bounds": [],
+          "train_row_ids": [],
+          "test_row_ids": []
+        },
+        "canonical_result_sha256": "46a6cc1a7db2d5a568a9df12faf1913f8101f1d61106b0a613b0258d67a52d53",
+        "rerun_canonical_result_sha256": "46a6cc1a7db2d5a568a9df12faf1913f8101f1d61106b0a613b0258d67a52d53",
+        "rerun_match": true
+      },
+      "rule_version": "2026.08.1"
     }
   ],
   "reproducibility": {
+    "policy_version": "2026.08.1",
     "seed": 255,
     "input_sha256": "7372a7fd43364c9e5d2b6120b3cf2d42da5de65918e2128ad18e226dbd951a04",
+    "source_sha256": "c1157cd9984626a27b36998c85637a1542c05d9ca0e32d086a58d77edb7a07ce",
+    "configuration_sha256": "50e7f454f31fbb969756b852608ce113f7979e725bea30b71531e8d082620089",
+    "dependency_lock_sha256": "none",
+    "repository_revision": "8de463527ee123c0af1f08f0320a11995f02f728",
     "python": "3.14.7",
-    "split": "first 70% train / final 30% holdout by snapshot_date"
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "split": "time-ordered temporal holdouts",
+    "split_manifest": {
+      "grain": "customer_snapshot",
+      "primary_window": "final_holdout",
+      "train_date_bounds": [],
+      "test_date_bounds": [],
+      "train_row_ids": [],
+      "test_row_ids": []
+    },
+    "canonical_result_sha256": "46a6cc1a7db2d5a568a9df12faf1913f8101f1d61106b0a613b0258d67a52d53",
+    "rerun_canonical_result_sha256": "46a6cc1a7db2d5a568a9df12faf1913f8101f1d61106b0a613b0258d67a52d53",
+    "rerun_match": true
   },
   "model_quality": {
-    "train_rows": 26,
-    "test_rows": 12,
-    "ticket_threshold": 2,
-    "model": {
-      "accuracy": 0.6667,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6667,
-      "balanced_accuracy": 0.75
-    },
-    "majority_baseline": {
-      "accuracy": 0.6667,
-      "precision": 0,
-      "recall": 0.0,
-      "f1": 0,
-      "balanced_accuracy": 0.5
+    "status": "INCONCLUSIVE",
+    "reason": "model evaluation blocked until schema and domain validation pass",
+    "excluded_rows": {
+      "invalid_input": 1
     }
   },
   "release_recommendation": "CONDITIONAL",
-  "summary": "4 fail(s), 0 warning(s); release recommendation: CONDITIONAL"
+  "decision_state": "BLOCKED",
+  "decision": {
+    "policy_version": "2026.08.1",
+    "blocking_findings": [
+      {
+        "name": "schema",
+        "severity": "high",
+        "status": "FAIL",
+        "detail": "41 rows; missing=[]; extra=[]; row_errors=1"
+      },
+      {
+        "name": "duplicate_identifiers",
+        "severity": "high",
+        "status": "FAIL",
+        "detail": "duplicate_key_values=[['C0001', '2025-01-02']]; exact_duplicate_rows=1; excluded=1"
+      },
+      {
+        "name": "domain_validity",
+        "severity": "high",
+        "status": "INCONCLUSIVE",
+        "detail": "0 domain violation(s) across 41 typed rows"
+      },
+      {
+        "name": "model_quality",
+        "severity": "high",
+        "status": "INCONCLUSIVE",
+        "detail": "status=INCONCLUSIVE; reason=model evaluation blocked until schema and domain validation pass; test_rows=0"
+      }
+    ],
+    "warning_findings": [],
+    "text": "Release is blocked by: schema, duplicate_identifiers, domain_validity, model_quality."
+  },
+  "summary": "3 fail(s), 2 inconclusive, 0 warning(s); release recommendation: CONDITIONAL"
 }

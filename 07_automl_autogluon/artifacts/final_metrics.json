@@ -1,0 +1,13 @@
+{
+  "model": "logistic_regression",
+  "backend": "sklearn",
+  "accuracy": 0.956140350877193,
+  "balanced_accuracy": 0.9503968253968254,
+  "f1": 0.9655172413793104,
+  "roc_auc": 0.9947089947089948,
+  "fit_seconds": 0.007,
+  "evaluation_scope": "final_holdout",
+  "selection_metric": "cv_roc_auc_mean",
+  "selected_by": "development_cv",
+  "final_test_samples": 114
+}
