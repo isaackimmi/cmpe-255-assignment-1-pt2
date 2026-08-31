@@ -22,6 +22,7 @@ The app also works by opening `index.html` directly, although some browsers rest
 - View dataset metadata, workflow stages, progress, and agent activity.
 - Seeded example tasks demonstrate a typical CRISP-DM/data-science-agent loop.
 - Responsive layout for desktop and narrow screens.
+- Polished dashboard presentation with CRISP-DM stage progress, accessible focus states, reduced-motion support, and local static-server compatibility.
 
 ## Tests
 

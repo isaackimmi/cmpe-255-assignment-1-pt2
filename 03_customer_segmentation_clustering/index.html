@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Customer intelligence dashboard for a reproducible synthetic clustering experiment." />
+    <title>Customer intelligence | Project 03</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#overview" aria-label="Customer intelligence home">
+        <span class="brand-mark">03</span>
+        <span>
+          <strong>Customer intelligence</strong>
+          <small>Project 03 / clustering lab</small>
+        </span>
+      </a>
+      <nav class="topnav" aria-label="Dashboard sections">
+        <a href="#profiles">Segments</a>
+        <a href="#evaluation">Evaluation</a>
+        <a href="#method">Method</a>
+      </nav>
+      <span class="data-badge"><span class="status-dot"></span>Synthetic data · reproducible</span>
+    </header>
+
+    <main>
+      <section class="hero shell" id="overview">
+        <div class="hero-copy">
+          <p class="eyebrow">Decision surface / CRISP-DM deployment view</p>
+          <h1>Find the shape of your customer base.</h1>
+          <p class="hero-lede">A compact readout of a deterministic K-Means experiment. Explore the profiles, inspect the evidence, and keep the boundary between a teaching dataset and a business decision visible.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#profiles">Explore segments <span aria-hidden="true">↘</span></a>
+            <a class="button button-secondary" href="#method">Read the run recipe</a>
+          </div>
+          <div class="hero-note"><span class="note-icon">i</span><span><strong>Honest label:</strong> all customers are generated locally from three intentionally interpretable prototypes. This is not observed customer behavior.</span></div>
+        </div>
+        <div class="hero-orbit" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="orbit orbit-three"></div>
+          <div class="orbit-core"><span>k</span><strong id="hero-k">—</strong><small>selected</small></div>
+          <span class="orbit-label label-a">value</span>
+          <span class="orbit-label label-b">intent</span>
+          <span class="orbit-label label-c">premium</span>
+        </div>
+      </section>
+
+      <section class="metric-strip shell" aria-label="Selected run metrics">
+        <div class="metric metric-featured"><span class="metric-label">Selected model</span><strong id="selected-model">K-Means · k=—</strong><small id="run-size">— customers · seed —</small></div>
+        <div class="metric"><span class="metric-label">Silhouette <span class="help" title="Higher is better; used as the primary selection criterion.">?</span></span><strong id="silhouette">—</strong><small>primary selection signal</small></div>
+        <div class="metric"><span class="metric-label">Calinski–Harabasz <span class="help" title="Higher values generally indicate dense, well-separated clusters.">?</span></span><strong id="calinski">—</strong><small>separation / compactness</small></div>
+        <div class="metric"><span class="metric-label">Davies–Bouldin <span class="help" title="Lower values generally indicate better separation.">?</span></span><strong id="davies">—</strong><small>lower is better</small></div>
+      </section>
+
+      <section class="section shell" id="profiles">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">What the model found</p>
+            <h2>Three profiles, one useful starting point.</h2>
+          </div>
+          <div class="controls">
+            <label class="control-label" for="feature-select">Compare feature</label>
+            <select id="feature-select" class="select-control">
+              <option value="spend_score">Spend score</option>
+              <option value="annual_income_k">Annual income</option>
+              <option value="purchase_frequency">Purchase frequency</option>
+              <option value="avg_order_value">Average order value</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-row" aria-label="Filter customer segments">
+          <span class="filter-label">Show</span>
+          <button class="filter-button is-active" data-filter="all">All segments</button>
+          <div id="segment-filters" class="segment-filters"></div>
+        </div>
+        <div id="profile-grid" class="profile-grid" aria-live="polite">
+          <div class="loading-card">Loading segment profiles…</div>
+        </div>
+      </section>
+
+      <section class="section evidence-section shell" id="evaluation">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">Evidence, not vibes</p>
+            <h2>Cluster selection and customer map</h2>
+          </div>
+          <p class="section-aside">Silhouette is the selection signal. CH and DB provide additional context; none of these metrics prove business value.</p>
+        </div>
+        <div class="evidence-grid">
+          <div class="panel score-panel">
+            <div class="panel-heading"><div><h3>Improved preprocessing</h3><p>log1p income + order value → StandardScaler</p></div><span class="mini-badge">k = 2–7</span></div>
+            <div class="score-table-wrap"><table class="score-table"><thead><tr><th>k</th><th>Silhouette</th><th>CH</th><th>DB</th></tr></thead><tbody id="score-body"><tr><td colspan="4">Loading scores…</td></tr></tbody></table></div>
+            <div class="legend-line"><span class="legend-swatch selected-swatch"></span>selected run <span class="legend-copy">higher silhouette is preferred</span></div>
+          </div>
+          <figure class="panel plot-panel">
+            <div class="panel-heading"><div><h3>Segmentation artifact</h3><p>Selection curve + PCA projection exported by the Python run</p></div><span class="mini-badge">artifact</span></div>
+            <div class="plot-frame"><img src="artifacts/segmentation.png" alt="Two-panel plot showing silhouette scores by k and a PCA customer map with three clusters" /></div>
+            <figcaption>Visual diagnostics only: PCA compresses the four feature dimensions into two axes.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section shell method-section" id="method">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">Trace the work</p>
+            <h2>CRISP-DM, made visible.</h2>
+          </div>
+          <p class="section-aside">Use the phase navigator as a quick presentation guide for the experiment’s reasoning and boundaries.</p>
+        </div>
+        <div class="phase-layout">
+          <div class="phase-nav" role="tablist" aria-label="CRISP-DM phases">
+            <button class="phase-button is-active" data-phase="business" role="tab" aria-selected="true"><span>01</span><strong>Business understanding</strong><small>Why segment?</small></button>
+            <button class="phase-button" data-phase="data" role="tab" aria-selected="false"><span>02</span><strong>Data understanding</strong><small>What is in scope?</small></button>
+            <button class="phase-button" data-phase="prep" role="tab" aria-selected="false"><span>03</span><strong>Data preparation</strong><small>How is it shaped?</small></button>
+            <button class="phase-button" data-phase="model" role="tab" aria-selected="false"><span>04</span><strong>Modeling</strong><small>How are groups formed?</small></button>
+            <button class="phase-button" data-phase="evaluate" role="tab" aria-selected="false"><span>05</span><strong>Evaluation</strong><small>What counts as signal?</small></button>
+            <button class="phase-button" data-phase="deploy" role="tab" aria-selected="false"><span>06</span><strong>Deployment / use</strong><small>What happens next?</small></button>
+          </div>
+          <div class="phase-detail" aria-live="polite">
+            <span class="phase-detail-kicker" id="phase-number">01 / BUSINESS UNDERSTANDING</span>
+            <h3 id="phase-title">Turn cluster output into a decision surface.</h3>
+            <p id="phase-description">Identify actionable customer groups for differentiated offers while keeping the experiment’s assumptions explicit.</p>
+            <div class="phase-callout"><span class="callout-line"></span><span id="phase-callout">A segment is a conversation starter, not a verdict about a person.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section shell run-section">
+        <div class="run-card">
+          <div><p class="eyebrow">Run it yourself</p><h2>Reproduce the evidence locally.</h2><p>The dashboard reads the generated artifacts in this folder. Start the Python run when you want a fresh dataset and then serve this directory over HTTP.</p></div>
+          <div class="command-stack"><code>python3 -m src.experiment</code><code>python3 -m pytest -q</code><code>python3 -m http.server 8000</code></div>
+          <a class="button button-light" href="README.md">Open README <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer shell"><span>CMPE 255 · Project 03</span><span>Static UI over reproducible artifacts</span><span id="app-status">Preparing dashboard…</span></footer>
+    <script src="app.js" defer></script>
+  </body>
+</html>

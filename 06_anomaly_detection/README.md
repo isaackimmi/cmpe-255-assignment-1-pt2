@@ -23,6 +23,18 @@ python -m pytest -q
 
 The run writes `artifacts/metrics.json` and `artifacts/anomaly_scores.png`. The experiment is deterministic with seed 42 and accepts `--seed` for sensitivity checks.
 
+## Dashboard
+
+The project includes a responsive static dashboard in `index.html`. It loads `artifacts/metrics.json` in the browser and presents the detector comparison, ROC-AUC / average precision / F1, category recall, the saved anomaly-score image, a CRISP-DM workflow rail, and an operating-point explorer.
+
+From this directory, start a local static server:
+
+```bash
+python3 -m http.server 8000
+```
+
+Open [http://localhost:8000](http://localhost:8000) and select a detector row to update the readout and projected queue. The threshold and flag-budget sliders show clearly labeled, illustrative client-side behavior; they do not rerun the Python experiment or change the saved metrics. To refresh the source artifacts first, run `python3 src/anomaly_experiment.py --output-dir artifacts` and reload the page.
+
 ## Evaluation
 
 Because anomaly prevalence is low, accuracy is intentionally omitted. The report includes ROC-AUC (ranking quality), average precision (precision-recall quality under class imbalance), and fixed-budget precision, recall, and F1. It also reports recall for each anomaly category so an apparently strong aggregate score cannot hide a method's failure on local or clustered anomalies.

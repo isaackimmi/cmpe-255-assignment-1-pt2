@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102c3e" />
+    <title>Taxi Lens · CRISP-DM audit platform</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#overview" aria-label="Taxi Lens home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>Taxi Lens</span>
+        </a>
+        <div class="topbar-meta">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Local evidence workspace</span>
+          <span class="topbar-divider"></span>
+          <span id="last-updated">Loading artifacts…</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero" id="overview">
+          <div class="hero-copy">
+            <p class="eyebrow">PROJECT 13 / MODEL AUDIT</p>
+            <h1>Make the trip<br /><em>legible.</em></h1>
+            <p class="hero-lede">A compact CRISP-DM command center for understanding, auditing, and stress-testing a synthetic NYC taxi duration model.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#inference">Try a local estimate <span aria-hidden="true">↗</span></a>
+              <a class="button button-quiet" href="#evidence">Explore evidence <span aria-hidden="true">↓</span></a>
+            </div>
+          </div>
+          <div class="hero-visual" aria-label="Stylized city route illustration">
+            <div class="map-glow"></div>
+            <div class="map-grid map-grid-a"></div>
+            <div class="map-grid map-grid-b"></div>
+            <div class="route route-one"><i></i><i></i><i></i></div>
+            <div class="route route-two"><i></i><i></i></div>
+            <div class="route route-three"><i></i><i></i><i></i><i></i></div>
+            <div class="map-pin pin-start"><span></span></div>
+            <div class="map-pin pin-end"><span></span></div>
+            <div class="hero-badge"><span class="badge-kicker">MODEL STATUS</span><strong>Chronological holdout</strong><span>80 / 20 split · no future leakage</span></div>
+          </div>
+        </section>
+
+        <section class="section-block" aria-labelledby="scorecard-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">01 / SCORECARD</p>
+              <h2 id="scorecard-title">A fast read on model health.</h2>
+            </div>
+            <p class="section-note">Loaded from <code>artifacts/metrics.json</code></p>
+          </div>
+          <div class="kpi-grid" id="kpi-grid">
+            <article class="kpi-card kpi-featured skeleton-card"><span class="kpi-label">Model accuracy</span><strong>—</strong><span>Awaiting metrics</span></article>
+            <article class="kpi-card"><span class="kpi-label">Mean absolute error</span><strong>—</strong><span>minutes per trip</span></article>
+            <article class="kpi-card"><span class="kpi-label">RMSE</span><strong>—</strong><span>minutes · holdout</span></article>
+            <article class="kpi-card"><span class="kpi-label">Test coverage</span><strong>—</strong><span>chronological rows</span></article>
+          </div>
+        </section>
+
+        <section class="section-block evidence-section" id="evidence" aria-labelledby="evidence-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">02 / EVIDENCE</p>
+              <h2 id="evidence-title">See the data before trusting the score.</h2>
+            </div>
+            <span class="section-chip">Synthetic NYC-like sample</span>
+          </div>
+          <div class="evidence-grid">
+            <figure class="chart-card chart-card-large">
+              <div class="chart-card-head"><div><span class="chart-number">A</span><h3>Trip duration distribution</h3></div><span class="chart-caption">EDA / shape</span></div>
+              <div class="image-frame"><img src="../artifacts/eda.png" alt="Histogram showing the sample trip duration distribution" /></div>
+              <figcaption>What the model sees: a deliberately compact, inspectable sample rather than a full TLC download.</figcaption>
+            </figure>
+            <figure class="chart-card">
+              <div class="chart-card-head"><div><span class="chart-number">B</span><h3>Actual vs predicted</h3></div><span class="chart-caption">Temporal holdout</span></div>
+              <div class="image-frame"><img src="../artifacts/actual_vs_predicted.png" alt="Scatter plot comparing actual and predicted trip durations" /></div>
+              <figcaption>Closer to the diagonal means a tighter duration estimate.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="section-block process-section" aria-labelledby="process-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">03 / CRISP-DM LOOP</p>
+              <h2 id="process-title">From question to monitored signal.</h2>
+            </div>
+            <p class="section-note">A compact audit trail, not a production claim.</p>
+          </div>
+          <div class="timeline" id="timeline">
+            <article class="timeline-step is-active"><span class="timeline-index">01</span><span class="timeline-node"></span><h3>Business<br />understanding</h3><p>Estimate duration for planning and dispatch analysis.</p></article>
+            <article class="timeline-step"><span class="timeline-index">02</span><span class="timeline-node"></span><h3>Data<br />understanding</h3><p>Profile schema, nulls, duplicates, invalid values, and outliers.</p></article>
+            <article class="timeline-step"><span class="timeline-index">03</span><span class="timeline-node"></span><h3>Data<br />preparation</h3><p>Derive temporal features; impute feature gaps; exclude bad targets.</p></article>
+            <article class="timeline-step"><span class="timeline-index">04</span><span class="timeline-node"></span><h3>Modeling &<br />evaluation</h3><p>Fit a CPU-safe gradient booster on a chronological holdout.</p></article>
+            <article class="timeline-step"><span class="timeline-index">05</span><span class="timeline-node"></span><h3>Deployment &<br />monitoring</h3><p>Run locally, then monitor drift, error slices, and latency.</p></article>
+          </div>
+        </section>
+
+        <section class="section-block audit-section" aria-labelledby="audit-title">
+          <div class="audit-layout">
+            <div class="audit-intro">
+              <p class="eyebrow">04 / DATA AUDIT</p>
+              <h2 id="audit-title">Small issues.<br /><em>Visible early.</em></h2>
+              <p>The platform audits the raw sample before training. Findings are intentionally surfaced instead of buried in a notebook.</p>
+              <div class="audit-summary" id="audit-summary"><span class="audit-summary-icon">✓</span><div><strong>Audit is loading</strong><span>Reading the saved report…</span></div></div>
+            </div>
+            <div class="audit-table-wrap"><div class="audit-table" id="audit-table" role="table" aria-label="Data audit findings">
+              <div class="audit-row audit-header" role="row"><span>Check</span><span>Observed</span><span>Signal</span></div>
+              <div class="audit-row" role="row"><span>Missing distances</span><strong>—</strong><span class="signal signal-watch">Loading</span></div>
+              <div class="audit-row" role="row"><span>Non-positive durations</span><strong>—</strong><span class="signal signal-watch">Loading</span></div>
+              <div class="audit-row" role="row"><span>Duplicate trip IDs</span><strong>—</strong><span class="signal signal-good">Loading</span></div>
+              <div class="audit-row" role="row"><span>IQR duration outliers</span><strong>—</strong><span class="signal signal-watch">Loading</span></div>
+              <div class="audit-row" role="row"><span>Missing required columns</span><strong>—</strong><span class="signal signal-good">Loading</span></div>
+            </div></div>
+          </div>
+        </section>
+
+        <section class="section-block inference-section" id="inference" aria-labelledby="inference-title">
+          <div class="inference-layout">
+            <div class="inference-copy">
+              <p class="eyebrow">05 / LOCAL INFERENCE LAB</p>
+              <h2 id="inference-title">What would this trip look like?</h2>
+              <p>Play with the model inputs and get a quick directional estimate in your browser. This is an illustrative client-side approximation for exploration.</p>
+              <div class="callout"><span class="callout-icon">i</span><p><strong>Illustrative only.</strong> The browser does not load <code>model.joblib</code>. For the saved Python model, use the CLI command in the run guide below. Never use this demo for dispatch, pricing, or safety decisions.</p></div>
+            </div>
+            <form class="inference-form" id="inference-form">
+              <div class="form-heading"><span class="form-kicker">LOCAL ESTIMATE</span><span class="local-pill"><span></span> In-browser</span></div>
+              <div class="form-grid">
+                <label>Pickup hour <span class="field-value" id="pickup-hour-value">17:00</span><input id="pickup-hour" type="range" min="0" max="23" value="17" /></label>
+                <label>Weekday<select id="weekday"><option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option><option value="3">Thursday</option><option value="4" selected>Friday</option><option value="5">Saturday</option><option value="6">Sunday</option></select></label>
+                <label>Distance <span class="field-value"><output id="distance-value">3.2</output> mi</span><input id="distance" type="range" min="0.5" max="18" step="0.1" value="3.2" /></label>
+                <label>Passengers<select id="passengers"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></label>
+              </div>
+              <button class="button button-primary button-full" type="submit">Estimate trip duration <span aria-hidden="true">→</span></button>
+              <div class="prediction-output" aria-live="polite"><span>Estimated duration</span><strong id="prediction-value">—</strong><small id="prediction-note">Adjust the inputs to explore.</small></div>
+            </form>
+          </div>
+        </section>
+
+        <section class="section-block report-section" aria-labelledby="report-title">
+          <div class="section-heading">
+            <div><p class="eyebrow">06 / REPORT NOTES</p><h2 id="report-title">The narrative behind the numbers.</h2></div>
+            <a class="text-link" href="../artifacts/crispdm_report.md" target="_blank" rel="noreferrer">Open raw report ↗</a>
+          </div>
+          <div class="report-panel" id="report-panel"><p>Loading <code>crispdm_report.md</code>…</p></div>
+        </section>
+
+        <section class="section-block run-section" aria-labelledby="run-title">
+          <div class="run-layout">
+            <div><p class="eyebrow">07 / RUN GUIDE</p><h2 id="run-title">Keep the evidence reproducible.</h2><p>Regenerate the artifacts, run the real saved-model inference, and execute the tests from the project root.</p></div>
+            <div class="command-list">
+              <div class="command-item"><span>01</span><code>python run_platform.py --output artifacts</code><button class="copy-button" type="button" data-copy="python run_platform.py --output artifacts" aria-label="Copy pipeline command">Copy</button></div>
+              <div class="command-item"><span>02</span><code>python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2 --passengers 2</code><button class="copy-button" type="button" data-copy="python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2 --passengers 2" aria-label="Copy inference command">Copy</button></div>
+              <div class="command-item"><span>03</span><code>pytest -q</code><button class="copy-button" type="button" data-copy="pytest -q" aria-label="Copy test command">Copy</button></div>
+              <div class="command-item"><span>04</span><code>python -m http.server 8000</code><button class="copy-button" type="button" data-copy="python -m http.server 8000" aria-label="Copy local server command">Copy</button></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer"><span>Taxi Lens / Project 13</span><span>Educational audit platform · synthetic data · local only</span></footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

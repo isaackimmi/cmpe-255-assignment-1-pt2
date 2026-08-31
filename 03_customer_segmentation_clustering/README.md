@@ -16,6 +16,20 @@ python3 -m pytest -q
 
 Expected outputs include `artifacts/segmentation.png`, `summary.json`, and the three CSV reports. The data generator creates 120 customers across three intentionally interpretable prototypes (budget/infrequent, frequent/high-spend, and affluent/premium); it is not a claim about real customer behavior.
 
+## Interactive dashboard
+
+The project includes a dependency-free browser dashboard in `index.html`. It loads `artifacts/summary.json`, `artifacts/improved_scores.csv`, and `artifacts/customer_segments.csv` at runtime, so run the experiment first if the artifacts are missing or stale.
+
+From this directory, run:
+
+```bash
+python3 -m src.experiment
+python3 -m pytest -q
+python3 -m http.server 8000
+```
+
+Then open [http://localhost:8000](http://localhost:8000). Use the segment filter and feature selector to explore the profile cards, click through the CRISP-DM phase navigator, and review the exported segmentation image. Serving the directory over HTTP is required because browsers block `fetch()` requests for local files opened directly with `file://`.
+
 ## CRISP-DM trace
 
 1. **Business understanding:** identify actionable customer groups for differentiated offers.

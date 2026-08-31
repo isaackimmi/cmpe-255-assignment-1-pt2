@@ -15,6 +15,20 @@ python -m unittest discover -s tests -v
 
 The example prints the execution order and a small report. No third-party packages are required; Python 3.10+ is recommended.
 
+## Browser UI companion
+
+The `ui/` directory contains a dependency-light static browser companion for the example pipeline. It visualizes the same four tasks, their dependency edges, execution order, task outputs, and the data-science story behind each step. The UI demo is for explanation and interaction; the Python engine remains the source of truth.
+
+To launch it locally, from this directory run:
+
+```bash
+python -m http.server 8000
+```
+
+Then open <http://localhost:8000/ui/> and click **Run demo**. Select any graph node to inspect its dependencies and latest output, or use **Replay demo** and **Reset** to repeat the visualization. Stop the server with `Ctrl-C` when finished.
+
+The browser companion uses only local HTML, CSS, and JavaScript—there is no frontend build step or package installation. For authoritative execution and tests, use the Python commands in [Quick start](#quick-start).
+
 ## Concepts
 
 - `Task`: a named unit of work with a callable and zero or more upstream task names.

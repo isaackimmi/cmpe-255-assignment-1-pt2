@@ -16,7 +16,20 @@ python3 -m unittest discover -s tests -v
 - `reports/audit_report.md` — human-readable findings and release recommendation
 - `reports/audit_results.json` — machine-readable check results
 
-The sample is synthetic; no production records are used. The model-quality section is a deliberately small deterministic decision-stump baseline, not a production training pipeline.
+## Governance dashboard
+
+`index.html` is a dependency-free responsive dashboard for the generated reports. It presents the release recommendation, quality-dimension health, severity mix, model-quality baseline, schema/leakage/missingness/reproducibility evidence, and a filterable findings table. The page fetches both `reports/audit_results.json` and `reports/audit_report.md` at load time.
+
+Because browsers restrict `fetch()` for local `file://` pages, serve the project directory locally:
+
+```bash
+cd HW/cmpe-255-assignment-1-pt2/11_enterprise_ds_audit
+python3 -m http.server 8000
+```
+
+Then open <http://localhost:8000> and use the status/severity filters or search box to inspect findings. Re-run `python3 run_audit.py` before refreshing if the fixture or reports need to be regenerated.
+
+The sample is synthetic; no production records are used. The dashboard labels this explicitly as a synthetic fixture. The model-quality section is a deliberately small deterministic decision-stump baseline, not a production training pipeline.
 
 ## Audit coverage
 

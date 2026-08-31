@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive CRISP-DM teaching dashboard for the Iris classification walkthrough.">
+  <title>CRISP-DM Studio · Iris curriculum</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="CRISP-DM Studio home">
+        <span class="brand-symbol" aria-hidden="true">✳</span>
+        <span><strong>CRISP-DM</strong><small>studio / 01</small></span>
+      </a>
+
+      <div class="sidebar-label">Curriculum map</div>
+      <nav id="phase-nav" class="phase-nav" aria-label="CRISP-DM phases">
+        <button class="phase-nav-item active" data-phase="business_understanding" type="button"><span>01</span>Business understanding</button>
+        <button class="phase-nav-item" data-phase="data_understanding" type="button"><span>02</span>Data understanding</button>
+        <button class="phase-nav-item" data-phase="data_preparation" type="button"><span>03</span>Data preparation</button>
+        <button class="phase-nav-item" data-phase="modeling" type="button"><span>04</span>Modeling</button>
+        <button class="phase-nav-item" data-phase="evaluation" type="button"><span>05</span>Evaluation</button>
+        <button class="phase-nav-item" data-phase="deployment" type="button"><span>06</span>Deployment</button>
+      </nav>
+
+      <div class="sidebar-note">
+        <span class="note-mark">↗</span>
+        <strong>Learn by following the evidence.</strong>
+        <p>Every card is powered by the latest run report.</p>
+      </div>
+      <div class="sidebar-footer"><span class="status-dot"></span> Local teaching workspace <span class="version">v1.0</span></div>
+    </aside>
+
+    <main id="top" class="main-content">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>CURRICULUM</span><i>/</i> IRIS CLASSIFICATION</div>
+        <div class="top-actions"><span id="report-status" class="report-status"><span class="status-dot"></span> Loading report</span><a class="text-link" href="artifacts/crispdm_report.json" target="_blank" rel="noreferrer">View JSON ↗</a></div>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="kicker">A guided end-to-end walkthrough <span class="rule"></span></p>
+          <h1 id="page-title">From question<br><em>to deployable</em> learning.</h1>
+          <p class="hero-intro">A compact CRISP-DM studio for making the thinking behind a machine learning project visible, inspectable, and easy to teach.</p>
+          <div class="hero-meta"><span class="live-pill"><span class="status-dot"></span> Report connected</span><span>Last run: reproducible local pipeline</span></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="hero-number">01<span>—</span>06</div>
+          <div class="hero-caption">THE<br>LEARNING<br>LOOP</div>
+          <div class="hero-dot dot-a"></div><div class="hero-dot dot-b"></div><div class="hero-dot dot-c"></div>
+        </div>
+      </section>
+
+      <section class="stats-grid" aria-label="Run summary">
+        <article class="stat-card featured"><span class="stat-label">Holdout accuracy</span><strong id="accuracy-stat">—</strong><span class="stat-foot"><span class="trend-up">↑</span> success threshold <span id="threshold-stat">≥ 0.90</span></span></article>
+        <article class="stat-card"><span class="stat-label">Dataset size</span><strong id="rows-stat">—</strong><span class="stat-foot">labeled Iris rows</span></article>
+        <article class="stat-card"><span class="stat-label">Test set</span><strong id="test-stat">—</strong><span class="stat-foot">stratified holdout rows</span></article>
+        <article class="stat-card"><span class="stat-label">Missing values</span><strong id="missing-stat">—</strong><span class="stat-foot success-foot">clean input surface</span></article>
+      </section>
+
+      <section class="section-block phases-section" aria-labelledby="phases-title">
+        <div class="section-heading"><div><p class="kicker">The method</p><h2 id="phases-title">Six phases, one connected story.</h2></div><p class="section-caption">Select a phase to reveal its working notes<br>and the evidence it leaves behind.</p></div>
+        <div id="phase-cards" class="phase-cards" role="list"></div>
+      </section>
+
+      <section class="studio-grid section-block" aria-label="Phase detail and evaluation">
+        <article class="detail-card">
+          <div class="detail-top"><span id="detail-index" class="detail-index">01 / 06</span><span id="detail-tag" class="detail-tag">FRAME THE DECISION</span></div>
+          <div class="detail-heading"><h2 id="detail-title">Business understanding</h2><p id="detail-summary">Start with a decision worth supporting, not a model worth showing.</p></div>
+          <div id="detail-content" class="detail-content"></div>
+        </article>
+
+        <article class="evaluation-card">
+          <div class="card-heading"><div><p class="kicker">Evidence snapshot</p><h2>Evaluation at a glance</h2></div><span class="check-badge">✓ PASS</span></div>
+          <div class="accuracy-display"><div class="accuracy-ring"><span id="ring-value">—</span><small>accuracy</small></div><div><strong id="evaluation-headline">Model clears the bar.</strong><p>On an untouched, stratified holdout.</p></div></div>
+          <div class="matrix-heading"><span>Confusion matrix</span><span class="matrix-legend"><i></i> correct &nbsp; <i class="error-key"></i> review</span></div>
+          <div id="confusion-matrix" class="matrix-wrap"></div>
+          <div id="class-scores" class="class-scores"></div>
+        </article>
+      </section>
+
+      <section class="bottom-grid section-block" aria-label="Dataset and workflow notes">
+        <article class="dataset-card panel-card"><div class="card-heading"><div><p class="kicker">What went in</p><h2>Teaching dataset</h2></div><span class="iris-chip">IRIS / CLEAN</span></div><div class="dataset-identity"><div class="dataset-icon">✣</div><div><strong id="dataset-name">sklearn.datasets.load_iris</strong><p>Small, balanced, and intentionally familiar.</p></div></div><div id="feature-list" class="feature-list"></div><div class="teaching-note"><span>i</span><p>Iris is a teaching surface, not a production claim. Use this run to practice the method and ask better questions.</p></div></article>
+        <article class="workflow-card panel-card"><div class="card-heading"><div><p class="kicker">Make it reproducible</p><h2>Run the studio</h2></div><span class="terminal-mark">⌘</span></div><div class="command-block"><span class="prompt">$</span><code>python3 src/crispdm_demo.py</code><button class="copy-button" id="copy-command" type="button" aria-label="Copy run command">Copy</button></div><div class="command-block secondary-command"><span class="prompt">$</span><code>pytest -q</code><button class="copy-button" data-copy="pytest -q" type="button" aria-label="Copy test command">Copy</button></div><div class="workflow-steps"><div><span>01</span><p>Generate the report and Iris snapshot.</p></div><div><span>02</span><p>Serve this folder to load the JSON in a browser.</p></div><div><span>03</span><p>Click through the phases; teach from the evidence.</p></div></div><p class="serve-tip">UI preview: <code>python3 -m http.server 8000</code> → open <code>http://localhost:8000</code></p></article>
+      </section>
+
+      <footer class="footer"><span>CRISP-DM STUDIO</span><span>Built for the classroom · artifacts/crispdm_report.json is the source of truth</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="src/app.js"></script>
+</body>
+</html>

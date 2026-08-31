@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="AutoML model comparison dashboard for the Project 07 breast-cancer classification experiment." />
+    <title>ModelBench | AutoML leaderboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="ModelBench home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>Model<span class="brand-accent">Bench</span></span>
+        </a>
+        <div class="topbar-meta">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span id="last-updated">Loading run artifacts…</span>
+          <a class="github-link" href="README.md">Runbook <span aria-hidden="true">↗</span></a>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero section-wrap">
+          <div class="hero-copy">
+            <p class="eyebrow">PROJECT 07 / TABULAR AUTOML</p>
+            <h1>Find the model that<br /><em>earns the handoff.</em></h1>
+            <p class="hero-lede">A transparent, CPU-safe comparison of classification models on the scikit-learn breast-cancer dataset.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#leaderboard">Explore leaderboard <span aria-hidden="true">↓</span></a>
+              <a class="button button-quiet" href="#workflow">View CRISP-DM workflow</a>
+            </div>
+          </div>
+          <div class="hero-orbit" aria-hidden="true">
+            <div class="orbit orbit-outer"></div>
+            <div class="orbit orbit-inner"></div>
+            <div class="orbit-core"><span>ROC<br /><strong>AUC</strong></span></div>
+            <span class="orbit-tag tag-top">MODEL<br /><strong>SEARCH</strong></span>
+            <span class="orbit-tag tag-right">TEST-SET<br /><strong>PROOF</strong></span>
+            <span class="orbit-tag tag-bottom">REPRODUCIBLE<br /><strong>SEED 255</strong></span>
+          </div>
+        </section>
+
+        <section class="section-wrap status-strip" aria-label="Run status">
+          <div class="status-main">
+            <span class="status-icon" aria-hidden="true">✓</span>
+            <div>
+              <p class="status-kicker">CURRENT RUN STATUS</p>
+              <h2 id="backend-title">Loading backend…</h2>
+            </div>
+          </div>
+          <div class="status-detail">
+            <span class="status-pill" id="backend-pill">Checking artifacts</span>
+            <p id="backend-note">Reading metrics.json to determine which modeling path produced this leaderboard.</p>
+          </div>
+          <div class="status-rule"></div>
+          <div class="status-explainer">
+            <span class="mini-label">HOW TO READ THIS</span>
+            <p id="status-explainer-copy">AutoGluon is optional. The fallback is labeled explicitly and never presented as an AutoGluon run.</p>
+          </div>
+        </section>
+
+        <section class="section-wrap snapshot-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">AT A GLANCE</p>
+              <h2>Run snapshot</h2>
+            </div>
+            <p class="section-caption" id="dataset-caption">Dataset summary loading…</p>
+          </div>
+          <div class="stat-grid">
+            <article class="stat-card stat-card-accent">
+              <div class="stat-label">LEADER</div>
+              <div class="stat-value stat-value-name" id="leader-name">—</div>
+              <div class="stat-foot" id="leader-foot">Ranked by ROC-AUC</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">BEST ROC-AUC</div>
+              <div class="stat-value" id="best-auc">—</div>
+              <div class="stat-foot">Holdout test score</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">BEST ACCURACY</div>
+              <div class="stat-value" id="best-accuracy">—</div>
+              <div class="stat-foot">Correct classifications</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">MODELS EVALUATED</div>
+              <div class="stat-value" id="model-count">—</div>
+              <div class="stat-foot" id="model-count-foot">Across the configured search</div>
+            </article>
+          </div>
+          <div class="dataset-facts" id="dataset-facts" aria-label="Dataset facts"></div>
+        </section>
+
+        <section class="section-wrap leaderboard-section" id="leaderboard">
+          <div class="section-heading leaderboard-heading">
+            <div>
+              <p class="eyebrow">MODEL COMPARISON</p>
+              <h2>Leaderboard</h2>
+            </div>
+            <div class="metric-legend" aria-label="Leaderboard metrics">
+              <span><i class="legend-swatch swatch-auc"></i>ROC-AUC</span>
+              <span><i class="legend-swatch swatch-accuracy"></i>Accuracy</span>
+              <span><i class="legend-swatch swatch-time"></i>Fit time</span>
+            </div>
+          </div>
+          <div class="leaderboard-layout">
+            <div class="model-list" id="model-list" aria-live="polite">
+              <div class="loading-card"><span class="loader"></span> Loading leaderboard.csv…</div>
+            </div>
+            <aside class="detail-panel" aria-labelledby="detail-title">
+              <div class="detail-panel-top">
+                <div>
+                  <p class="eyebrow">MODEL DETAIL</p>
+                  <h3 id="detail-title">Select a model</h3>
+                </div>
+                <label class="sr-only" for="model-select">Select a model to inspect</label>
+                <select id="model-select" disabled>
+                  <option>Loading…</option>
+                </select>
+              </div>
+              <div class="detail-divider"></div>
+              <div id="model-detail" class="model-detail-empty">Select a leaderboard card to inspect its test-set profile.</div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="section-wrap insight-section">
+          <div class="insight-copy">
+            <p class="eyebrow">READ THE SIGNAL</p>
+            <h2>One metric, three<br /><em>decision lenses.</em></h2>
+            <p>ROC-AUC is the ranking signal for this run. Accuracy shows the operating-point result, while fit time makes the cost of iteration visible.</p>
+            <div class="insight-callout"><span aria-hidden="true">↗</span><span>Higher ROC-AUC wins. Lower fit time wins.</span></div>
+          </div>
+          <div class="comparison-chart" id="comparison-chart" aria-label="Model metric comparison chart"></div>
+        </section>
+
+        <section class="section-wrap workflow-section" id="workflow">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">METHOD / CRISP-DM</p>
+              <h2>From question to handoff</h2>
+            </div>
+            <p class="section-caption">A compact view of the experiment lifecycle.</p>
+          </div>
+          <div class="workflow-track">
+            <article class="workflow-step workflow-complete"><span class="step-number">01</span><span class="step-icon">⌁</span><h3>Business<br />understanding</h3><p>Choose a model that can rank malignant vs. benign cases reliably.</p></article>
+            <article class="workflow-step workflow-complete"><span class="step-number">02</span><span class="step-icon">◌</span><h3>Data<br />understanding</h3><p>Inspect 569 rows, 30 numeric features, and a binary target.</p></article>
+            <article class="workflow-step workflow-complete"><span class="step-number">03</span><span class="step-icon">◇</span><h3>Data<br />preparation</h3><p>Use a stratified, reproducible 80/20 train-test split.</p></article>
+            <article class="workflow-step workflow-complete"><span class="step-number">04</span><span class="step-icon">✣</span><h3>Modeling</h3><p>Compare four CPU-safe sklearn estimators; AutoGluon is optional.</p></article>
+            <article class="workflow-step workflow-complete"><span class="step-number">05</span><span class="step-icon">◒</span><h3>Evaluation</h3><p>Rank only on untouched test ROC-AUC, with accuracy and fit time.</p></article>
+            <article class="workflow-step workflow-next"><span class="step-number">06</span><span class="step-icon">↗</span><h3>Deployment</h3><p>Review the winning model, then validate with repeated CV before production.</p></article>
+          </div>
+        </section>
+
+        <section class="section-wrap run-section">
+          <div class="run-intro">
+            <p class="eyebrow">REPRODUCE THE RUN</p>
+            <h2>Keep the loop<br /><em>moving.</em></h2>
+            <p>Everything here is generated locally. Re-run the experiment, refresh the artifacts, and reload this page.</p>
+          </div>
+          <div class="command-grid">
+            <article class="command-card"><span class="command-index">01</span><h3>Install</h3><code>python3 -m pip install -r requirements.txt</code><p>Optional: add AutoGluon separately when the environment supports it.</p></article>
+            <article class="command-card"><span class="command-index">02</span><h3>Run fallback</h3><code>python3 src/run_experiment.py --no-autogluon</code><p>Fast, deterministic sklearn comparison for CPU-only environments.</p></article>
+            <article class="command-card"><span class="command-index">03</span><h3>Serve UI</h3><code>python3 -m http.server 8000</code><p>Open <span class="inline-code">http://localhost:8000</span> in your browser.</p></article>
+            <article class="command-card command-card-test"><span class="command-index">04</span><h3>Test</h3><code>python3 -m pytest -q</code><p>Verifies reproducibility and ranked artifact output.</p></article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer section-wrap">
+        <span>MODEL<span class="brand-accent">BENCH</span> / PROJECT 07</span>
+        <span>Artifacts are the source of truth for this view.</span>
+      </footer>
+    </div>
+    <div class="toast" id="error-toast" role="alert" hidden></div>
+  </body>
+</html>

@@ -1,13 +1,13 @@
 # Project 08 — Data Science Visual Foundations
 
-An offline-friendly, GitHub Pages-ready mini curriculum for beginner data-science students. It teaches four ideas with live, deterministic simulations:
+An offline-friendly, GitHub Pages-ready mini curriculum for beginner data-science students. The page is designed as a polished learning UI: a responsive lesson rail, progress cues, clear math callouts, live simulation panels, metric cards, quizzes, and interview prompts. It teaches four ideas with live, deterministic simulations:
 
 1. **Naive Bayes** — update a prior with evidence and see the posterior move.
 2. **Model evaluation** — change a threshold and inspect the confusion matrix, precision/recall, ROC point, and a simple cost matrix.
 3. **Derivatives and gradient descent** — visualize a tangent slope and watch a parameter descend a quadratic loss.
 4. **Chain rule and backpropagation** — step through a tiny two-layer computation graph and see each local derivative multiply into a gradient.
 
-Every lesson includes an intuition paragraph, the governing math, a live interaction, a check-your-understanding quiz, and interview questions. The page has no network dependency and can be opened directly as `index.html` or deployed to GitHub Pages.
+Every lesson includes an intuition paragraph, the governing math, a live interaction, a check-your-understanding quiz, and interview questions. The page has no network dependency, external fonts, or build step; it can be opened directly as `index.html` or deployed to GitHub Pages.
 
 ## Run
 
@@ -17,11 +17,21 @@ python3 -m pytest -q
 open index.html                    # macOS; or double-click it
 ```
 
+## UI and screenshot instructions
+
+1. Open `index.html` directly in a browser. For a clean hero screenshot, use a desktop viewport around 1440 × 900 and keep the page at the default `01 · Naive Bayes` lesson.
+2. Capture the first viewport for the visual overview: it includes the sticky project bar, learning-path rail, hero message, toolkit card, and the start of the active lesson.
+3. Capture a lesson interaction by selecting a lesson in the left rail, then moving one or more sliders. The SVG visual, output values, and explanatory note update immediately.
+4. For an interaction-focused screenshot, scroll until the simulation panel, legend, and quiz are visible together. Select a quiz answer and press **Check answer** to show the feedback state.
+5. For a mobile screenshot, use a narrow viewport around 390 × 844. The lesson rail becomes a horizontal strip, cards stack vertically, and controls collapse to a single column on very narrow screens.
+
+The visual language is intentionally self-contained in `index.html`: system fonts, inline CSS, and inline SVG keep screenshots deterministic and GitHub Pages deployment simple.
+
 The plot command creates four snapshots in `artifacts/` (PNG when Matplotlib is installed, otherwise dependency-free SVG). The browser page uses inline SVG so it remains portable; the snapshots are audit-friendly views of the same concepts.
 
 ## Project layout
 
-- `index.html` — static interactive curriculum; suitable for GitHub Pages.
+- `index.html` — responsive static interactive curriculum; suitable for GitHub Pages and screenshot capture.
 - `src/concepts.py` — pure-Python reference calculations used by the page design and tests.
 - `src/generate_plots.py` — deterministic plot/screenshot generator.
 - `tests/test_concepts.py` — numerical invariants, edge cases, and artifact tests.

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08111f" />
+    <meta name="description" content="A local, auditable dashboard for the Nano LLM Transformer experiment." />
+    <title>Nano LLM · experiment console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="src/app.js"></script>
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+    <main class="shell">
+      <nav class="topbar" aria-label="Primary">
+        <a class="brand" href="#top" aria-label="Nano LLM home">
+          <span class="brand-mark"><span></span><span></span><span></span></span>
+          <span>nano<span class="brand-muted">/</span>llm</span>
+        </a>
+        <div class="topbar-meta">
+          <span class="eyebrow">CMPE 255 · PROJECT 02</span>
+          <span class="live-dot"><i></i> local artifact</span>
+        </div>
+      </nav>
+
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow accent">EXPERIMENT CONSOLE <span class="rule"></span> 01</p>
+          <h1>Small model.<br /><em>Clear evidence.</em></h1>
+          <p class="hero-lede">A calm, inspectable view into a laptop-sized causal language model experiment — from tiny corpus to held-out perplexity.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#playground">Try the local demo <span>↓</span></a>
+            <a class="text-link" href="#reproduce">View reproduction steps <span>↗</span></a>
+          </div>
+        </div>
+        <div class="hero-orbit" aria-label="Character level modeling illustration">
+          <div class="orbit orbit-large"></div>
+          <div class="orbit orbit-small"></div>
+          <div class="orbit-node node-one">u</div>
+          <div class="orbit-node node-two">s</div>
+          <div class="orbit-node node-three">e</div>
+          <div class="orbit-core"><span>next</span><strong>char</strong><small>→</small></div>
+          <span class="orbit-label label-top">context</span>
+          <span class="orbit-label label-bottom">predict</span>
+        </div>
+      </section>
+
+      <section class="metrics-grid" aria-label="Experiment metrics">
+        <article class="metric-card metric-featured">
+          <div class="card-topline"><span class="card-label">HELD-OUT PERPLEXITY</span><span class="metric-icon">↗</span></div>
+          <div class="metric-value" id="perplexity">—</div>
+          <p class="metric-caption"><span class="signal"></span> lower is better · test split</p>
+          <div class="sparkline" aria-hidden="true"><span style="height: 35%"></span><span style="height: 53%"></span><span style="height: 44%"></span><span style="height: 68%"></span><span style="height: 57%"></span><span style="height: 79%"></span><span style="height: 72%"></span><span style="height: 92%"></span><span style="height: 82%"></span><span style="height: 100%"></span></div>
+        </article>
+        <article class="metric-card">
+          <div class="card-topline"><span class="card-label">BACKEND</span><span class="status-badge" id="backend-status">LOADING</span></div>
+          <div class="metric-value metric-text" id="backend">—</div>
+          <p class="metric-caption">dependency-free baseline</p>
+          <div class="micro-bar"><span style="width: 100%"></span></div>
+        </article>
+        <article class="metric-card">
+          <div class="card-topline"><span class="card-label">HELD-OUT LOSS</span><span class="metric-icon">∿</span></div>
+          <div class="metric-value" id="loss">—</div>
+          <p class="metric-caption">cross-entropy · nats / character</p>
+          <div class="loss-track"><span></span></div>
+        </article>
+        <article class="metric-card">
+          <div class="card-topline"><span class="card-label">REPRODUCIBILITY</span><span class="metric-icon">✦</span></div>
+          <div class="metric-value metric-text">seed <span id="seed">—</span></div>
+          <p class="metric-caption">deterministic default run</p>
+          <div class="seed-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+      </section>
+
+      <div class="data-status" id="data-status" role="status" aria-live="polite"><span class="loader"></span> Reading local metrics.json…</div>
+
+      <section class="section-block split-grid" id="overview">
+        <div class="section-heading">
+          <p class="eyebrow accent">01 / OBSERVE</p>
+          <h2>What the run<br /><em>actually measured.</em></h2>
+          <p class="section-copy">The model learns the next character from the characters immediately before it. The deliberately small split makes the mechanics easy to audit — and the limitations impossible to miss.</p>
+          <a class="text-link" href="#crispdm">Trace the CRISP-DM record <span>↓</span></a>
+        </div>
+        <div class="corpus-panel panel">
+          <div class="panel-header"><div><p class="card-label">CORPUS SNAPSHOT</p><h3>tiny_corpus.txt</h3></div><span class="file-chip">.TXT</span></div>
+          <div class="corpus-visual"><div class="split-label"><span>TRAIN</span><strong id="train-chars">—</strong><small>characters</small></div><div class="split-bar"><span id="train-bar"></span></div><div class="split-label split-test"><span>TEST</span><strong id="test-chars">—</strong><small>characters</small></div></div>
+          <div class="panel-divider"></div>
+          <div class="corpus-details"><div><span class="detail-key">FORMAT</span><strong>character-level</strong></div><div><span class="detail-key">DIALOGUE</span><strong>7 lines</strong></div><div><span class="detail-key">SOURCE</span><strong>local / synthetic</strong></div></div>
+        </div>
+      </section>
+
+      <section class="section-block playground-section" id="playground">
+        <div class="section-heading section-heading-wide">
+          <div><p class="eyebrow accent">02 / INTERACT</p><h2>A tiny window<br /><em>into generation.</em></h2></div>
+          <div class="illustrative-note"><span class="note-icon">i</span><p><strong>Illustrative local behavior</strong><br />This browser preview uses curated responses from the tiny corpus. It does not execute Python or claim to be a live model endpoint.</p></div>
+        </div>
+        <div class="playground panel">
+          <div class="chat-topbar"><div class="chat-title"><span class="nano-avatar">N</span><div><strong>Nano assistant</strong><span>character n-gram · local preview</span></div></div><button class="ghost-button" id="reset-chat" type="button">Reset chat <span>↺</span></button></div>
+          <div class="chat-window" id="chat-window" aria-live="polite">
+            <div class="message message-assistant"><span class="message-avatar">N</span><div><p>Hi — I’m Nano, a tiny language model trained on a tiny local corpus. Ask me about transformers, machine learning, or the experiment.</p><time>now · local preview</time></div></div>
+            <div class="suggestions" id="suggestions"><button type="button" data-prompt="What is machine learning?">What is machine learning?</button><button type="button" data-prompt="Explain a transformer">Explain a transformer</button><button type="button" data-prompt="Be concise">Be concise</button></div>
+          </div>
+          <form class="chat-form" id="chat-form"><label class="sr-only" for="chat-input">Ask Nano a question</label><input id="chat-input" type="text" autocomplete="off" placeholder="Ask about the tiny experiment…" /><button class="send-button" type="submit" aria-label="Send message">↗</button></form>
+          <div class="chat-footnote"><span class="signal"></span> no network calls · illustrative responses only</div>
+        </div>
+      </section>
+
+      <section class="section-block split-grid config-section" id="configuration">
+        <div class="config-panel panel">
+          <div class="panel-header"><div><p class="card-label">EXPERIMENT CONFIGURATION</p><h3>Reproducible by design</h3></div><span class="config-lock">⌘</span></div>
+          <div class="config-list"><div><span>BACKEND</span><strong>stdlib_char_ngram</strong></div><div><span>ORDER</span><strong>3 <small>context chars</small></strong></div><div><span>TRAIN FRACTION</span><strong>0.80</strong></div><div><span>ALPHA</span><strong>0.20 <small>smoothing</small></strong></div><div><span>SEED</span><strong id="config-seed">255</strong></div><div><span>OUTPUT</span><strong>metrics.json</strong></div></div>
+          <div class="config-callout"><span>↳</span><p>Optional path: <code>--backend torch</code> adds a small causal Transformer when PyTorch is installed.</p></div>
+        </div>
+        <div class="section-heading config-copy"><p class="eyebrow accent">03 / CONFIGURE</p><h2>Designed for<br /><em>small surfaces.</em></h2><p class="section-copy">Every important choice stays close to the experiment: a fixed seed, chronological split, transparent model, and one portable JSON artifact.</p><div class="tag-row"><span>CPU-safe</span><span>offline</span><span>auditable</span></div></div>
+      </section>
+
+      <section class="section-block crisp-section" id="crispdm">
+        <div class="section-heading section-heading-wide"><div><p class="eyebrow accent">04 / FOLLOW THE METHOD</p><h2>CRISP-DM, kept<br /><em>within reach.</em></h2></div><p class="section-copy">A six-step record keeps a tiny modeling exercise grounded in the same discipline as a larger production project.</p></div>
+        <div class="crisp-track">
+          <article class="crisp-step is-active"><div class="step-number">01</div><div class="step-dot"></div><h3>Business<br />understanding</h3><p>Demonstrate an inspectable conversational autoregressive model.</p></article>
+          <article class="crisp-step is-active"><div class="step-number">02</div><div class="step-dot"></div><h3>Data<br />understanding</h3><p>Inspect a seven-line synthetic chat corpus.</p></article>
+          <article class="crisp-step is-active"><div class="step-number">03</div><div class="step-dot"></div><h3>Data<br />preparation</h3><p>Preserve order; split chronologically at 80/20.</p></article>
+          <article class="crisp-step is-active"><div class="step-number">04</div><div class="step-dot"></div><h3>Modeling</h3><p>Fit a smoothed character n-gram baseline.</p></article>
+          <article class="crisp-step is-active"><div class="step-number">05</div><div class="step-dot"></div><h3>Evaluation</h3><p>Report held-out loss, perplexity, and sample.</p></article>
+          <article class="crisp-step is-next"><div class="step-number">06</div><div class="step-dot"></div><h3>Deployment &amp;<br />monitoring</h3><p>Next: larger holdout, safety checks, latency.</p></article>
+        </div>
+      </section>
+
+      <section class="section-block reproduce-section" id="reproduce">
+        <div class="reproduce-copy"><p class="eyebrow accent">05 / REPRODUCE</p><h2>One command<br /><em>to verify.</em></h2><p class="section-copy">Run from this directory. The baseline completes on CPU in under a second and rewrites the local metrics artifact.</p><div class="command-block"><div class="command-line"><span class="prompt">$</span><code>python3 nano_llm.py --output metrics.json</code><button class="copy-button" data-copy="python3 nano_llm.py --output metrics.json" type="button">copy</button></div><div class="command-line"><span class="prompt">$</span><code>python3 -m unittest discover -v</code><button class="copy-button" data-copy="python3 -m unittest discover -v" type="button">copy</button></div></div><p class="reproduce-foot">Optional Transformer run is documented in <a href="README.md">README.md</a>.</p></div>
+        <div class="verify-card panel"><div class="verify-stamp">✓</div><p class="card-label">VERIFIED ARTIFACT</p><h3>metrics.json</h3><div class="verify-row"><span>loss</span><strong id="verify-loss">—</strong></div><div class="verify-row"><span>perplexity</span><strong id="verify-perplexity">—</strong></div><div class="verify-row"><span>unit tests</span><strong class="success-text">3 / 3 passed</strong></div><div class="verify-divider"></div><p>Last loaded from the local workspace. Refresh after a new run to inspect updated values.</p></div>
+      </section>
+
+      <footer class="footer"><div class="brand"><span class="brand-mark"><span></span><span></span><span></span></span><span>nano<span class="brand-muted">/</span>llm</span></div><p>Teaching miniature · no pretrained weights · no production claims</p><a href="#top" class="back-top">back to top ↑</a></footer>
+    </main>
+  </body>
+</html>

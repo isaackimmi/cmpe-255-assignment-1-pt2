@@ -15,6 +15,18 @@ pytest -q
 
 The default run creates `outputs/metrics.json`, `outputs/synthetic_monthly_series.csv`, and `outputs/forecast.png`.
 
+## Forecasting Studio UI
+
+Open `index.html` through a small local HTTP server from this directory so the browser can load the generated JSON artifact:
+
+```bash
+python -m http.server 8000
+```
+
+Then visit <http://localhost:8000>. The studio loads `outputs/metrics.json` and displays `outputs/forecast.png`, with baseline/model metric cards, the chronological split, leakage controls, a CRISP-DM workflow trace, and reproduction commands. Refresh the page after regenerating the experiment outputs.
+
+The planning-horizon selector is intentionally labeled **illustrative**: it changes the review lens and does not call the Python experiment or create new predictions. A production version should connect that control to a backend inference endpoint before presenting horizon-specific values as forecasts.
+
 ## Method
 
 There are 240 monthly observations. The first 70% is training, the next 15% is a validation forecast horizon, and the final 15% is the reported test horizon. A `HistGradientBoostingRegressor` uses lags 1, 2, 3, 6, and 12 plus recent change and rolling means. The model is fit on training rows and forecasts recursively through validation and test. The seasonal-naive baseline predicts the value 12 months earlier. Metrics are MAE and RMSE.

@@ -14,6 +14,24 @@ pytest -q
 
 The default run creates `artifacts/metrics.json`, `artifacts/audit_report.json`, `artifacts/eda.png`, `artifacts/actual_vs_predicted.png`, `artifacts/crispdm_report.md`, and a fitted `artifacts/model.joblib`. The data is generated deterministically and is intentionally not a download of the full NYC TLC corpus.
 
+## Dashboard UI
+
+The project includes a dependency-free responsive dashboard in `dashboard/`. It reads the generated JSON/Markdown artifacts and displays the KPI scorecard, EDA and prediction plots, CRISP-DM timeline, audit findings, report notes, and a clearly labeled local/illustrative inference lab.
+
+After generating the artifacts, serve the project root and open <http://localhost:8000/dashboard/>:
+
+```bash
+python -m http.server 8000
+```
+
+The dashboard's browser estimate is intentionally illustrative because the saved scikit-learn `model.joblib` is used by the Python CLI, not loaded into the browser. Run the real saved-model inference with:
+
+```bash
+python run_platform.py --infer --pickup-hour 17 --weekday 4 --distance-miles 3.2 --passengers 2
+```
+
+Stop the local server with `Ctrl-C` when finished.
+
 ## What is implemented
 
 - **Business understanding:** estimate trip duration in minutes for planning and dispatch analysis.

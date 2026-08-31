@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b1220" />
+    <title>Signal / Anomaly detection lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Project navigation">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div><div class="brand-name">signal<span>/</span></div><div class="brand-kicker">ML evaluation lab</div></div>
+        </div>
+        <div class="project-chip"><span class="status-dot"></span><span>Project 06</span><span class="chip-slash">/</span><span>Anomaly detection</span></div>
+        <nav class="nav-stack">
+          <a class="nav-item active" href="#overview"><span class="nav-index">01</span><span>Overview</span></a>
+          <a class="nav-item" href="#comparison"><span class="nav-index">02</span><span>Detector comparison</span></a>
+          <a class="nav-item" href="#diagnostics"><span class="nav-index">03</span><span>Diagnostics</span></a>
+          <a class="nav-item" href="#methodology"><span class="nav-index">04</span><span>Methodology</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="rail-label">CRISP-DM / workflow</div>
+          <ol class="crisp-rail">
+            <li class="done"><span>01</span><strong>Business understanding</strong><small>Define alert budget</small></li>
+            <li class="done"><span>02</span><strong>Data understanding</strong><small>900 synthetic points</small></li>
+            <li class="done"><span>03</span><strong>Data preparation</strong><small>Standardized features</small></li>
+            <li class="current"><span>04</span><strong>Modeling</strong><small>Four detector views</small></li>
+            <li><span>05</span><strong>Evaluation</strong><small>Ranking + fixed budget</small></li>
+            <li><span>06</span><strong>Deployment</strong><small>Illustrative only</small></li>
+          </ol>
+          <div class="sidebar-foot">SEED 42 <span>•</span> REPRODUCIBLE RUN</div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumb"><span>PROJECT 06</span><i>/</i><span>ANOMALY DETECTION</span><i>/</i><b>RUN 042</b></div>
+          <div class="topbar-actions"><span class="synthetic-badge"><span class="sparkle">✦</span> Synthetic data</span><span class="run-time">LAST RUN <b>42 sec ago</b></span></div>
+        </header>
+
+        <section class="hero-section">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-line"></span> Unsupervised evaluation workspace</div>
+            <h1>Find the signal<br /><em>inside the noise.</em></h1>
+            <p class="hero-subtitle">A compact benchmark for global, local, and clustered anomalies — designed to make model trade-offs visible at a glance.</p>
+            <div class="hero-meta"><span class="meta-key">DATASET</span><span>Two correlated normal clusters + 3 anomaly mechanisms</span><span class="meta-divider"></span><span class="meta-key">LABELS</span><span>Evaluation only</span></div>
+          </div>
+          <div class="hero-stamp" aria-label="Deterministic run information"><div class="stamp-ring">42</div><div class="stamp-text">DETERMINISTIC<br /><span>SEED</span></div></div>
+        </section>
+
+        <section class="summary-grid" aria-label="Run summary">
+          <article class="summary-card accent-card"><div class="card-label">BEST OVERALL</div><div class="summary-value" id="best-method">Loading…</div><div class="summary-detail"><span id="best-auc">—</span> ROC-AUC <span class="arrow-up">↗</span></div></article>
+          <article class="summary-card"><div class="card-label">ANOMALY PREVALENCE</div><div class="summary-value" id="prevalence">—</div><div class="summary-detail">100 known anomalies / 900 points</div></article>
+          <article class="summary-card"><div class="card-label">ALERT BUDGET</div><div class="summary-value"><span id="budget-summary">100</span> <small>FLAGS</small></div><div class="summary-detail">Fixed contamination rate · 11.1%</div></article>
+          <article class="summary-card"><div class="card-label">DATASET STATUS</div><div class="summary-value status-value"><span class="status-dot"></span> Ready</div><div class="summary-detail">Metrics artifact loaded <span class="check">✓</span></div></article>
+        </section>
+
+        <section class="section-block" id="comparison">
+          <div class="section-heading"><div><div class="eyebrow compact"><span class="eyebrow-line"></span> Model scoreboard</div><h2>Detector comparison</h2></div><div class="section-note"><span class="legend-dot lime"></span> Higher is better <span class="note-divider"></span> Click a row to inspect</div></div>
+          <div class="comparison-layout">
+            <div class="table-card">
+              <div class="table-head"><span>METHOD</span><span>ROC-AUC</span><span>AVG PRECISION</span><span>F1 @ BUDGET</span><span>FLAGS</span></div>
+              <div id="detector-rows" class="detector-rows"><div class="loading-row">Reading <code>artifacts/metrics.json</code>…</div></div>
+              <div class="table-foot"><span><b id="method-count">—</b> methods evaluated</span><span>Scores from deterministic seed 42</span></div>
+            </div>
+            <aside class="insight-card"><div class="insight-tag">READOUT <span>01</span></div><h3 id="insight-title">Loading the leading signal…</h3><p id="insight-copy">The comparison will surface the strongest aggregate ranking once the metrics artifact is loaded.</p><div class="mini-rule"></div><div class="insight-footer"><span>SELECTED</span><b id="selected-method">—</b></div></aside>
+          </div>
+        </section>
+
+        <section class="section-block diagnostics" id="diagnostics">
+          <div class="section-heading"><div><div class="eyebrow compact"><span class="eyebrow-line"></span> Failure-mode view</div><h2>Where detectors see the anomaly</h2></div><div class="category-legend"><span><i class="legend-swatch global-swatch"></i>Global</span><span><i class="legend-swatch local-swatch"></i>Local</span><span><i class="legend-swatch cluster-swatch"></i>Cluster</span></div></div>
+          <div class="diagnostics-grid">
+            <article class="panel category-panel"><div class="panel-top"><div><h3>Category recall</h3><p>Recall at the fixed 100-flag budget</p></div><span class="panel-index">A</span></div><div id="category-bars" class="category-bars"><div class="loading-row">Loading category recall…</div></div><div class="panel-caption"><span class="caption-mark">↳</span> Aggregate scores can hide local failure modes.</div></article>
+            <article class="panel image-panel"><div class="panel-top"><div><h3>Anomaly score map</h3><p>Larger markers indicate higher suspicion</p></div><span class="panel-index">B</span></div><div class="image-frame"><img src="artifacts/anomaly_scores.png" alt="Four scatter plots showing anomaly scores for each detector" /></div><div class="image-caption"><span>ARTIFACT / <b>anomaly_scores.png</b></span><span>2D feature space</span></div></article>
+          </div>
+        </section>
+
+        <section class="section-block controls-section" id="methodology">
+          <div class="section-heading"><div><div class="eyebrow compact"><span class="eyebrow-line"></span> Operating point explorer</div><h2>Budget &amp; threshold</h2></div><div class="illustrative-note"><span class="info-icon">i</span> Illustrative client-side behavior</div></div>
+          <div class="control-layout">
+            <article class="panel control-panel"><div class="control-intro"><div><h3>Shape the alert queue</h3><p>Explore how an operating point changes the queue for the selected detector.</p></div><div class="selected-pill" id="selected-pill">—</div></div><label class="control-label" for="threshold"><span>Decision threshold</span><output id="threshold-output" for="threshold">0.70</output></label><input id="threshold" type="range" min="50" max="95" value="70" step="1" /><div class="range-ends"><span>0.50 / broad net</span><span>0.95 / strict queue</span></div><label class="control-label budget-label" for="flag-budget"><span>Flag budget</span><output id="budget-output" for="flag-budget">100 points</output></label><input id="flag-budget" type="range" min="25" max="200" value="100" step="5" /><div class="range-ends"><span>25 / focused</span><span>200 / expansive</span></div><div class="control-foot"><span class="sim-dot"></span><span>Simulated operating point</span><span class="control-foot-note">Does not rerun Python</span></div></article>
+            <article class="panel queue-panel"><div class="queue-head"><div><h3>Projected queue</h3><p>Directional estimate for review</p></div><span class="queue-signal">LIVE PREVIEW</span></div><div class="queue-metrics"><div><span class="queue-number" id="queue-flagged">100</span><span class="queue-unit">flags</span></div><div><span class="queue-number" id="queue-recall">64%</span><span class="queue-unit">recall</span></div><div><span class="queue-number" id="queue-precision">64%</span><span class="queue-unit">precision</span></div></div><div class="queue-bar"><span id="queue-fill"></span></div><p class="queue-note" id="queue-note">At 100 flags, the UI mirrors the saved fixed-budget result. Move the controls to explore a directional trade-off.</p></article>
+          </div>
+        </section>
+
+        <section class="methodology-strip"><div class="methodology-copy"><div class="eyebrow compact"><span class="eyebrow-line"></span> Method note</div><h2>Rank first. Threshold second.</h2><p>Raw detector scores live on different scales, so the rank ensemble averages percentile ranks before the fixed-budget evaluation. In production, the alert threshold should be calibrated against operational cost and drift.</p></div><div class="methodology-steps"><div><span>01</span><b>Fit</b><small>Unlabeled features</small></div><div><span>02</span><b>Rank</b><small>Comparable scores</small></div><div><span>03</span><b>Review</b><small>Human queue</small></div></div></section>
+
+        <footer class="app-footer"><div><span class="footer-logo">signal/</span> Project 06 dashboard</div><div><span>Source: <code>artifacts/metrics.json</code></span><span class="footer-divider"></span><span>UI simulation only</span></div></footer>
+      </main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

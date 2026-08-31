@@ -7,12 +7,24 @@ This is a lightweight, runnable end-to-end CRISP-DM demonstration for Assignment
 From this directory:
 
 ```bash
-python -m pip install -r requirements.txt
-python src/crispdm_demo.py
+python3 -m pip install -r requirements.txt
+python3 src/crispdm_demo.py
 pytest -q
 ```
 
 The run writes `artifacts/crispdm_report.json` (phase-by-phase EDA, preparation, modeling, evaluation, and deployment notes) and `artifacts/iris_snapshot.csv`. Use `--output-dir path/to/output` to write elsewhere.
+
+## Interactive curriculum dashboard
+
+The project includes a responsive, JSON-backed dashboard in `index.html`. It turns the run report into six clickable CRISP-DM phase cards, a phase detail panel, dataset/model summary metrics, and a confusion-matrix evaluation view. The Iris teaching context and production limitations remain explicit in the UI.
+
+After running the demo, serve this directory so the browser can fetch the report (opening `index.html` directly may block `fetch()` in some browsers):
+
+```bash
+python3 -m http.server 8000
+```
+
+Open <http://localhost:8000> and select any phase card or the matching item in the left curriculum map. Use **View JSON** to inspect the source artifact. The **Run the studio** panel includes the demo/test commands and the local-server command.
 
 ## CRISP-DM walkthrough
 

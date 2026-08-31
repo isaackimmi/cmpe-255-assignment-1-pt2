@@ -4,6 +4,8 @@
 
 Open the root README and show that Projects 00–13 are independent, offline-friendly reproductions. Point out PROMPTS_USED.md, REPRODUCTION_LOG.md, and COMPARISON_REPORT.md as the evidence trail.
 
+Start the repository static server and open the new dashboard pages. Show the polished UI for Projects 01, 03, 04, 06, 07, 08, 12, and 13, then briefly open the remaining project UIs so every project has visual evidence. Demonstrate metric cards, artifact previews, phase navigation, and at least one interactive control.
+
 ## 0:30–1:20 — Applications and workflow
 
 Open Project 00 and show the task/workspace UI. Run its Node tests. Then show Project 01's metrics.json and SVG outputs: the deterministic NYC-like fallback uses a chronological split and the log-target model improves over the median baseline.
@@ -23,4 +25,3 @@ Run the Project 09 pipeline and show its deterministic execution order. Open Pro
 ## 3:40–4:30 — Capstone and verification
 
 Run Project 13, call its inference CLI, and open metrics.json, audit_report.json, and the two PNGs. State the result: MAE 2.794 minutes, R² 0.892, and 4/4 tests. Close with the remaining blockers: no external Kaggle/TLC download, no AutoGluon install, and no hosted production dashboards.
-

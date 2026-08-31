@@ -8,6 +8,17 @@ This is a small, auditable reproduction of the Project 02 prompt: “build a sim
 - `data/tiny_corpus.txt`: deliberately small local chat corpus.
 - `test_nano_llm.py`: smoke tests for split integrity, learning behavior, and CLI output.
 - `metrics.json`: generated experiment artifact (create it with the command below).
+- `index.html`, `styles.css`, `src/app.js`: dependency-light browser console for inspecting the local artifact, CRISP-DM record, configuration, and an explicitly illustrative chat preview.
+
+## Open the browser console
+
+Serve this directory locally so the UI can fetch `metrics.json`:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open <http://localhost:8000> in a browser. The dashboard reads `metrics.json` at load time, so rerun the baseline command and refresh the page to inspect updated values. The chat panel is intentionally a curated local illustration; it does not execute `nano_llm.py`, call an API, or represent live model inference. If the page is opened directly as a `file://` URL, the browser may block the JSON fetch and the UI will show its verified fallback snapshot instead.
 
 ## Reproduce
 

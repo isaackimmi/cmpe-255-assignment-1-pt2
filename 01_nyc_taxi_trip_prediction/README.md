@@ -33,6 +33,19 @@ python3 run_experiment.py --input /path/to/train.csv --sample-size 50000
 
 Outputs are written to `outputs/`: `metrics.json`, `feature_importance.csv`, `predictions.csv`, `duration_distribution.svg`, and `predicted_vs_actual.svg`.
 
+## Browser UI
+
+The project includes a dependency-light standalone browser UI in `index.html`, `styles.css`, and `app.js`. It reads the checked-in `outputs/metrics.json` at runtime and presents the model metrics, baseline comparison, SVG evidence, CRISP-DM workflow, and run instructions in a screenshot-friendly layout.
+
+Because browsers block `fetch()` for local JSON files opened with `file://`, serve this directory locally:
+
+```bash
+cd 01_nyc_taxi_trip_prediction
+python3 -m http.server 8000
+```
+
+Then open <http://localhost:8000>. The route/time controls provide a client-side illustrative estimate based on the synthetic generator's directional relationships. They do not load model weights and should not be described as a production prediction. The UI falls back to the checked-in metric values when opened without a local server, but serving the folder enables the live `metrics.json` status.
+
 ## Results
 
 The checked-in `outputs/metrics.json` records the result of the default deterministic fallback run. The model should beat the median baseline on MAE and RMSE, but the synthetic generator intentionally makes the task learnable and should not be interpreted as a real-world benchmark.

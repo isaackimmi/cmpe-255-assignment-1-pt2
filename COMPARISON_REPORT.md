@@ -2,6 +2,10 @@
 
 The portfolio is a faithful lightweight reproduction of the reference project themes, not a claim that every original production-scale feature is present. The public source is the reference PROMPTS.md; prompt-by-prompt mapping is in PROMPTS_USED.md.
 
+## UI coverage
+
+All 14 projects now have a browser-facing presentation layer. The dashboards read checked-in outputs and provide project-specific metric cards, charts, phase context, and interactions. Controls that do not call the Python runtime are explicitly labeled illustrative; the underlying experiments remain the source of truth.
+
 | Project | Reference intent | Implemented comparison | Result/artifact |
 |---|---|---|---|
 | 00 | Dynamic todo app | Local-first dependency-free task/workspace UI | HTML app; 4/4 tests |
@@ -24,4 +28,3 @@ The portfolio is a faithful lightweight reproduction of the reference project th
 - Reproducibility is strongest where data are checked in or deterministically generated, seeds are fixed, and outputs are machine-readable.
 - Temporal projects (01, 12, 13) preserve chronological evaluation; Project 06 explicitly documents that its compact scaling demonstration should be tightened for production.
 - The portfolio's main gap against the public reference is breadth of UI/deployment and external-data integration, not missing test evidence in the compact implementations.
-

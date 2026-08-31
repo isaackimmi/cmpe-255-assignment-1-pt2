@@ -8,6 +8,35 @@ Reference: [dlmastery/data_science_examples](https://github.com/dlmastery/data_s
 
 Each numbered directory contains an independent reproduction, its own README, runnable code, tests, and generated artifacts where practical.
 
+## UI layer
+
+Every project now includes a browser-facing UI in addition to its data-science experiment. The dashboards are dependency-light and read checked-in metrics, CSVs, and visual artifacts. Start a static server from this repository root:
+
+```bash
+python3 -m http.server 8766
+```
+
+Then open the corresponding path:
+
+| Project | UI path |
+|---|---|
+| 00 | `/00_dynamic_todo_workspace/` |
+| 01 | `/01_nyc_taxi_trip_prediction/` |
+| 02 | `/02_nano_llm_transformer/` |
+| 03 | `/03_customer_segmentation_clustering/` |
+| 04 | `/04_associative_pattern_mining/` |
+| 05 | `/05_data_science_skills_lab/` |
+| 06 | `/06_anomaly_detection/` |
+| 07 | `/07_automl_autogluon/` |
+| 08 | `/08_datascience_visual_mastery/` |
+| 09 | `/09_flowforge_dag_engine/ui/` |
+| 10 | `/10_crispdm_masters_curriculum/` |
+| 11 | `/11_enterprise_ds_audit/` |
+| 12 | `/12_timeseries_forecasting/` |
+| 13 | `/13_crispdm_nyc_taxi_audit_platform/dashboard/` |
+
+Each UI includes metric cards, visualizations or artifact previews, explanatory CRISP-DM context, responsive styling, and clear labeling for browser interactions that are illustrative rather than direct Python inference.
+
 | Directory | Focus |
 |---|---|
 | `00_dynamic_todo_workspace` | Agent-oriented task workspace |

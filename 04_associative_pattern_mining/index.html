@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101d32">
+    <title>Basket signals · Market-basket analytics</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#overview" aria-label="Basket signals home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>basket<span class="brand-dot">.</span>signals</span>
+        </a>
+        <nav class="topnav" aria-label="Page navigation">
+          <a href="#patterns">Patterns</a>
+          <a href="#explorer">Explorer</a>
+          <a href="#method">Method</a>
+        </nav>
+        <div class="data-badge"><span class="status-dot"></span> Local lab <span class="badge-divider"></span> Synthetic data</div>
+      </header>
+
+      <main>
+        <section class="hero" id="overview">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-line"></span> Pattern mining / Apriori</p>
+            <h1>What gets picked<br><em>together?</em></h1>
+            <p class="hero-lede">A compact view of recurring grocery baskets. Find the combinations that clear your threshold, then test the signal against an individual basket.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#patterns">Explore patterns <span aria-hidden="true">↘</span></a>
+              <a class="text-link" href="#method">How to read this <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+          <div class="hero-note">
+            <div class="note-index">01 <span>/</span> 04</div>
+            <div class="note-rule"></div>
+            <p><strong>Decision support, not a forecast.</strong><br>These patterns describe this local sample; they do not claim real customer behavior.</p>
+          </div>
+        </section>
+
+        <section class="stat-strip" aria-label="Dataset summary">
+          <div class="stat-item"><span class="stat-label">Baskets analyzed</span><strong id="stat-transactions">24</strong><span class="stat-foot">checked-in transactions</span></div>
+          <div class="stat-item"><span class="stat-label">Distinct products</span><strong id="stat-items">5</strong><span class="stat-foot">bread · milk · eggs · coffee · jam</span></div>
+          <div class="stat-item"><span class="stat-label">Frequent itemsets</span><strong id="stat-itemsets">18</strong><span class="stat-foot">at <span id="stat-support">25%</span> minimum support</span></div>
+          <div class="stat-item stat-highlight"><span class="stat-label">Best lift signal</span><strong id="stat-lift">1.33×</strong><span class="stat-foot" id="stat-lift-rule">eggs + coffee → milk</span></div>
+        </section>
+
+        <section class="section-heading" id="patterns">
+          <div><p class="eyebrow"><span class="eyebrow-line"></span> Signal board</p><h2>The shape of the basket</h2></div>
+          <p class="section-caption">Ranked by observed support. Use the controls below to make the definition of “frequent” stricter or looser.</p>
+        </section>
+
+        <section class="content-grid">
+          <article class="card chart-card">
+            <div class="card-topline"><div><p class="card-kicker">Frequent itemsets</p><h3>Most supported combinations</h3></div><span class="live-tag"><span class="pulse-dot"></span> Live threshold</span></div>
+            <div class="chart-legend"><span><i class="legend-swatch"></i> Support in baskets</span><span>0% <span class="legend-divider"></span> 100%</span></div>
+            <div id="support-chart" class="support-chart" role="img" aria-label="Horizontal bar chart of frequent itemset support"></div>
+            <div class="chart-foot"><span>Source: <code>data/transactions.csv</code></span><span>n = <span id="chart-n">24</span> baskets</span></div>
+          </article>
+
+          <aside class="card read-card">
+            <div class="card-topline"><div><p class="card-kicker">Metric guide</p><h3>Read the signal</h3></div><span class="info-icon" aria-label="Metric definitions">i</span></div>
+            <div class="metric-explanation"><div class="metric-icon support-icon">S</div><div><h4>Support <span>how often</span></h4><p>Share of all baskets containing the itemset. A 50% support means it appears in 12 of 24 baskets.</p></div></div>
+            <div class="metric-explanation"><div class="metric-icon confidence-icon">C</div><div><h4>Confidence <span>how likely</span></h4><p>Among baskets with the left-hand side, the share that also contain the right-hand side.</p></div></div>
+            <div class="metric-explanation"><div class="metric-icon lift-icon">L</div><div><h4>Lift <span>how distinct</span></h4><p>Confidence divided by the consequent’s popularity. Lift above 1 suggests a positive association.</p></div></div>
+            <div class="read-callout"><span aria-hidden="true">↗</span><p><strong>Use all three together.</strong> Confidence alone can make a popular product look more predictive than it is.</p></div>
+          </aside>
+        </section>
+
+        <section class="threshold-section" aria-labelledby="threshold-title">
+          <div class="threshold-intro"><p class="eyebrow"><span class="eyebrow-line"></span> Threshold lab</p><h2 id="threshold-title">Tune the definition of frequent</h2><p>Slide the minimum support to see which itemsets survive Apriori pruning. The rule cards update with the same local sample.</p></div>
+          <div class="threshold-control card">
+            <div class="control-head"><div><span class="card-kicker">Minimum support</span><strong id="support-value">25%</strong></div><span class="control-hint">Higher = fewer, stronger patterns</span></div>
+            <input id="support-slider" type="range" min="10" max="70" value="25" step="5" aria-label="Minimum support threshold">
+            <div class="range-labels"><span>10%</span><span>35%</span><span>70%</span></div>
+            <div class="control-result"><span class="result-number" id="threshold-count">18</span><span>frequent itemsets<br><small>currently visible</small></span></div>
+          </div>
+        </section>
+
+        <section class="rules-section" aria-labelledby="rules-title">
+          <div class="section-heading compact"><div><p class="eyebrow"><span class="eyebrow-line"></span> Association rules</p><h2 id="rules-title">Signals worth a closer look</h2></div><span class="section-meta" id="rule-count">8 rules shown</span></div>
+          <div id="rules-grid" class="rules-grid"></div>
+        </section>
+
+        <section class="explorer-section" id="explorer">
+          <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Basket explorer</p><h2>Put a basket under the lens</h2></div><p class="section-caption">Select a transaction to see its products and the strongest co-pick context available in this sample.</p></div>
+          <div class="explorer-grid">
+            <article class="card basket-card">
+              <div class="basket-select-row"><div><p class="card-kicker">Inspect transaction</p><h3 id="basket-title">Basket T001</h3></div><label class="select-wrap"><span class="sr-only">Select transaction</span><select id="basket-select"></select><span class="select-chevron">⌄</span></label></div>
+              <div id="basket-items" class="basket-items"></div>
+              <div class="basket-summary"><span><strong id="basket-size">3</strong> items</span><span class="basket-summary-dot"></span><span id="basket-match">2 frequent patterns</span></div>
+              <div class="basket-id"><span class="id-dot"></span> <span id="basket-id-label">T001</span> <span>·</span> source row <span id="basket-row">01</span></div>
+            </article>
+            <article class="card context-card">
+              <div class="card-topline"><div><p class="card-kicker">Co-pick context</p><h3>What tends to travel with it?</h3></div><span class="context-label">Local sample</span></div>
+              <div id="context-list" class="context-list"></div>
+              <p class="context-footnote">Bars show the share of this basket’s products that appear with each candidate across all 24 baskets.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="method-section" id="method">
+          <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> From data to decision</p><h2>CRISP-DM, made visible</h2></div><p class="section-caption">A transparent loop for moving from a business question to a carefully qualified pattern.</p></div>
+          <div class="phase-rail">
+            <div class="phase active"><span class="phase-number">01</span><span class="phase-name">Business<br>understanding</span><span class="phase-line"></span></div>
+            <div class="phase"><span class="phase-number">02</span><span class="phase-name">Data<br>understanding</span><span class="phase-line"></span></div>
+            <div class="phase"><span class="phase-number">03</span><span class="phase-name">Data<br>preparation</span><span class="phase-line"></span></div>
+            <div class="phase"><span class="phase-number">04</span><span class="phase-name">Modeling<br>Apriori</span><span class="phase-line"></span></div>
+            <div class="phase"><span class="phase-number">05</span><span class="phase-name">Evaluation<br>metrics</span><span class="phase-line"></span></div>
+            <div class="phase"><span class="phase-number">06</span><span class="phase-name">Deployment<br>decision support</span></div>
+          </div>
+          <div class="method-lower-grid">
+            <article class="card artifact-card"><div class="card-topline"><div><p class="card-kicker">Generated artifact</p><h3>Support plot</h3></div><span class="file-pill">SVG</span></div><div class="plot-frame"><img src="outputs/support_plot.svg" alt="Generated support bar chart for the top frequent itemsets"></div><p class="artifact-note">The original dependency-free output from <code>analysis.py</code>. The live chart above responds to your threshold.</p></article>
+            <article class="card run-card"><p class="card-kicker">Reproduce locally</p><h3>Run the analysis in three commands.</h3><pre><code>python analysis.py
+pytest -q
+open index.html</code></pre><p>Everything here is local and deterministic: no API key, server, or network connection required.</p><a class="text-link" href="README.md">Read the project README <span aria-hidden="true">↗</span></a></article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer"><span class="brand-small">basket<span class="brand-dot">.</span>signals</span><span>CMPE 255 · Project 04</span><span>Synthetic/local data · Offline by design</span></footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
