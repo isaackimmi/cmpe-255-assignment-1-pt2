@@ -1,0 +1,17 @@
+{
+  "dataset_rows": 240,
+  "split": {
+    "train_end": 168,
+    "validation_end": 204,
+    "test_start": 204
+  },
+  "baseline_seasonal_naive": {
+    "mae": 0.7677633427987847,
+    "rmse": 0.9971312157700278
+  },
+  "model_hist_gradient_boosting": {
+    "mae": 2.3014631208788807,
+    "rmse": 2.7191701132811787
+  },
+  "leakage_control": "Chronological split; lag/rolling features use values before t; model test forecast is recursive."
+}
