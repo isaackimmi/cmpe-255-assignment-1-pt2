@@ -23,6 +23,21 @@ cd client && npm install && npm run dev
 
 The exact modules/ports are documented per project (00: 8000/5173, 01: 8001/5173, 02: 8002/5175, 03: 8003/5173, 04: 8004/5173, 05: 8005/5175). The client proxies `/api` to the local server, and the API reads checked-in artifacts or deterministic fixtures. A root static server is still available for the original artifact galleries:
 
+### First-six demo runbook
+
+Run one project at a time. In one terminal, start the server from the project directory; in a second terminal, start its React client from the project’s `client/` directory. Open the printed Vite URL in a browser.
+
+| Project | Server command | Client command |
+| --- | --- | --- |
+| 00 Dynamic Todo | `python3 -m uvicorn main:app --reload --port 8000` | `cd client && npm ci && npm run dev` |
+| 01 NYC Taxi | `python3 -m uvicorn server.main:app --reload --host 127.0.0.1 --port 8001` | `cd client && npm install && npm run dev` |
+| 02 Nano LLM | `cd server && python3 -m uvicorn main:app --host 127.0.0.1 --port 8002` | `cd client && npm install && npm run dev -- --port 5175` |
+| 03 Customer Segmentation | `python3 -m uvicorn server.app:app --reload --port 8003` | `cd client && npm install && npm run dev` |
+| 04 Pattern Mining | `python3 -m uvicorn server.main:app --reload --port 8004` | `cd client && npm install && npm run dev` |
+| 05 Skills Lab | `python3 -m uvicorn server.main:app --reload --host 127.0.0.1 --port 8005` | `cd client && npm install && npm run dev -- --port 5175` |
+
+Each project README contains the same instructions with project-specific prerequisites and API details. A ready-to-read narration for the six screenshots is in [DEMO_SCRIPTS_00_05.md](DEMO_SCRIPTS_00_05.md).
+
 ```bash
 python3 -m http.server 8766
 ```
