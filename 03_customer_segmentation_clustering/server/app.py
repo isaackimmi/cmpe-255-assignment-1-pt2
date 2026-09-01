@@ -23,7 +23,8 @@ class Observation(BaseModel):
 def evidence_status() -> dict:
     try:
         result = validate_artifacts(ARTIFACTS)
-        manifest = read_json("manifest.json") if (ARTIFACTS / "manifest.json").exists() else None
+        manifest_path = ARTIFACTS / "manifest.json"
+        manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else None
         return {"valid": bool(result["valid"]), "errors": result["errors"], "manifest": manifest}
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         return {"valid": False, "errors": [f"artifact_parse_error: {exc}"], "manifest": None}

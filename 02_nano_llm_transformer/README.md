@@ -8,17 +8,36 @@ This is a small, auditable reproduction of the Project 02 prompt: “build a sim
 - `data/tiny_corpus.txt`: deliberately small local chat corpus.
 - `test_nano_llm.py`: smoke tests for split integrity, learning behavior, and CLI output.
 - `metrics.json`: generated experiment artifact (create it with the command below).
-- `index.html`, `styles.css`, `src/app.js`: dependency-light browser console for inspecting the local artifact, CRISP-DM record, configuration, split/OOV accounting, and an artifact-backed deterministic generation trace.
+- `ml/`: importable model boundary used by the API; it rebuilds the default n-gram model from the recorded training boundary and exposes generation/probabilities without changing evaluation artifacts.
+- `server/`: FastAPI service exposing `/api/health`, `/api/metrics`, `/api/behavior`, `/api/generate`, and `/api/probabilities`.
+- `client/`: Vite-compatible raw HTML/CSS/JS evidence studio. It calls FastAPI for run metadata, generation, and next-character probabilities.
+- `test_nano_llm.py` and `tests/`: DS-core, API-contract, and client-wiring tests.
 
-## Open the browser console
+## Run the E2E application
 
-Serve this directory locally so the UI can fetch `metrics.json`:
+From this directory, generate the default artifact and install the two small runtime environments:
 
 ```bash
-python3 -m http.server 8000
+python3 nano_llm.py --corpus data/tiny_corpus.txt --output metrics.json
+python3 -m pip install -r server/requirements.txt
+cd client && npm install
 ```
 
-Then open <http://localhost:8000> in a browser. The dashboard reads `metrics.json` at load time, so rerun the baseline command and refresh the page to inspect updated values. The behavior inspector replays serialized model distributions and generation traces in the browser; it does not execute `nano_llm.py`, call an API, or represent a live endpoint. If the page is opened directly as a `file://` URL, the browser may block the JSON fetch and the UI will show its clearly labeled fallback snapshot instead.
+Run the API and client in separate terminals:
+
+```bash
+# terminal 1
+cd server
+python3 -m uvicorn main:app --host 127.0.0.1 --port 8002
+
+# terminal 2
+cd client
+npm run dev
+```
+
+Open <http://127.0.0.1:5175/>. Vite proxies `/api` to FastAPI. The client displays explicit API loading/error states and requests metrics, behavior metadata, generation traces, and probability distributions from the server. No model training occurs in a request; the API rebuilds the deterministic default adapter from the local corpus and recorded chronological training boundary.
+
+For a production-like static client build, run `npm run build` in `client/`; the generated `client/dist/` can be served behind an API reverse proxy.
 
 ## Reproduce
 
@@ -27,6 +46,7 @@ From this directory:
 ```bash
 python3 nano_llm.py --corpus data/tiny_corpus.txt --output metrics.json
 python3 -m unittest discover -v
+python3 -m unittest discover -s tests -v
 ```
 
 The standard-library backend completes on CPU in under a second and reports validation and untouched held-out test character loss/perplexity plus OOV counts, split metadata, and a serialized behavior trace. The default protocol is a strict chronological 80/10/10 character split. Boundary context is carried from the preceding ground-truth prefix into each suffix; targets within a suffix are teacher-forced. The test suffix is scored only after training/model selection. The displayed perplexity is a conditional character-stream metric over 36 test targets, not a conversational quality score.
@@ -56,8 +76,10 @@ Run the reproduce command to regenerate `metrics.json`. Because the tiny corpus 
 ## Limitations and deviations
 
 This is intentionally a lightweight reproduction, not NanoLlama: it has no pretrained weights, BPE tokenizer, instruction tuning, or genuine autoresearch/hyperparameter hill-climbing loop. The prompt’s “state of art primitives” is represented in the optional causal Transformer, while the default uses a dependency-free baseline because the assignment environment may not have PyTorch. The corpus is synthetic and too small for meaningful generalization. The Transformer implementation is a teaching miniature and should not be used for production inference. The Torch path is optional and CPU-safe; it is not presented as a pretrained or production GPU model.
-## Integration verification
+## E2E and DS contracts
 
 - **Prompt alignment:** Public Project 02 asks for a laptop-sized LLM/chatbot with CRISP-DM, dashboard, and autoresearch; next-token modeling and optional causal Transformer are present.
 - **Results/artifacts:** `metrics.json` records train/validation/test sizes, a train-only vocabulary with OOV accounting, validation/test metrics, corpus hash, split offsets, runtime configuration, environment metadata, and serialized replay distributions/traces; the unittest suite covers split validation, OOV normalization, boundary context, replay serialization, CLI validation, and the causal mask when Torch is installed.
-- **Issue/resolution:** PyTorch, pretrained weights, tokenizer, and hill-climbing remain optional/absent for offline reproducibility; the dashboard is a static artifact inspector rather than a live inference service.
+- **API boundary:** FastAPI validates prompt length, generation length, temperature, and probability contexts. API responses preserve normalized candidate probabilities and deterministic temperature-zero traces.
+- **Client boundary:** The Vite client calls `/api/metrics`, `/api/behavior`, `/api/generate`, and `/api/probabilities`; static tests assert those routes, loading/error states, and no direct artifact-only replay path.
+- **Issue/resolution:** PyTorch, pretrained weights, tokenizer, and hill-climbing remain optional/absent for offline reproducibility. The default API backend is a transparent n-gram adapter, while the optional Transformer remains explicitly labeled.

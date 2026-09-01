@@ -34,18 +34,71 @@ python3 run_experiment.py --input /path/to/train.csv
 
 Outputs are written to `outputs/`: `metrics.json`, `feature_importance.csv`, `predictions.csv`, `duration_distribution.svg`, and `predicted_vs_actual.svg`. `predictions.csv` contains primary all-row scores plus distance/time slice fields, residuals, and a `robust_inlier` sensitivity flag.
 
-## Browser UI
+## E2E application layout
 
-The project includes a dependency-light standalone browser UI in `index.html`, `styles.css`, and `app.js`. It reads the checked-in `outputs/metrics.json`, `outputs/predictions.csv`, and `outputs/feature_importance.csv` at runtime and presents the model metrics, baseline comparison, residual/slice explorer, fold evidence, cleaning audit, SVG evidence, CRISP-DM workflow, and run instructions in a screenshot-friendly layout.
+The project now follows the reference repository's client/server/ml split while
+keeping the data-science code dependency-light:
 
-Because browsers block `fetch()` for local JSON files opened with `file://`, serve this directory locally:
+- `ml/` contains the artifact-backed inference adapter; `run_experiment.py`
+  remains the reproducible training/evaluation entry point.
+- `server/` contains the FastAPI application and typed request model. It serves
+  experiment metadata, feature importance, prediction slices, and the
+  deterministic teaching estimator.
+- `client/` is a Vite-compatible raw HTML/CSS/JavaScript application. It calls
+  the API through Vite's `/api` development proxy and renders loading/error
+  states, metrics, holdout residuals, feature bars, and estimator responses.
+
+### Run the ML experiment
 
 ```bash
 cd 01_nyc_taxi_trip_prediction
+python3 run_experiment.py
+python3 validate.py
+```
+
+### Run FastAPI
+
+In a second terminal from this project directory:
+
+```bash
+python3 -m venv .venv-server
+source .venv-server/bin/activate
+python -m pip install -r server/requirements.txt
+uvicorn server.main:app --reload --host 127.0.0.1 --port 8001
+```
+
+The API docs are available at <http://127.0.0.1:8001/docs>.
+
+### Run the Vite client
+
+In a third terminal:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Open <http://127.0.0.1:5173>. Vite proxies `/api` to FastAPI on port 8001.
+For a production-like local preview, use `npm run build` followed by
+`npm run preview` while FastAPI remains running.
+
+## Legacy artifact viewer
+
+The top-level `index.html`, `styles.css`, and `app.js` remain as a standalone
+artifact viewer for GitHub Pages and offline inspection. The Vite client is the
+preferred demo path because it exercises the actual FastAPI boundary.
+
+Because browsers block `fetch()` for local JSON files opened with `file://`, the
+legacy viewer can be served directly:
+
+```bash
 python3 -m http.server 8000
 ```
 
-Then open <http://localhost:8000>. The route/time controls provide a deterministic, no-noise client-side illustrative estimate based on the synthetic generator's directional relationships. They do not load model weights and should not be described as a production prediction. The UI falls back to the checked-in metric values when opened without a local server, but serving the folder enables the live `metrics.json` status. Hero and callout percentages are populated from the loaded metrics, so they remain honest for alternate CSV runs.
+The legacy route/time controls are a deterministic browser-only teaching aid.
+The E2E Vite client sends estimator requests to FastAPI, which applies the same
+service-area, timestamp, distance, and passenger validation contract.
 
 ## Results
 
@@ -57,6 +110,18 @@ The checked-in `outputs/metrics.json` records the result of the default determin
 - The linear model and median baselines are intentionally small, interpretable benchmarks, not tuned production models. `feature_importance.csv` reports absolute standardized linear coefficients; correlated coordinate features can make individual rankings unstable.
 - A real evaluation should use the official TLC/Kaggle data, verify the service-area policy against the source, use a time-based validation design, and perform calibration/error analysis by borough, hour, and distance.
 - The target is unavailable at prediction time in real deployment; only pickup-time and request attributes may be used.
+
+## Tests
+
+Run the experiment and API contracts without starting either server:
+
+```bash
+python3 -m unittest discover -v
+```
+
+The API tests call route functions directly. They cover health and artifact
+response shapes, stable slice boundaries, invalid query values, valid estimator
+responses, out-of-area coordinates, and ambiguous timestamps.
 ## Integration verification
 
 - **Prompt alignment:** Public Project 01 asks for end-to-end NYC taxi prediction with data, training, deployment, CRISP-DM, map, and estimation. This covers data, training, temporal evaluation, outputs, and CLI; hosted map UI is out of scope.

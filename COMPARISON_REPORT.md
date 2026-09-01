@@ -6,7 +6,9 @@ The portfolio is a faithful lightweight reproduction of the reference project th
 
 All 14 projects now have a browser-facing presentation layer. The dashboards read checked-in outputs and provide project-specific metric cards, charts, phase context, and analytical interactions. Controls that do not call the Python runtime are explicitly labeled artifact-backed or illustrative; the underlying experiments remain the source of truth.
 
-Rendered evidence for each dashboard is checked into `ui_screenshots/project-00.png` through `project-13.png` and was refreshed during a sequential localhost smoke-review pass.
+Projects 0–5 additionally follow the reference repository's client/server/ml separation. Their Vite clients were smoke-tested against one local FastAPI process at a time, with fresh evidence in `ui_screenshots/e2e-project-00.png` through `e2e-project-05.png`. Project 00 is a planning-only workflow and intentionally has no ML adapter; Projects 1–5 expose their experiment logic through `ml/`. Projects 6–14 were left unchanged.
+
+The original full-portfolio gallery remains in `ui_screenshots/project-00.png` through `project-13.png`.
 
 ## Final polish review
 

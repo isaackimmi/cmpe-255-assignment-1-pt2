@@ -15,25 +15,40 @@ The run writes `artifacts/metrics.json`, `artifacts/summary.json`, and two SVG s
 
 ## Dashboard
 
-The project includes a responsive browser dashboard in `index.html`. It reads `artifacts/metrics.json` and `artifacts/summary.json` at runtime, renders an inline evidence explorer from those artifacts, and provides an interactive selector for the five lab modules.
+The project includes a responsive browser dashboard in `client/`. It uses raw HTML/CSS/JavaScript with Vite and calls the FastAPI service for artifact-backed evidence rather than inventing metrics in the browser.
 
-From this directory, regenerate the artifacts and start a local static server:
+The end-to-end layout mirrors the reference repository:
+
+```text
+client/   Vite-compatible raw HTML/CSS/JS dashboard
+server/   FastAPI JSON API for metrics, rows, and evidence
+ml/       artifact/model adapter; no silent retraining on reads
+```
+
+From this directory, regenerate the artifacts and start the API and client in separate terminals:
 
 ```bash
 python3 run_lab.py
-python3 -m http.server 8000
+python3 -m pip install -r server/requirements.txt
+python3 -m uvicorn server.main:app --reload --host 127.0.0.1 --port 8005
+# second terminal
+cd client
+npm install
+npm run dev
 ```
 
-Open <http://localhost:8000> in a browser. A static server is required because browsers block `fetch()` for local `file://` pages. Stop it with `Ctrl-C` when finished. No network request or third-party runtime is needed by the dashboard; it uses system font stacks and browser-native APIs.
+Open <http://localhost:5175>. Stop both processes with `Ctrl-C` when finished. The available API routes are `/api/health`, `/api/summary`, `/api/cleaning`, `/api/classification`, `/api/regression`, `/api/clustering`, and `/api/rows`. The client calls the module-specific route as you navigate and calls `/api/rows?plan=...&renewal=...&cluster=...` when filters change. Vite proxies `/api` to port 8005 through `client/vite.config.js`; set `VITE_API_URL=http://127.0.0.1:8005` when the API is hosted on another origin.
 
-The dashboard is intentionally labeled **offline-ready** and **synthetic fixture**. The CSV is a compact teaching dataset, not a public production dataset. Its metrics are reproducibility evidence for the lab—not business, causal, or production forecasting claims.
+The dashboard is intentionally labeled **offline-ready** and **synthetic fixture**. The CSV is a compact teaching dataset, not a public production dataset. Its metrics are reproducibility evidence for the lab—not business, causal, or production forecasting claims. The client does not silently replace failed API requests with browser-only model results.
+
+The DS remains the main character: `run_lab.py` and `src/skills_lab.py` own validation, fold-local imputation, baselines, regression, classification, clustering, and artifact generation. FastAPI exposes those results with explicit missing-artifact errors; the client is an evidence exploration layer.
 
 ### Dashboard checks
 
-- Confirm the footer reports `ARTIFACT STATUS: READY`.
-- Select all five module rows and confirm the detail panel changes.
-- Switch between `01 / trend` and `02 / groups`; filter by plan, renewal outcome, and cluster group; and inspect the plotted-row table.
-- Hover or keyboard-focus a point to inspect its customer-level values and verify the evidence count changes with filters.
+- Confirm the header reports `API CONNECTED`.
+- Select the five module views and confirm the detail panel changes.
+- Filter by plan, renewal outcome, and cluster group; inspect the returned row table.
+- Compare the model to the baseline, then inspect the classification confusion matrix and cluster profiles.
 - Resize the browser to a narrow viewport to check the responsive layout.
 
 ## Evaluation and reproducibility

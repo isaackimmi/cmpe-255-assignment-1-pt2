@@ -10,7 +10,18 @@ Each numbered directory contains an independent reproduction, its own README, ru
 
 ## UI layer
 
-Every project now includes a browser-facing UI in addition to its data-science experiment. The dashboards are dependency-light and read checked-in metrics, CSVs, and visual artifacts. Start a static server from this repository root:
+Every project includes a browser-facing UI in addition to its data-science experiment. Projects 0–5 also provide a professor-style end-to-end layout: a Vite client calls a FastAPI server, and Projects 1–5 expose a small `ml/` adapter where model/evaluation logic belongs. Project 00 is intentionally planning-only and therefore has no `ml/` directory. Projects 6–14 remain unchanged.
+
+For the polished E2E demos, follow each project README and run only one project at a time. The common pattern is:
+
+```bash
+cd <project>
+python3 -m uvicorn <server module>:app --host 127.0.0.1 --port <port>
+# in a second terminal
+cd client && npm install && npm run dev
+```
+
+The exact modules/ports are documented per project (00: 8000/5173, 01: 8001/5173, 02: 8002/5175, 03: 8003/5173, 04: 8004/5173, 05: 8005/5175). The client proxies `/api` to the local server, and the API reads checked-in artifacts or deterministic fixtures. A root static server is still available for the original artifact galleries:
 
 ```bash
 python3 -m http.server 8766
@@ -37,7 +48,7 @@ Then open the corresponding path:
 
 Each UI includes metric cards, visualizations or artifact previews, explanatory CRISP-DM context, responsive styling, and project-specific analytical controls. Where the browser is reading checked-in artifacts rather than running Python, that boundary is labeled explicitly.
 
-Rendered UI screenshots are stored in [`ui_screenshots/`](ui_screenshots/). They were refreshed through one sequential localhost review pass, with only one static server and one project page loaded at a time.
+Rendered UI screenshots are stored in [`ui_screenshots/`](ui_screenshots/). `e2e-project-00.png` through `e2e-project-05.png` are the fresh sequential Vite/FastAPI smoke-test captures; the older `project-00.png` through `project-13.png` gallery captures remain for the full portfolio.
 
 | Directory | Focus |
 |---|---|
@@ -74,6 +85,10 @@ The final polish pass added a second review record, [`FINAL_POLISH_REPORT.md`](F
 ## Reproducibility
 
 Each project README contains its own setup and execution instructions. Projects use small or synthetic datasets when the original data, hardware, or external service is impractical; those deviations are documented explicitly.
+
+## E2E verification
+
+Projects 0–5 were started one at a time locally, with API-connected browser checks and a meaningful UI interaction per project. The checks exercised task mutation (00), a repaired rush-hour slice (01), generation/probability traces (02), point inspection (03), rule sorting (04), and server-side row filtering (05). The live screenshots and per-project reviewer reports provide the submission/demo evidence.
 
 ## Video
 
