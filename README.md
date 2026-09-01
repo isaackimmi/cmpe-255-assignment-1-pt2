@@ -53,7 +53,7 @@ Run one project at a time. In one terminal, start the server from the project di
 | 04 Pattern Mining | `python3 -m uvicorn server.main:app --reload --port 8004` | `cd client && npm install && npm run dev` |
 | 05 Skills Lab | `python3 -m uvicorn server.main:app --reload --host 127.0.0.1 --port 8005` | `cd client && npm install && npm run dev -- --port 5175` |
 
-Each project README contains the same instructions with project-specific prerequisites and API details. A ready-to-read narration for the six screenshots is in [DEMO_SCRIPTS_00_05.md](DEMO_SCRIPTS_00_05.md).
+Each project README contains the same instructions with project-specific prerequisites and API details.
 
 ```bash
 python3 -m http.server 8766
@@ -102,9 +102,7 @@ Rendered UI screenshots are stored in [`ui_screenshots/`](ui_screenshots/). `e2e
 ## Assignment artifacts
 
 - [Prompt record](PROMPTS_USED.md)
-- [Reproduction log](REPRODUCTION_LOG.md)
 - [Comparison report](COMPARISON_REPORT.md)
-- [Video script](VIDEO_SCRIPT.md)
 
 ## Data-science robustness review
 
@@ -131,6 +129,6 @@ Projects 0–5 use React entrypoints mounted by Vite. Each client keeps reusable
 YouTube walkthrough: _To be added after recording._
 ## Integration status
 
-All 14 projects have a real README, runnable entry point, test or validation command, documented prompt alignment, results/artifacts, and explicit deviations. The final local verification is summarized in [REPRODUCTION_LOG.md](REPRODUCTION_LOG.md): all 14 project checks passed, with Project 11 intentionally returning a CONDITIONAL release recommendation because its fixture contains four governance defects.
+All 14 projects have a real README, runnable entry point, test or validation command, documented prompt alignment, results/artifacts, and explicit deviations. Project-specific verification evidence and limitations are documented in the individual project READMEs and review reports.
 
 The portfolio is intentionally offline-friendly. Synthetic or built-in datasets replace external Kaggle/TLC downloads where needed, AutoGluon and PyTorch remain optional, and hosted dashboards/browser tours are not claimed unless present in the project README.
