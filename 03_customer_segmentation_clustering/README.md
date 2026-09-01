@@ -20,15 +20,31 @@ Expected outputs include `artifacts/segmentation.png`, `summary.json`, `manifest
 
 The project includes a dependency-free browser dashboard in `index.html`. It loads the summary, both preprocessing score tables, validation scores, assignments, point-level explorer diagnostics, plot, and manifest at runtime. The UI checks exact schemas, finite numeric values, row counts, selected-model metadata, and the complete SHA-256 hash set before showing a verified status; run the experiment first if artifacts are missing or stale. The summary’s feature audit is descriptive for the generated sample, not a substitute for a real-data quality policy.
 
-From this directory, run:
+The polished E2E version is split into a Vite-compatible raw HTML/CSS/JS client, a FastAPI evidence/scoring server, and an `ml/` adapter around the canonical reproducible experiment:
+
+```text
+client/   Vite client and interactive SVG explorer
+server/   FastAPI endpoints for artifacts, profiles, validation, and scoring
+ml/       API adapter that loads the exact selected preprocessing/model path
+```
+
+From this directory, first regenerate the canonical artifacts and run the tests:
 
 ```bash
 python3 -m src.experiment
 python3 -m pytest -q
-python3 -m http.server 8000
 ```
 
-Then open [http://localhost:8000](http://localhost:8000). Use the segment filter and feature selector to explore the heuristic profile cards, select raw x/y features or the PCA view, and click points to inspect customer-level features and assignment diagnostics. The PCA map is visualization-only. Distance, margin, and confidence are geometry proxies in fitted scaled space, not probabilities or outcome predictions. Serving the directory over HTTP is required because browsers block `fetch()` requests for local files opened directly with `file://`.
+Run the API and client in separate terminals when doing a local demo (only one project server should be running at a time):
+
+```bash
+python3 -m uvicorn server.app:app --reload --port 8003
+cd client
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173). The client calls the API for the manifest, summary, profiles, point-level explorer data, and new-customer scoring. Use the segment filter and feature selectors to explore profiles, then submit the estimator form to exercise the `/api/score` endpoint. The PCA map and geometry confidence are visualization/assignment diagnostics, not probabilities or outcome predictions.
 
 ## CRISP-DM trace
 
@@ -46,6 +62,9 @@ This is a teaching experiment, not a production segmentation. The synthetic clus
 ## Project layout
 
 - `src/experiment.py` — data contract, preprocessing, repeated validation, stability, scoring, and artifact checks.
+- `client/` — Vite-compatible browser client using raw HTML/CSS/JS and SVG charts.
+- `server/app.py` — FastAPI evidence and scoring API.
+- `ml/pipeline.py` — adapter that reuses the canonical experiment for API scoring.
 - `tests/test_experiment.py` — reproducibility, validation, scoring, and artifact-content tests.
 - `artifacts/` — generated outputs (created by the run command), including the browser-ready `explorer_points.csv` diagnostics.
 - `reports/` — reserved for a future full research report.
