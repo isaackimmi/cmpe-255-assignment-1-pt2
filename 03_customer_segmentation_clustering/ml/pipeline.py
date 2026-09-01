@@ -1,16 +1,22 @@
-"""ML adapter used by the API; the canonical experiment remains src/experiment.py."""
-from __future__ import annotations
-import sys
+"""Thin adapter exposing the reproducible experiment as a service boundary."""
 from pathlib import Path
-import pandas as pd
+import sys
 
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path: sys.path.insert(0, str(ROOT))
-from src.experiment import FEATURES, SEED, make_dataset, fit_segmenter, run  # noqa: E402
+PROJECT = Path(__file__).resolve().parents[1]
+if str(PROJECT) not in sys.path: sys.path.insert(0, str(PROJECT))
 
-def score_observation(values: dict[str, float]) -> dict:
-    frame = pd.DataFrame([values], columns=FEATURES)
-    summary = run(ROOT / "artifacts") if not (ROOT / "artifacts/manifest.json").exists() else __import__("json").loads((ROOT / "artifacts/summary.json").read_text())
-    fitted = fit_segmenter(make_dataset(seed=SEED), summary["selected_preprocessing"], int(summary["selected_k"]))
-    cluster = int(fitted["model"].predict(fitted["scaler"].transform(frame[FEATURES]))[0])
-    return {"cluster": cluster, "preprocessing": summary["selected_preprocessing"], "k": int(summary["selected_k"]), "note": "Geometry assignment from the reproducible fitted model; not a behavioral probability."}
+from src.experiment import FEATURES, SEED, fit_segmenter, make_dataset, score_customers  # noqa: E402
+
+def score_observation(values: dict, preprocessing: str = "standard", k: int = 3) -> dict:
+    """Apply the canonical scoring path for either measured preprocessing variant."""
+    import pandas as pd
+    frame = make_dataset()
+    fitted = fit_segmenter(frame, preprocessing, k)
+    incoming = pd.DataFrame([values], columns=FEATURES)
+    assignments = score_customers(incoming, fitted)
+    transformed = fitted["scaler"].transform(__import__("src.experiment", fromlist=["_raw_values"])._raw_values(incoming, preprocessing))
+    distances = fitted["model"].transform(transformed)[0]
+    ordered = sorted(float(distance) for distance in distances)
+    return {"cluster": int(assignments.iloc[0]), "preprocessing": preprocessing, "k": k, "distances": [round(float(x), 6) for x in distances], "nearest_distance": round(ordered[0], 6), "assignment_margin": round(ordered[1] - ordered[0], 6), "note": "geometry diagnostics, not a probability"}
+
+__all__ = ["FEATURES", "SEED", "fit_segmenter", "make_dataset", "score_customers", "score_observation"]

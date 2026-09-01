@@ -9,9 +9,17 @@ The experiment predeclares candidate **k=2…7** and compares `StandardScaler` w
 ## Reproduce
 
 ```bash
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt -r server/requirements.txt
 python3 -m src.experiment
 python3 -m pytest -q
+```
+
+For an isolated setup, use Python 3.11+ and create a virtual environment before installing the two requirement files:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt -r server/requirements.txt
 ```
 
 Expected outputs include `artifacts/segmentation.png`, `summary.json`, `manifest.json`, and five CSV reports. The data generator creates 120 customers across three intentionally interpretable prototypes (budget/infrequent, frequent/high-spend, and affluent/premium); it is a prototype-recovery teaching sample, not a claim about real customer behavior.
