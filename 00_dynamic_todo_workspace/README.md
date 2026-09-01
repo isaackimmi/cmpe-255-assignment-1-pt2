@@ -6,6 +6,14 @@ A lightweight runnable workspace for planning data-science-agent work. It combin
 
 The polished version is a real E2E split application: `client/` is a React 19 application built by Vite, Radix UI supplies accessible interaction primitives, and `server/` is a layered FastAPI service. The legacy root `index.html` remains a separate static fallback for GitHub Pages.
 
+For a demo, one command handles dependencies, starts both processes, opens <http://127.0.0.1:5173>, and stops everything with one `Ctrl-C`:
+
+```bash
+./run_demo.sh
+```
+
+The commands below are the equivalent manual development workflow.
+
 Terminal 1 — API:
 
 ```bash

@@ -63,7 +63,7 @@ export function useBasketSignals() {
     basketApi.getTransactions(signal)
       .then((payload) => setTransactions(payload.rows))
       .catch(failDashboardRequest)
-      .finally(() => { if (!signal.aborted) finishDashboardRequest(); });
+      .finally(finishDashboardRequest);
   }, [dashboardRetryToken]);
 
   useRequest((signal) => {
@@ -71,7 +71,7 @@ export function useBasketSignals() {
     basketApi.getSummary(appliedFilters, signal)
       .then(setSummary)
       .catch(failDashboardRequest)
-      .finally(() => { if (!signal.aborted) finishDashboardRequest(); });
+      .finally(finishDashboardRequest);
   }, [appliedFilters.support, appliedFilters.confidence, appliedFilters.count, dashboardRetryToken]);
 
   useRequest((signal) => {
@@ -79,7 +79,7 @@ export function useBasketSignals() {
     basketApi.getRules(appliedFilters, signal)
       .then((payload) => setRules(payload.rows))
       .catch(failDashboardRequest)
-      .finally(() => { if (!signal.aborted) finishDashboardRequest(); });
+      .finally(finishDashboardRequest);
   }, [appliedFilters.support, appliedFilters.confidence, appliedFilters.count, appliedFilters.sort, dashboardRetryToken]);
 
   useRequest((signal) => {
@@ -87,7 +87,7 @@ export function useBasketSignals() {
     basketApi.getItemsets(appliedFilters, signal)
       .then((payload) => setItemsets(payload.rows))
       .catch(failDashboardRequest)
-      .finally(() => { if (!signal.aborted) finishDashboardRequest(); });
+      .finally(finishDashboardRequest);
   }, [appliedFilters.support, appliedFilters.count, appliedFilters.size, dashboardRetryToken]);
 
   useRequest((signal) => {

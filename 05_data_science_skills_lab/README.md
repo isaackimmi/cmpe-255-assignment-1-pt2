@@ -17,6 +17,14 @@ The run writes `artifacts/metrics.json`, `artifacts/summary.json`, and two SVG s
 
 The project includes a responsive React dashboard in `client/`. Vite builds the application, Material UI supplies accessible interaction primitives, and the client calls FastAPI for artifact-backed evidence rather than inventing metrics in the browser.
 
+For a demo, one command handles dependencies, starts FastAPI and React, opens <http://127.0.0.1:5175>, and stops both with one `Ctrl-C`:
+
+```bash
+./run_demo.sh
+```
+
+The commands below remain available for artifact regeneration and manual development.
+
 The end-to-end layout mirrors the reference repository:
 
 ```text

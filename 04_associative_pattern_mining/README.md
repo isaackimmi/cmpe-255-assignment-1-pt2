@@ -15,7 +15,15 @@ The script prints frequent itemsets and rules, including the effective whole-bas
 
 ## Explore the UI
 
-The primary UI is a React + Vite client backed by a FastAPI service. Run it from this directory in two terminals:
+The primary UI is a React + Vite client backed by a FastAPI service.
+
+For a demo, one command handles dependencies, starts both processes, opens <http://127.0.0.1:5173>, and stops everything with one `Ctrl-C`:
+
+```bash
+./run_demo.sh
+```
+
+The commands below are the equivalent manual development workflow.
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate

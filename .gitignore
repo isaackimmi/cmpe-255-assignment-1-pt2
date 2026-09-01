@@ -1,5 +1,6 @@
 # Local environments and generated Python state
 **/.venv/
+.demo-venv/
 **/venv/
 **/__pycache__/
 **/.pytest_cache/

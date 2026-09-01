@@ -15,6 +15,14 @@ This is a small, auditable reproduction of the Project 02 prompt: “build a sim
 
 ## Run the E2E application
 
+For a demo, one command handles dependencies, starts FastAPI and React, opens <http://127.0.0.1:5175>, and stops both with one `Ctrl-C`:
+
+```bash
+./run_demo.sh
+```
+
+The commands below are the equivalent manual development workflow.
+
 From this directory, generate the default artifact and install the two small runtime environments:
 
 ```bash

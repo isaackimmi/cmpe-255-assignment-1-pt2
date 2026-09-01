@@ -26,6 +26,14 @@ Expected outputs include `artifacts/segmentation.png`, `summary.json`, `manifest
 
 ## Interactive dashboard
 
+For a demo, one command handles dependencies, starts FastAPI and React, opens <http://127.0.0.1:5173>, and stops both with one `Ctrl-C`:
+
+```bash
+./run_demo.sh
+```
+
+The commands below remain available for artifact regeneration and manual development.
+
 The project includes a dependency-free browser dashboard in `index.html`. It loads the summary, both preprocessing score tables, validation scores, assignments, point-level explorer diagnostics, plot, and manifest at runtime. The UI checks exact schemas, finite numeric values, row counts, selected-model metadata, and the complete SHA-256 hash set before showing a verified status; run the experiment first if artifacts are missing or stale. The summary’s feature audit is descriptive for the generated sample, not a substitute for a real-data quality policy.
 
 The polished E2E version is split into a React/Vite client built from reusable MUI components, a modular FastAPI evidence/scoring server, and an `ml/` adapter around the canonical reproducible experiment:

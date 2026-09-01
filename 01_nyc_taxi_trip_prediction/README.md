@@ -51,6 +51,16 @@ keeping the data-science code dependency-light:
   under `client/src/components`; API transport, async hooks, formatting, and
   the shared MUI theme live in their own modules.
 
+### One-command demo
+
+From this project directory, one command handles dependencies, starts FastAPI and React, opens <http://127.0.0.1:5173>, and stops both with one `Ctrl-C`:
+
+```bash
+./run_demo.sh
+```
+
+The separate commands below remain available for experiment regeneration and development.
+
 ### Run the ML experiment
 
 ```bash

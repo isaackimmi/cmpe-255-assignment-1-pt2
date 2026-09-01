@@ -12,7 +12,24 @@ Each numbered directory contains an independent reproduction, its own README, ru
 
 Every project includes a browser-facing UI in addition to its data-science experiment. Projects 0–5 also provide a professor-style end-to-end layout: a Vite client calls a FastAPI server, and Projects 1–5 expose a small `ml/` adapter where model/evaluation logic belongs. Project 00 is intentionally planning-only and therefore has no `ml/` directory. Projects 6–14 remain unchanged.
 
-For the polished E2E demos, follow each project README and run only one project at a time. The common pattern is:
+### One-command demos
+
+From the repository root, launch any of the first six projects with one command:
+
+```bash
+./run_demo.sh 0  # Project 00
+./run_demo.sh 1  # Project 01
+./run_demo.sh 2  # Project 02
+./run_demo.sh 3  # Project 03
+./run_demo.sh 4  # Project 04
+./run_demo.sh 5  # Project 05
+```
+
+Run only one project at a time. The first launch creates a shared `.demo-venv` and installs any missing client dependencies. The script starts FastAPI and React, waits for both, opens the demo URL, and keeps both processes attached to the terminal. Press `Ctrl-C` once to stop everything. Use `DEMO_NO_OPEN=1 ./run_demo.sh <project>` when you do not want the browser opened automatically.
+
+Every Project 00–05 directory also contains its own `./run_demo.sh` wrapper, so the same one-command workflow works after entering a project directory.
+
+The equivalent manual pattern remains available for development and troubleshooting:
 
 ```bash
 cd <project>
@@ -23,7 +40,7 @@ cd client && npm install && npm run dev
 
 The exact modules/ports are documented per project (00: 8000/5173, 01: 8001/5173, 02: 8002/5175, 03: 8003/5173, 04: 8004/5173, 05: 8005/5175). The client proxies `/api` to the local server, and the API reads checked-in artifacts or deterministic fixtures. A root static server is still available for the original artifact galleries:
 
-### First-six demo runbook
+### First-six manual runbook
 
 Run one project at a time. In one terminal, start the server from the project directory; in a second terminal, start its React client from the project’s `client/` directory. Open the printed Vite URL in a browser.
 
