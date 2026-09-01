@@ -70,11 +70,18 @@ class ApiContractTests(unittest.TestCase):
             (BackendUnsupported("torch artifact unsupported"), 501, "/api/generate"),
         ):
             with self.subTest(code=error.code):
-                target = "load_metrics" if route.endswith("metrics") else "generate"
-                with patch.object(self.main, target, side_effect=error):
+                target = "server.services.evidence.load_metrics" if route.endswith("metrics") else "server.services.inference.generate"
+                with patch(target, side_effect=error):
                     response = self.client.get(route) if route.endswith("metrics") else self.client.post(route, json={"prompt": "x"})
                 self.assertEqual(response.status_code, expected_status)
                 self.assertEqual(response.json()["error"]["code"], error.code)
+
+    def test_server_entrypoint_is_a_thin_composition_root(self):
+        source = (PROJECT / "server" / "main.py").read_text(encoding="utf-8")
+        self.assertIn("create_app", source)
+        self.assertNotIn("@app.get", source)
+        for path in ("routers/evidence.py", "routers/inference.py", "services/evidence.py", "services/inference.py", "schemas.py"):
+            self.assertTrue((PROJECT / "server" / path).exists(), path)
 
 
 if __name__ == "__main__":

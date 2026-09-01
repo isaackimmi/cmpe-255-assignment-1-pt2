@@ -4,7 +4,7 @@ A lightweight runnable workspace for planning data-science-agent work. It combin
 
 ## Run locally
 
-The polished version is a real E2E split application: `client/` is a Vite-compatible raw HTML/CSS/JavaScript client, and `server/` is a FastAPI service. The legacy root `index.html` remains as a static fallback for GitHub Pages.
+The polished version is a real E2E split application: `client/` is a React 19 application built by Vite, Radix UI supplies accessible interaction primitives, and `server/` is a layered FastAPI service. The legacy root `index.html` remains a separate static fallback for GitHub Pages.
 
 Terminal 1 — API:
 
@@ -19,13 +19,15 @@ Terminal 2 — Vite client:
 
 ```bash
 cd client
-npm install
+npm ci
 npm run dev
 ```
 
-Open <http://127.0.0.1:5173>. `client/vite.config.js` proxies `/api` to `http://127.0.0.1:8000`; set `VITE_API_BASE_URL` before `npm run dev` when using a different API origin. The client calls `/api/workspace`, `/api/readiness`, and the task mutation endpoints. Run the API and client separately; do not use multiple project servers simultaneously during the portfolio demo.
+Open <http://127.0.0.1:5173>. `client/vite.config.js` proxies `/api` to `http://127.0.0.1:8000`; set `VITE_API_BASE_URL` before `npm run dev` when using a different API origin. The client loads `/api/workspace`, uses the task mutation endpoints, and refreshes the workspace after a demo agent check. `/api/readiness` remains available as an independently typed API resource. Run the API and client separately; do not use multiple project servers simultaneously during the portfolio demo.
 
-No package installation is required. From this directory, start any static server:
+### Legacy static fallback
+
+The legacy root app is dependency-free and does not exercise FastAPI. From this project directory, start any static server:
 
 ```bash
 python3 -m http.server 8000
@@ -33,7 +35,7 @@ python3 -m http.server 8000
 
 Then open <http://localhost:8000>.
 
-The original root app also works by opening `index.html` directly, although it does not exercise the FastAPI API.
+The root app also works by opening `index.html` directly. Its local-storage behavior and Node tests apply only to this fallback—not to the React/FastAPI application.
 
 ## Features
 
@@ -49,7 +51,18 @@ The original root app also works by opening `index.html` directly, although it d
 
 ## Tests
 
-The pure task/state helpers, workflow summary, and HTML honesty/accessibility contract are covered with Node's built-in test runner:
+The React client is covered by Vitest, React Testing Library, and user-event. Tests render the real component tree and cover loading/error states, filtering, workflow accessibility, mutation failures, overlapping-write protection, and agent-check refresh:
+
+```bash
+cd client
+npm ci
+npm run test:client
+npm run build
+```
+
+Use `npm run check` after dependencies are installed to run the React tests and production build together.
+
+The legacy fallback's pure task/state helpers and HTML honesty contract remain covered separately with Node's built-in test runner:
 
 ```bash
 node --test tests/*.test.js
@@ -67,13 +80,13 @@ These contract checks use the standard library. If the FastAPI dependencies are 
 
 This checkout does not contain `retail_orders.parquet`, a profiling report, forecasting code, model output, or evaluation artifacts. The dataset card and workflow therefore describe planned/example work. The agent-check button only records a simulated queue check in the local activity log. No displayed quality score, confidence percentage, time-saved estimate, forecast, leakage check, or model metric is a measured result.
 
-Tasks and the activity log are stored in browser local storage when available. Stored tasks are validated on load: safe numeric-string IDs are migrated to numbers, duplicate or malformed records are discarded, and missing metadata is normalized safely. The footer reports when browser storage is unavailable.
+The legacy fallback stores tasks and activity in browser local storage when available. Its stored tasks are validated on load: safe numeric-string IDs are migrated to numbers, duplicate or malformed records are discarded, and missing metadata is normalized safely.
 
-The FastAPI demo server keeps state in memory for the session. It is intentionally not a forecasting engine and does not claim a measured dataset profile, model score, or time saving.
+The React E2E client does not use browser persistence; it reads and mutates the FastAPI service. The server keeps state in a thread-safe in-memory repository for the process lifetime. Routes, response/request schemas, services, and repository concerns are separated. The app is intentionally not a forecasting engine and does not claim a measured dataset profile, model score, or time saving.
 
 ## Documented deviations
 
-The original Project 00 prompt referenced by the assignment was not available in this checkout. The E2E implementation intentionally uses raw HTML/CSS/JavaScript rather than React and uses an in-memory FastAPI service rather than a database or authentication system. A production version could add persistence, multi-user sync, and auth.
+The original Project 00 prompt referenced by the assignment was not available in this checkout. The E2E implementation uses React, Radix UI, Vite, and an in-memory FastAPI repository rather than a database or authentication system. A production version could add persistence, multi-user sync, and auth.
 
 ## Files
 
@@ -83,8 +96,19 @@ The original Project 00 prompt referenced by the assignment was not available in
 - `src/app.js` — DOM rendering and interaction logic.
 - `tests/state.test.js` — executable state/model tests.
 - `tests/contract.test.js` — checks the honest demo boundary and key accessible controls.
-- `client/` — Vite-compatible browser client.
-- `server/` — FastAPI API and in-memory session state.
+- `client/src/components/layout/` — shell, sidebar/mobile identity, and dashboard header.
+- `client/src/components/project/` — project context and reusable metric cards.
+- `client/src/components/tasks/` — composable task board, form, and rows.
+- `client/src/components/workflow/` — accessible stage selection and evidence detail.
+- `client/src/components/ui/` — small local design-system wrappers; Radix primitives are used within feature components.
+- `client/src/hooks/` — cancellable workspace loading and single-flight mutation orchestration.
+- `client/src/services/` — HTTP transport and normalized API errors.
+- `client/src/test/` — React behavior and accessibility-focused component tests.
+- `server/app/api/` — transport-focused routes and dependencies.
+- `server/app/models/` — request and response schemas.
+- `server/app/services/` — use cases and error policy.
+- `server/app/repositories/` — thread-safe in-memory state and the explicit planning-only seed.
+- `server/main.py` — thin ASGI bootstrap retained for `uvicorn main:app`.
 - `tests/test_server_contract.py` — dependency-light API contract checks.
 - `screenshots/` — optional visual evidence generated during local QA.
 ## Integration verification

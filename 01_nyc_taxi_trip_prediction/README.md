@@ -39,14 +39,17 @@ Outputs are written to `outputs/`: `metrics.json`, `feature_importance.csv`, `pr
 The project now follows the reference repository's client/server/ml split while
 keeping the data-science code dependency-light:
 
-- `ml/` contains the artifact-backed inference adapter; `run_experiment.py`
+- `ml/` is organized by responsibility: artifact loading, numerical validation,
+  scoring, slice analysis, geospatial math, and teaching estimation.
+  `ml/model.py` remains a compatibility facade, while `run_experiment.py`
   remains the reproducible training/evaluation entry point.
-- `server/` contains the FastAPI application and typed request model. It serves
-  experiment metadata, feature importance, prediction slices, and the
-  deterministic teaching estimator.
-- `client/` is a Vite-compatible raw HTML/CSS/JavaScript application. It calls
-  the API through Vite's `/api` development proxy and renders loading/error
-  states, metrics, holdout residuals, feature bars, and estimator responses.
+- `server/` separates app construction, configuration, Pydantic schemas,
+  routers, and an application service. `server/main.py` is a deliberately thin
+  ASGI/compatibility entry point.
+- `client/` is a React + Vite application using Material UI. Reusable layout,
+  evidence, explorer, estimator, loading/error, and metric components live
+  under `client/src/components`; API transport, async hooks, formatting, and
+  the shared MUI theme live in their own modules.
 
 ### Run the ML experiment
 
@@ -122,6 +125,11 @@ python3 -m unittest discover -v
 The API tests call route functions directly. They cover health and artifact
 response shapes, stable slice boundaries, invalid query values, valid estimator
 responses, out-of-area coordinates, and ambiguous timestamps.
+
+The static E2E contracts also verify the React/Vite/MUI dependency boundary,
+the component directory, modular API service, FastAPI router/service split, and
+focused ML modules. Run `npm run build` from `client/` to verify the production
+frontend bundle.
 ## Integration verification
 
 - **Prompt alignment:** Public Project 01 asks for end-to-end NYC taxi prediction with data, training, deployment, CRISP-DM, map, and estimation. This covers data, training, temporal evaluation, outputs, and CLI; hosted map UI is out of scope.

@@ -1,0 +1,8 @@
+import Chip from "@mui/material/Chip";
+import { Panel, PanelHeader } from "../common/Panel";
+import { number } from "../../utils/format";
+
+export function ClusteringPanel({ metrics, rows, totalRows }) {
+  const clustering = metrics.clustering;
+  return <div className="detail-grid"><Panel large><PanelHeader tag="SCALED K-MEANS" value={`k = ${clustering.k}`}/><figure><div className="cluster-chart" role="img" aria-label={`${clustering.k} cluster centers shown by monthly usage and support-ticket coordinates`}>{clustering.centers.map((center, index) => <div className={`cluster-node node-${index}`} style={{ left: `${18 + index * 54}%`, top: `${35 + index * 18}%` }} key={index}><Chip label={index} color="primary"/><span>{number(center[0])} usage · {number(center[1])} tickets</span></div>)}</div><figcaption>{clustering.centers.map((center, index) => `Cluster ${index}: ${number(center[0])} usage, ${number(center[1])} tickets`).join("; ")}.</figcaption></figure><p className="callout">Z-score scaling prevents monthly usage from dominating support-ticket distance. Silhouette: {number(clustering.silhouette)}.</p></Panel><Panel><span className="tag">FILTERED POINTS</span><h3>{rows.length} of {totalRows} customers</h3><div className="table-scroll"><table className="evidence-table"><caption>Filtered customer cluster assignments</caption><thead><tr><th scope="col">Customer</th><th scope="col">Group</th><th scope="col">Usage</th><th scope="col">Plan</th></tr></thead><tbody>{rows.slice(0, 8).map((row) => <tr key={row.customer_id}><th scope="row">{row.customer_id}</th><td>G{row.cluster}</td><td>{number(row.monthly_usage)}</td><td>{row.plan}</td></tr>)}</tbody></table></div></Panel></div>;
+}

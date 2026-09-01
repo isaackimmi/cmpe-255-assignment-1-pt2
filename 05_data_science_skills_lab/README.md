@@ -15,14 +15,14 @@ The run writes `artifacts/metrics.json`, `artifacts/summary.json`, and two SVG s
 
 ## Dashboard
 
-The project includes a responsive browser dashboard in `client/`. It uses raw HTML/CSS/JavaScript with Vite and calls the FastAPI service for artifact-backed evidence rather than inventing metrics in the browser.
+The project includes a responsive React dashboard in `client/`. Vite builds the application, Material UI supplies accessible interaction primitives, and the client calls FastAPI for artifact-backed evidence rather than inventing metrics in the browser.
 
 The end-to-end layout mirrors the reference repository:
 
 ```text
-client/   Vite-compatible raw HTML/CSS/JS dashboard
-server/   FastAPI JSON API for metrics, rows, and evidence
-ml/       artifact/model adapter; no silent retraining on reads
+client/   React + Vite + Material UI dashboard
+server/   FastAPI composition root, routers, schemas, and evidence services
+ml/       artifact contracts, repository, and read-only analytical service
 ```
 
 From this directory, regenerate the artifacts and start the API and client in separate terminals:
@@ -42,6 +42,24 @@ Open <http://localhost:5175>. Stop both processes with `Ctrl-C` when finished. T
 The dashboard is intentionally labeled **offline-ready** and **synthetic fixture**. The CSV is a compact teaching dataset, not a public production dataset. Its metrics are reproducibility evidence for the lab—not business, causal, or production forecasting claims. The client does not silently replace failed API requests with browser-only model results.
 
 The DS remains the main character: `run_lab.py` and `src/skills_lab.py` own validation, fold-local imputation, baselines, regression, classification, clustering, and artifact generation. FastAPI exposes those results with explicit missing-artifact errors; the client is an evidence exploration layer.
+
+### Code organization
+
+The frontend is composed rather than assembled in one entry file. `client/src/components/` contains the `AppShell`, `ModuleNav`, metric grid/cards, filters, evidence container, and one focused panel per analytical module. `client/src/hooks/useLabData.js` owns request state while `client/src/api/labApi.js` owns HTTP details. Theme tokens live in `theme.js`; presentation remains in scoped CSS files.
+
+Global plan, renewal, and cluster controls filter the reusable row-evidence panel shown alongside every module. They do **not** recompute the fixed checked-in model metrics; that boundary is stated next to the count and active filter chips. Abort controllers plus request identities guarantee latest-request-wins behavior for rapid navigation and filtering. Client response validators and an evidence error boundary prevent malformed nested artifacts from crashing the full shell.
+
+Frontend quality checks are available from `client/`:
+
+```bash
+npm run lint
+npm test
+npm run build
+```
+
+Vitest and React Testing Library cover navigation/retry behavior, query composition, nested contracts, and out-of-order module/filter responses. Evidence rows and confusion matrices use semantic tables, while visual charts include textual figure alternatives.
+
+The backend follows the same boundary discipline. `server/main.py` only composes the application, `server/routers/` defines HTTP routes, `server/schemas.py` validates filter domains, and `server/services/evidence.py` translates analytical errors into API behavior. In `ml/`, artifact I/O, contracts, and source-evidence assembly are separate modules; `pipeline.py` remains a small compatibility facade for existing imports.
 
 ### Dashboard checks
 

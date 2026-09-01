@@ -8,6 +8,8 @@ All 14 projects now have a browser-facing presentation layer. The dashboards rea
 
 Projects 0–5 additionally follow the reference repository's client/server/ml separation. Their Vite clients were smoke-tested against one local FastAPI process at a time, with fresh evidence in `ui_screenshots/e2e-project-00.png` through `e2e-project-05.png`. Project 00 is a planning-only workflow and intentionally has no ML adapter; Projects 1–5 expose their experiment logic through `ml/`. Projects 6–14 were left unchanged.
 
+The follow-up frontend refactor replaced the single-file browser clients with React composition roots, domain component folders, shared UI primitives, hooks, API services, and project themes. Six independent frontend reviews then checked wiring, placement, composability, accessibility, async state, and styling; their findings and fixes are recorded in each project's `FINAL_FE_REVIEW.md`. React behavior tests and sequential production builds were added for Projects 0–5.
+
 The original full-portfolio gallery remains in `ui_screenshots/project-00.png` through `project-13.png`.
 
 ## Final polish review

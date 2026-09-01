@@ -1,0 +1,87 @@
+.estimator-section {
+  background: #e8e9e2;
+}
+.estimator-section .estimate-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+.estimator-section .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.estimator-section .form-grid .MuiFormControl-root {
+  width: 100%;
+}
+.estimator-section .form-grid .MuiOutlinedInput-root {
+  background: #fff;
+}
+.estimator-section .wide {
+  grid-column: 1/-1;
+}
+.estimator-section .error {
+  color: var(--coral);
+  font:
+    11px "DM Mono",
+    monospace;
+}
+.estimator-section .estimate-result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 330px;
+  background: var(--ink);
+  color: #fff;
+}
+.estimator-section .estimate-result .eyebrow {
+  color: var(--mint);
+}
+.estimator-section .estimate-result > strong {
+  margin: 28px 0 10px;
+  font-size: 75px;
+  letter-spacing: -0.09em;
+}
+.estimator-section .estimate-result p {
+  color: #c4cbda;
+  line-height: 1.5;
+}
+.estimator-section .estimate-result small {
+  margin-top: auto;
+  color: #9da9bc;
+}
+.estimator-section .mini-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+.estimator-section .mini-stat span {
+  color: #9da9bc;
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.estimator-section .mini-stat b {
+  margin-right: 14px;
+  font-size: 13px;
+}
+.estimator-section .button.primary.MuiButton-root {
+  padding: 16px 22px;
+  background: var(--ink);
+  color: #fff;
+}
+.estimator-section .button.primary.MuiButton-root:hover {
+  background: #202c42;
+}
+
+@media (max-width: 800px) {
+  .estimator-section .estimate-grid,
+  .estimator-section .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .estimator-section .wide {
+    grid-column: auto;
+  }
+}

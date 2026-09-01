@@ -13,17 +13,32 @@ MODEL_SPEC.loader.exec_module(model)
 
 
 class StaticE2EContractTests(unittest.TestCase):
-    def test_client_is_vite_and_references_all_api_resources(self):
+    def test_client_is_react_vite_mui_and_references_all_api_resources(self):
         package = json.loads((PROJECT / "client" / "package.json").read_text())
         self.assertIn("vite", package["devDependencies"])
-        client = (PROJECT / "client" / "src" / "main.js").read_text()
+        self.assertIn("react", package["dependencies"])
+        self.assertIn("@mui/material", package["dependencies"])
+        self.assertTrue((PROJECT / "client" / "src" / "components").is_dir())
+        for component in (
+            "layout/AppShell.jsx", "sections/HeroSection.jsx", "evidence/EvidenceSection.jsx",
+            "common/MetricCard.jsx", "common/MetricGrid.jsx", "explorer/SliceExplorer.jsx",
+            "estimator/TripEstimator.jsx",
+        ):
+            self.assertTrue((PROJECT / "client" / "src" / "components" / component).exists(), component)
+        app_source = (PROJECT / "client" / "src" / "App.jsx").read_text()
+        for component_name in ("AppShell", "HeroSection", "EvidenceSection", "SliceExplorer", "TripEstimator"):
+            self.assertIn(component_name, app_source)
+        client = (PROJECT / "client" / "src" / "services" / "api.js").read_text()
         for endpoint in ("/experiment", "/feature-importance", "/predictions", "/estimate"):
             self.assertIn(endpoint, client)
 
     def test_server_declares_fastapi_routes_and_vite_proxy(self):
-        server = (PROJECT / "server" / "main.py").read_text()
+        server = (PROJECT / "server" / "routers" / "experiment.py").read_text()
         for route in ("/api/health", "/api/experiment", "/api/feature-importance", "/api/predictions", "/api/estimate"):
-            self.assertIn(route, server)
+            self.assertIn(route.removeprefix("/api"), server)
+        self.assertTrue((PROJECT / "server" / "services" / "experiment_service.py").exists())
+        self.assertTrue((PROJECT / "ml" / "artifacts.py").exists())
+        self.assertTrue((PROJECT / "ml" / "slicing.py").exists())
         vite = (PROJECT / "client" / "vite.config.js").read_text()
         self.assertIn("127.0.0.1:8001", vite)
 

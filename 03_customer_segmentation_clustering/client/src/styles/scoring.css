@@ -1,0 +1,4 @@
+.scoring { margin-bottom: 22px; }
+.score-form { display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 12px; align-items: start; }
+@media (max-width: 1000px) { .score-form { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 580px) { .score-form { grid-template-columns: 1fr; } }

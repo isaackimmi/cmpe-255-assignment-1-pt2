@@ -90,6 +90,10 @@ Each project README contains its own setup and execution instructions. Projects 
 
 Projects 0–5 were started one at a time locally, with API-connected browser checks and a meaningful UI interaction per project. The checks exercised task mutation (00), a repaired rush-hour slice (01), generation/probability traces (02), point inspection (03), rule sorting (04), and server-side row filtering (05). The live screenshots and per-project reviewer reports provide the submission/demo evidence.
 
+## Frontend and service architecture
+
+Projects 0–5 use React entrypoints mounted by Vite. Each client keeps reusable UI under `client/src/components/`, transport and server state under `client/src/api`, `client/src/services`, or `client/src/hooks`, and project styling/theme concerns in dedicated files. Radix UI is used where appropriate for lightweight primitives; MUI is used where appropriate for richer controls and feedback. The Python side follows the same separation: FastAPI routers/schemas/services form the server boundary, while `ml/` contains focused artifact, preprocessing, scoring, and domain modules behind compatibility facades where needed. Each project includes a `FINAL_FE_REVIEW.md` documenting the independent composability/accessibility review and applied fixes.
+
 ## Video
 
 YouTube walkthrough: _To be added after recording._

@@ -1,0 +1,37 @@
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); border-block: 1px solid #d8ddd7; margin-bottom: 48px; }
+.metric-card { padding: 24px; border-right: 1px solid #d8ddd7; }
+.metric-card:last-child { border: 0; }
+.metric-card span, .metric-card small, .profile-top { font: 500 10px ui-monospace, monospace; letter-spacing: .1em; color: #67807f; }
+.metric-card strong { display: block; font-size: 28px; margin: 9px 0 3px; letter-spacing: -.05em; }
+.metric-card small { letter-spacing: 0; }
+.profiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.profile { background: #f6f8f3; border-radius: 13px; padding: 17px; }
+.profile-top { display: flex; justify-content: space-between; font-size: 9px; }
+.profile-top b { color: #233b43; }
+.profile h3 { font-size: 18px; margin: 22px 0 6px; letter-spacing: -.04em; }
+.profile p { font-size: 12px; color: #6b7b7b; min-height: 36px; }
+.bar { height: 5px; background: #dce7df; border-radius: 4px; margin: 18px 0 7px; }
+.bar i { height: 100%; display: block; background: #2b817d; border-radius: 4px; }
+.profile > strong { font: 500 10px ui-monospace, monospace; color: #2b817d; }
+.mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 18px; }
+.mini-grid span { font-size: 10px; color: #77908f; }
+.mini-grid b { display: block; color: #233b43; margin-top: 3px; }
+.scores { display: grid; gap: 14px; margin-top: 27px; }
+.score-row { display: grid; grid-template-columns: 42px 1fr 46px 65px; align-items: center; gap: 10px; font-size: 12px; }
+.score-row span { height: 8px; background: #edf1ed; border-radius: 6px; }
+.score-row i { display: block; height: 100%; background: #e87854; border-radius: 6px; }
+.score-row.selected i { background: #2b817d; }
+.score-row small { font: 500 9px ui-monospace, monospace; color: #81908e; }
+.method .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+.steps div { display: grid; grid-template-columns: 28px 1fr; gap: 4px 10px; }
+.steps b { grid-row: span 2; color: #e87854; font: 500 12px ui-monospace, monospace; }
+.steps strong { font-size: 13px; }
+.steps span { font-size: 11px; color: #778786; line-height: 1.45; }
+.api-card { background: #19323b !important; color: #f5f6ef !important; }
+.api-card .eyebrow { color: #9bc8bc; }
+.api-card .note, .api-card .run-meta span { color: #afc2bd; }
+.run-meta { display: grid; gap: 16px; margin: 30px 0; }
+.run-meta span { display: block; font: 500 9px ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.run-meta b { display: block; margin-top: 4px; font-size: 13px; }
+@media (max-width: 900px) { .metrics { grid-template-columns: 1fr 1fr; } .profiles { grid-template-columns: 1fr; } }
+@media (max-width: 580px) { .metrics { grid-template-columns: 1fr; } .metric-card { border-right: 0; border-bottom: 1px solid #d8ddd7; } }

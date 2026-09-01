@@ -8,7 +8,6 @@
 # Frontend install/build output
 **/node_modules/
 **/client/dist/
-**/client/package-lock.json
 
 # Local OS/editor state
 .DS_Store

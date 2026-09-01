@@ -1,0 +1,22 @@
+:root {
+  --ink: #edf2f2;
+  --muted: #8e9aa2;
+  --bg: #07111f;
+  --panel: #101d2d;
+  --line: #263747;
+  --lime: #c9f36b;
+  --coral: #f07d66;
+  --teal: #61d4c5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Manrope, system-ui, sans-serif;
+}
+
+button,
+select { font: inherit; }

@@ -7,10 +7,16 @@ ROOT = Path(__file__).parents[1]
 
 def test_e2e_directories_and_client_contract_exist():
     assert (ROOT / "client/package.json").exists()
-    assert (ROOT / "client/src/main.js").read_text().startswith('import "./styles.css";')
-    assert (ROOT / "server/app.py").read_text().count('@app.get') >= 5
-    assert (ROOT / "server/app.py").read_text().count('@app.') >= 7
+    package = json.loads((ROOT / "client/package.json").read_text())
+    assert {"react", "react-dom", "@mui/material"}.issubset(package["dependencies"])
+    assert (ROOT / "client/src/main.jsx").exists()
+    assert len(list((ROOT / "client/src/components").rglob("*.jsx"))) >= 10
+    assert (ROOT / "client/src/hooks/useSegmentationData.js").exists()
+    assert (ROOT / "server/routers/evidence.py").read_text().count('@router.get') >= 5
+    assert (ROOT / "server/routers/segmentation.py").read_text().count('@router.') >= 3
+    assert (ROOT / "server/services/artifacts.py").exists()
     assert (ROOT / "ml/pipeline.py").exists()
+    assert (ROOT / "ml/scoring.py").exists()
 
 def test_api_artifacts_have_required_contract():
     summary = json.loads((ROOT / "artifacts/summary.json").read_text())
@@ -54,9 +60,10 @@ def test_api_reports_corrupt_artifacts_without_green_status(monkeypatch, tmp_pat
     pytest.importorskip("fastapi")
     from fastapi.testclient import TestClient
     import server.app as api
+    from server.services.artifacts import repository
     shutil.copytree(ROOT / "artifacts", tmp_path / "artifacts")
     (tmp_path / "artifacts" / "manifest.json").write_text("not json")
-    monkeypatch.setattr(api, "ARTIFACTS", tmp_path / "artifacts")
+    monkeypatch.setattr(repository, "root", tmp_path / "artifacts")
     response = TestClient(api.app).get("/api/evidence-status")
     assert response.status_code == 200
     assert response.json()["valid"] is False

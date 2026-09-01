@@ -15,7 +15,7 @@ The script prints frequent itemsets and rules, including the effective whole-bas
 
 ## Explore the UI
 
-The primary UI is now a Vite client backed by a FastAPI service. Run it from this directory in two terminals:
+The primary UI is a React + Vite client backed by a FastAPI service. Run it from this directory in two terminals:
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
@@ -31,9 +31,13 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Vite proxies `/api` to `http://127.0.0.1:8004`, and the browser calls `/api/summary`, `/api/transactions`, `/api/itemsets`, `/api/rules`, and `/api/context`. FastAPI routes all mining through the single canonical `ml/pipeline.py` adapter, which uses the same validated Apriori implementation as `analysis.py`. The threshold sliders therefore recompute evidence end to end rather than filtering page-only mock values. To use another API origin, change the proxy target in `client/vite.config.js`.
+Open `http://127.0.0.1:5173`. Vite proxies `/api` to `http://127.0.0.1:8004`, and the browser calls `/api/summary`, `/api/transactions`, `/api/itemsets`, `/api/rules`, and `/api/context`. React composes the screen from reusable layout, section, chart, card, and control components. Radix UI provides accessible select and slider primitives, while `useBasketSignals` owns cancellable request state and `services/api.js` owns the transport contract. The threshold sliders therefore recompute evidence end to end rather than filtering page-only mock values. Set `VITE_API_URL` to use another API origin.
 
-The client intentionally uses a pinned major/minor Vite range and the server pins compatible FastAPI/Uvicorn ranges in the project requirements. A generated npm lockfile is not committed because this educational project keeps the frontend dependency surface to Vite alone; `npm install` resolves the declared range and `npm run build` verifies the client bundle.
+Threshold previews are debounced before requests are applied. Transactions are cached independently, itemset-size changes only reload itemsets, and rule sorting only reloads rules. Dashboard and basket-context failures have separate section alerts and retry controls, so one failed surface does not mark unrelated evidence unavailable. The client uses system/local font stacks and makes no remote font request.
+
+The client declares React, React DOM, Radix Select, and Radix Slider as runtime dependencies and uses the Vite React plugin for JSX compilation. The server pins compatible FastAPI/Uvicorn ranges in the project requirements. Run `npm run build` to verify the production client bundle.
+
+Run the behavioral frontend tests with `npm test`. Vitest and React Testing Library verify request scoping, threshold debouncing, independent context recovery, and section-level retry behavior.
 
 The older root-level `index.html` remains as a dependency-free artifact viewer for offline comparison. The client/server layout is the recommended demo path.
 
@@ -62,9 +66,9 @@ The original prompt names a popular Kaggle dataset but does not prescribe a URL 
 
 ## Files
 
-`data/transactions.csv` is the input source; `scripts/generate_browser_data.py` produces the offline browser module `data/transactions.js`; `analysis.py` contains the standard-library mining implementation and plotting entry point; `ml/pipeline.py` is the single canonical adapter for the API; `server/main.py` exposes transport endpoints; `client/` contains the Vite-compatible raw HTML/CSS/JS client; `tests/` provides numerical, API-contract, and parity tests; `outputs/` contains generated visuals. The ML layer remains the source of truth for support, confidence, and lift.
+`data/transactions.csv` is the input source; `scripts/generate_browser_data.py` produces the offline browser module `data/transactions.js`; and `analysis.py` contains the standard-library mining implementation and plotting entry point. `ml/` separates repository access, Apriori orchestration, serialization, and context analysis while preserving `ml.pipeline` as the stable public facade. `server/` separates the ASGI entry point, app factory, API router, Pydantic schemas, configuration, and service layer. `client/src/` separates React components, hooks, API services, utilities, and Radix theme adapters. `tests/` provides numerical, API-contract, composition, and parity tests; `outputs/` contains generated visuals. The ML layer remains the source of truth for support, confidence, and lift.
 ## Integration verification
 
 - **Prompt alignment:** Public Project 04 asks for associative mining with CRISP-DM/reporting; Apriori, rule metrics, ranking, and SVG are implemented.
 - **Results/artifacts:** 24 transactions produce 18 frequent itemsets and 15 rules at 25% support / 60% confidence; support plot and browser data are generated artifacts.
-- **Verification:** `python3 scripts/generate_browser_data.py --check`, `node --check app.js client/src/main.js`, `python3 -m py_compile analysis.py ml/pipeline.py server/main.py tests/test_analysis.py tests/test_api_contract.py`, direct analytical checks, and the browser/Python parity harness cover the offline and E2E layers. Run `pytest -q` with the project requirements for the complete suite. The API contract tests exercise the canonical ML adapter without starting a server; route-level tests are skipped automatically when FastAPI is not installed.
+- **Verification:** `python3 scripts/generate_browser_data.py --check`, `npm run build` in `client/`, `python3 -m compileall ml server`, direct analytical checks, and the browser/Python parity harness cover the offline and E2E layers. Run `pytest -q` with the project requirements for the complete suite. The API contract tests exercise the canonical ML facade without starting a server; route-level tests are skipped automatically when FastAPI is not installed.

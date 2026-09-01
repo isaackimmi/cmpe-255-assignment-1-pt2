@@ -1,0 +1,61 @@
+.evidence-section .evidence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.evidence-section .split-card strong {
+  display: block;
+  font-size: 38px;
+  letter-spacing: -0.06em;
+}
+.evidence-section .split-card span,
+.evidence-section .split-card small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.evidence-section .split-card code {
+  display: block;
+  margin: 24px 0;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.evidence-section .importance {
+  display: grid;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.evidence-section .bar-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+.evidence-section .importance-track {
+  display: block;
+  height: 7px;
+  background: #deded6;
+}
+.evidence-section .importance-track > span {
+  display: block;
+  height: 100%;
+  background: var(--coral);
+}
+.evidence-section .bar-row strong {
+  font:
+    11px "DM Mono",
+    monospace;
+  text-align: right;
+}
+
+@media (max-width: 800px) {
+  .evidence-section .evidence-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -28,12 +28,12 @@ Expected outputs include `artifacts/segmentation.png`, `summary.json`, `manifest
 
 The project includes a dependency-free browser dashboard in `index.html`. It loads the summary, both preprocessing score tables, validation scores, assignments, point-level explorer diagnostics, plot, and manifest at runtime. The UI checks exact schemas, finite numeric values, row counts, selected-model metadata, and the complete SHA-256 hash set before showing a verified status; run the experiment first if artifacts are missing or stale. The summary’s feature audit is descriptive for the generated sample, not a substitute for a real-data quality policy.
 
-The polished E2E version is split into a Vite-compatible raw HTML/CSS/JS client, a FastAPI evidence/scoring server, and an `ml/` adapter around the canonical reproducible experiment:
+The polished E2E version is split into a React/Vite client built from reusable MUI components, a modular FastAPI evidence/scoring server, and an `ml/` adapter around the canonical reproducible experiment:
 
 ```text
-client/   Vite client and interactive SVG explorer
-server/   FastAPI endpoints for artifacts, profiles, validation, and scoring
-ml/       API adapter that loads the exact selected preprocessing/model path
+client/   React + MUI component tree, data hook/API client, and SVG explorer
+server/   FastAPI app factory, routers, schemas, artifact repository, profile service
+ml/       Stable pipeline facade plus scoring, contracts, and preprocessing modules
 ```
 
 From this directory, first regenerate the canonical artifacts and run the tests:
@@ -54,6 +54,17 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173). The client calls the API for the manifest, summary, profiles, point-level explorer data, and new-customer scoring. Use the segment filter and feature selectors to explore profiles, then submit the estimator form to exercise the `/api/score` endpoint. The PCA map and geometry confidence are visualization/assignment diagnostics, not probabilities or outcome predictions.
 
+The point explorer uses a roving keyboard focus model: Tab enters the selected point, arrow keys move between points, and Enter/Space selects. A synchronized semantic HTML table provides the same customer, segment, feature, and assignment evidence without relying on the SVG. Segment changes automatically reconcile the selected point so the inspector cannot display a customer outside the active filter.
+
+Frontend verification is self-contained:
+
+```bash
+cd client
+npm test       # Vitest + React Testing Library behavior contracts
+npm run lint   # ESLint + React Hooks rules
+npm run build  # production Vite bundle
+```
+
 ## CRISP-DM trace
 
 1. **Business understanding:** identify actionable customer groups for differentiated offers.
@@ -70,9 +81,11 @@ This is a teaching experiment, not a production segmentation. The synthetic clus
 ## Project layout
 
 - `src/experiment.py` — data contract, preprocessing, repeated validation, stability, scoring, and artifact checks.
-- `client/` — Vite-compatible browser client using raw HTML/CSS/JS and SVG charts.
-- `server/app.py` — FastAPI evidence and scoring API.
-- `ml/pipeline.py` — adapter that reuses the canonical experiment for API scoring.
+- `client/src/components/` — composable React presentation and interaction components; MUI supplies accessible fields, cards, feedback, and buttons.
+- `client/src/hooks/` and `client/src/api/` — data orchestration and HTTP boundaries kept out of presentation components.
+- `server/application.py` and `server/routers/` — FastAPI app factory and route modules; `server/app.py` remains the stable ASGI entry point.
+- `server/services/` — artifact validation/I/O and profile derivation, independent of HTTP routing.
+- `ml/pipeline.py` — stable compatibility facade; focused scoring/contracts/preprocessing logic lives in sibling modules.
 - `tests/test_experiment.py` — reproducibility, validation, scoring, and artifact-content tests.
 - `artifacts/` — generated outputs (created by the run command), including the browser-ready `explorer_points.csv` diagnostics.
 - `reports/` — reserved for a future full research report.
