@@ -1,0 +1,521 @@
+{
+  "dataset_rows": 240,
+  "split": {
+    "train_end": 168,
+    "validation_end": 204,
+    "test_start": 204,
+    "train_rows": 168,
+    "validation_rows": 36,
+    "test_rows": 36
+  },
+  "forecast_protocol": {
+    "name": "single_origin_closed_loop_with_reporting_slices",
+    "interpretation": "One 72-step forecast from the training origin; nominal validation and test blocks are reporting slices, not tuning or refit stages.",
+    "forecast_origin_index": 168,
+    "forecast_origin": "2014-01-01",
+    "history_through_index": 167,
+    "history_through": "2013-12-01",
+    "forecast_lead_start": 1,
+    "forecast_lead_end": 72,
+    "test_lead_start": 37,
+    "test_lead_end": 72,
+    "validation_role": "reporting_slice_only",
+    "test_role": "late_lead_reporting_slice",
+    "refit_after_validation": false,
+    "validation_horizon": 36,
+    "test_horizon": 36,
+    "actual_intermediate_observations_used": false,
+    "predictions_feed_back_into_history": true,
+    "test_targets_used_as_inputs": false
+  },
+  "validation": {
+    "baseline_seasonal_naive": {
+      "mae": 1.4823945231593312,
+      "rmse": 1.7049212360309565
+    },
+    "model_hist_gradient_boosting": {
+      "mae": 1.441108507349281,
+      "rmse": 1.7619906159520344
+    }
+  },
+  "test": {
+    "baseline_seasonal_naive": {
+      "mae": 2.7223321516232577,
+      "rmse": 2.9414878141672616
+    },
+    "model_hist_gradient_boosting": {
+      "mae": 2.3014631208788807,
+      "rmse": 2.7191701132811787
+    }
+  },
+  "baseline_seasonal_naive": {
+    "mae": 2.7223321516232577,
+    "rmse": 2.9414878141672616
+  },
+  "model_hist_gradient_boosting": {
+    "mae": 2.3014631208788807,
+    "rmse": 2.7191701132811787
+  },
+  "horizon_metrics": {
+    "6": {
+      "baseline_seasonal_naive": {
+        "mae": 2.403841614299061,
+        "rmse": 2.7992628469337872
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.0405898109811003,
+        "rmse": 3.24146500249124
+      }
+    },
+    "12": {
+      "baseline_seasonal_naive": {
+        "mae": 2.2434975988949737,
+        "rmse": 2.578930778928155
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.1778140230246037,
+        "rmse": 2.4834949088076703
+      }
+    },
+    "24": {
+      "baseline_seasonal_naive": {
+        "mae": 2.4087290532691865,
+        "rmse": 2.669944137936601
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.158885388166706,
+        "rmse": 2.530249233514775
+      }
+    },
+    "36": {
+      "baseline_seasonal_naive": {
+        "mae": 2.7223321516232577,
+        "rmse": 2.9414878141672616
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.3014631208788807,
+        "rmse": 2.7191701132811787
+      }
+    }
+  },
+  "horizon_metric_semantics": "cumulative_test_prefix_months_1_through_horizon_from_the_single_forecast_origin",
+  "lead_metrics": {
+    "1": {
+      "baseline_seasonal_naive": {
+        "mae": 4.277428944301217,
+        "rmse": 4.277428944301217
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.6649595044150693,
+        "rmse": 3.6649595044150693
+      }
+    },
+    "2": {
+      "baseline_seasonal_naive": {
+        "mae": 3.6493394106498585,
+        "rmse": 3.6493394106498585
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 4.671930604082011,
+        "rmse": 4.671930604082011
+      }
+    },
+    "3": {
+      "baseline_seasonal_naive": {
+        "mae": 0.3404976036066536,
+        "rmse": 0.3404976036066536
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.767505383689091,
+        "rmse": 2.767505383689091
+      }
+    },
+    "4": {
+      "baseline_seasonal_naive": {
+        "mae": 1.4986650633895273,
+        "rmse": 1.4986650633895273
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.412454213145846,
+        "rmse": 2.412454213145846
+      }
+    },
+    "5": {
+      "baseline_seasonal_naive": {
+        "mae": 3.3761388503402436,
+        "rmse": 3.3761388503402436
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.615121686308438,
+        "rmse": 3.615121686308438
+      }
+    },
+    "6": {
+      "baseline_seasonal_naive": {
+        "mae": 1.280979813506864,
+        "rmse": 1.280979813506864
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.1115674742461472,
+        "rmse": 1.1115674742461472
+      }
+    },
+    "7": {
+      "baseline_seasonal_naive": {
+        "mae": 1.2372095676673531,
+        "rmse": 1.2372095676673531
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.406200136054803,
+        "rmse": 1.406200136054803
+      }
+    },
+    "8": {
+      "baseline_seasonal_naive": {
+        "mae": 3.6509386566661632,
+        "rmse": 3.6509386566661632
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.4625968088858308,
+        "rmse": 1.4625968088858308
+      }
+    },
+    "9": {
+      "baseline_seasonal_naive": {
+        "mae": 1.2270709230926649,
+        "rmse": 1.2270709230926649
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.131565460034608,
+        "rmse": 1.131565460034608
+      }
+    },
+    "10": {
+      "baseline_seasonal_naive": {
+        "mae": 1.1993468647565066,
+        "rmse": 1.1993468647565066
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.3448320089046284,
+        "rmse": 1.3448320089046284
+      }
+    },
+    "11": {
+      "baseline_seasonal_naive": {
+        "mae": 3.473207021531998,
+        "rmse": 3.473207021531998
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 0.7595905866430677,
+        "rmse": 0.7595905866430677
+      }
+    },
+    "12": {
+      "baseline_seasonal_naive": {
+        "mae": 1.711148467230636,
+        "rmse": 1.711148467230636
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.7854444098857023,
+        "rmse": 1.7854444098857023
+      }
+    },
+    "13": {
+      "baseline_seasonal_naive": {
+        "mae": 3.4363015482901247,
+        "rmse": 3.4363015482901247
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.9530563779159067,
+        "rmse": 2.9530563779159067
+      }
+    },
+    "14": {
+      "baseline_seasonal_naive": {
+        "mae": 3.2494974494043483,
+        "rmse": 3.2494974494043483
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 4.698615106999366,
+        "rmse": 4.698615106999366
+      }
+    },
+    "15": {
+      "baseline_seasonal_naive": {
+        "mae": 1.0655274484909825,
+        "rmse": 1.0655274484909825
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 4.15823809814497,
+        "rmse": 4.15823809814497
+      }
+    },
+    "16": {
+      "baseline_seasonal_naive": {
+        "mae": 2.1525302258367347,
+        "rmse": 2.1525302258367347
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.0663193755930536,
+        "rmse": 3.0663193755930536
+      }
+    },
+    "17": {
+      "baseline_seasonal_naive": {
+        "mae": 3.2768353088830438,
+        "rmse": 3.2768353088830438
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.4013862527938983,
+        "rmse": 3.4013862527938983
+      }
+    },
+    "18": {
+      "baseline_seasonal_naive": {
+        "mae": 1.8491272346441185,
+        "rmse": 1.8491272346441185
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.7161397695289402,
+        "rmse": 1.7161397695289402
+      }
+    },
+    "19": {
+      "baseline_seasonal_naive": {
+        "mae": 0.7170102107210319,
+        "rmse": 0.7170102107210319
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 0.8860007791084819,
+        "rmse": 0.8860007791084819
+      }
+    },
+    "20": {
+      "baseline_seasonal_naive": {
+        "mae": 3.9738084930184066,
+        "rmse": 3.9738084930184066
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.785466645238074,
+        "rmse": 1.785466645238074
+      }
+    },
+    "21": {
+      "baseline_seasonal_naive": {
+        "mae": 2.7956300928888993,
+        "rmse": 2.7956300928888993
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 0.43699370976162655,
+        "rmse": 0.43699370976162655
+      }
+    },
+    "22": {
+      "baseline_seasonal_naive": {
+        "mae": 3.375077708869007,
+        "rmse": 3.375077708869007
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 0.3684053657622073,
+        "rmse": 0.3684053657622073
+      }
+    },
+    "23": {
+      "baseline_seasonal_naive": {
+        "mae": 3.201620946385951,
+        "rmse": 3.201620946385951
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 0.4356804195327477,
+        "rmse": 0.4356804195327477
+      }
+    },
+    "24": {
+      "baseline_seasonal_naive": {
+        "mae": 1.794559424288142,
+        "rmse": 1.794559424288142
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.7731791393264302,
+        "rmse": 1.7731791393264302
+      }
+    },
+    "25": {
+      "baseline_seasonal_naive": {
+        "mae": 3.4866955769952277,
+        "rmse": 3.4866955769952277
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 2.4257664093597953,
+        "rmse": 2.4257664093597953
+      }
+    },
+    "26": {
+      "baseline_seasonal_naive": {
+        "mae": 3.1881326393659926,
+        "rmse": 3.1881326393659926
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.472618867376223,
+        "rmse": 3.472618867376223
+      }
+    },
+    "27": {
+      "baseline_seasonal_naive": {
+        "mae": 2.29187773981684,
+        "rmse": 2.29187773981684
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 5.076399880859469,
+        "rmse": 5.076399880859469
+      }
+    },
+    "28": {
+      "baseline_seasonal_naive": {
+        "mae": 3.167368089945903,
+        "rmse": 3.167368089945903
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 4.6503301380579884,
+        "rmse": 4.6503301380579884
+      }
+    },
+    "29": {
+      "baseline_seasonal_naive": {
+        "mae": 4.156604049688447,
+        "rmse": 4.156604049688447
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 4.062720191734055,
+        "rmse": 4.062720191734055
+      }
+    },
+    "30": {
+      "baseline_seasonal_naive": {
+        "mae": 3.241579235348052,
+        "rmse": 3.241579235348052
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.2906821267915376,
+        "rmse": 3.2906821267915376
+      }
+    },
+    "31": {
+      "baseline_seasonal_naive": {
+        "mae": 3.641627711760325,
+        "rmse": 3.641627711760325
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 3.8887057268985323,
+        "rmse": 3.8887057268985323
+      }
+    },
+    "32": {
+      "baseline_seasonal_naive": {
+        "mae": 3.279802916799362,
+        "rmse": 3.279802916799362
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.0914610690190294,
+        "rmse": 1.0914610690190294
+      }
+    },
+    "33": {
+      "baseline_seasonal_naive": {
+        "mae": 3.952675746956075,
+        "rmse": 3.952675746956075
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 1.5940393638288022,
+        "rmse": 1.5940393638288022
+      }
+    },
+    "34": {
+      "baseline_seasonal_naive": {
+        "mae": 3.5926669848302204,
+        "rmse": 3.5926669848302204
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 0.15081608980099404,
+        "rmse": 0.15081608980099404
+      }
+    },
+    "35": {
+      "baseline_seasonal_naive": {
+        "mae": 4.375543333727659,
+        "rmse": 4.375543333727659
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 0.46106223316111894,
+        "rmse": 0.46106223316111894
+      }
+    },
+    "36": {
+      "baseline_seasonal_naive": {
+        "mae": 1.8198861547426937,
+        "rmse": 1.8198861547426937
+      },
+      "model_hist_gradient_boosting": {
+        "mae": 0.8748209387512134,
+        "rmse": 0.8748209387512134
+      }
+    }
+  },
+  "available_horizons": [
+    6,
+    12,
+    24,
+    36
+  ],
+  "forecast_artifacts": {
+    "6": "forecast_horizon_6.png",
+    "12": "forecast_horizon_12.png",
+    "24": "forecast_horizon_24.png",
+    "36": "forecast_horizon_36.png"
+  },
+  "forecast_predictions_artifact": "forecast_predictions.csv",
+  "provenance": {
+    "data": {
+      "generator": "make_dataset",
+      "seed": 7,
+      "rows": 240,
+      "start": "2000-01-01",
+      "frequency": "MS"
+    },
+    "features": {
+      "lags": [
+        1,
+        2,
+        3,
+        6,
+        12
+      ],
+      "seasonal_period": 12,
+      "feature_count": 8
+    },
+    "split_fractions": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "model": {
+      "estimator": "HistGradientBoostingRegressor",
+      "max_iter": 180,
+      "learning_rate": 0.05,
+      "max_leaf_nodes": 8,
+      "l2_regularization": 0.5,
+      "random_state": 7
+    },
+    "software": {
+      "python": "3.12.13",
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "scikit_learn": "1.9.0",
+      "matplotlib": "3.11.1"
+    },
+    "source_revision": "08697d2",
+    "repository_dirty": true
+  },
+  "artifact_manifest": "artifact_manifest.json",
+  "leakage_control": "Chronological split; lag/rolling features use values before t; both forecasts share one closed-loop origin and never use actual validation/test targets as inputs."
+}

@@ -1,0 +1,45 @@
+{
+  "dataset": "sklearn breast cancer",
+  "dataset_loader": "sklearn.datasets.load_breast_cancer",
+  "dataset_hash_sha256": "9fe7845fe04f4fb81933daf78607f39beea8ac04d6e31cf6834aa25e5e96056f",
+  "n_samples": 569,
+  "n_features": 30,
+  "development_samples": 455,
+  "final_test_samples": 114,
+  "train_samples": 455,
+  "test_samples": 114,
+  "random_seed": 255,
+  "test_size": 0.2,
+  "target_name": "target",
+  "target_names": {
+    "0": "malignant",
+    "1": "benign"
+  },
+  "target_class_counts": {
+    "0": 212,
+    "1": 357
+  },
+  "positive_class": {
+    "label": 0,
+    "name": "malignant"
+  },
+  "negative_class": {
+    "label": 1,
+    "name": "benign"
+  },
+  "intended_use": "Prioritize detection of malignant cases; false negatives are the higher-cost error.",
+  "error_costs": {
+    "false_negative_positive_class": "high",
+    "false_positive_positive_class": "moderate"
+  },
+  "selection_protocol": "2x5-fold repeated stratified CV on development data",
+  "final_evaluation_protocol": "Selected model refit on all development data; final holdout scored once",
+  "threshold_protocol": "Each candidate threshold is selected from its development-only out-of-fold probabilities by malignant-class F1; the selected threshold is then locked for the final holdout.",
+  "metric_semantics": {
+    "roc_auc": "Probability ranking for malignant (label 0).",
+    "pr_auc": "Average precision for malignant (label 0).",
+    "sensitivity": "Recall of malignant cases at the reported threshold.",
+    "specificity": "Recall of benign cases at the reported threshold.",
+    "brier_score": "Mean squared probability error for malignant probability; lower is better."
+  }
+}

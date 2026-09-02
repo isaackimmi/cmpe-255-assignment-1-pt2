@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b121c" />
+    <meta name="description" content="Governance and data-science quality audit dashboard" />
+    <title>Enterprise DS Audit · Release control</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <a class="brand" href="#overview" aria-label="Enterprise DS Audit home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span><strong>Northstar</strong><small>Model governance</small></span>
+        </a>
+        <div class="sidebar-label">Workspace</div>
+        <nav class="nav-list">
+          <a class="nav-link active" href="#overview"><span class="nav-icon">◈</span>Audit overview</a>
+          <a class="nav-link" href="#findings"><span class="nav-icon">≡</span>Findings <span class="nav-count" id="nav-finding-count">—</span></a>
+          <a class="nav-link" href="#quality"><span class="nav-icon">◌</span>Quality dimensions</a>
+          <a class="nav-link" href="#evidence"><span class="nav-icon">⌁</span>Evidence</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="fixture-note">
+            <span class="status-dot"></span>
+            <div><strong>Synthetic fixture</strong><small>Teaching artifact · not production data</small></div>
+          </div>
+          <div class="sidebar-meta">Project 11 <span>·</span> CMPE 255</div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Governance</span><b>/</b><strong>Enterprise DS Audit</strong></div>
+          <div class="topbar-actions">
+            <span class="live-indicator"><i></i> Report loaded</span>
+            <a class="icon-button" href="reports/audit_report.md" target="_blank" rel="noreferrer" aria-label="Open Markdown report">↗</a>
+          </div>
+        </header>
+
+        <div id="load-error" class="load-error" role="alert" hidden></div>
+
+        <section id="overview" class="page-intro">
+          <div>
+            <p class="eyebrow">RELEASE CONTROL <span class="eyebrow-line"></span> <span id="report-date">AUDIT RUN —</span></p>
+            <h1>Data-science quality<br /><em>you can defend.</em></h1>
+            <p class="intro-copy">A single control surface for dataset readiness, governance risk, and reproducibility evidence.</p>
+          </div>
+          <div class="dataset-pill">
+            <span class="dataset-icon">▦</span>
+            <div><small>Audited dataset</small><strong id="dataset-name">sample_customers.csv</strong></div>
+            <span class="chevron">⌄</span>
+          </div>
+        </section>
+
+        <section class="release-grid" aria-label="Release status">
+          <article class="release-card">
+            <div class="card-kicker"><span class="pulse-ring"></span> RELEASE DECISION</div>
+            <div class="release-row">
+              <div><div class="release-badge" id="release-badge">CONDITIONAL</div><p id="release-summary">Loading audit decision…</p></div>
+              <div class="release-score" aria-label="Release status indicator"><span id="release-score-mark">!</span></div>
+            </div>
+            <div class="release-rule"><span></span><span></span><span></span><span></span><span></span></div>
+            <p class="release-footnote"><strong>Gate:</strong> resolve high-severity or inconclusive controls before production scoring.</p>
+          </article>
+          <div class="stat-grid">
+            <article class="stat-card"><span class="stat-label">Checks evaluated</span><strong id="stat-checks">—</strong><span class="stat-trend neutral">audit scope</span></article>
+            <article class="stat-card"><span class="stat-label">Failures / inconclusive</span><strong id="stat-fails">—</strong><span class="stat-trend danger">release gate</span></article>
+            <article class="stat-card"><span class="stat-label">Advisory findings</span><strong id="stat-warnings">—</strong><span class="stat-trend warning">review</span></article>
+            <article class="stat-card"><span class="stat-label">High severity open</span><strong id="stat-high">—</strong><span class="stat-trend danger">priority queue</span></article>
+          </div>
+        </section>
+
+        <section id="quality" class="section-block">
+          <div class="section-heading"><div><p class="eyebrow">01 / QUALITY POSTURE</p><h2>Dimension health</h2></div><span class="section-caption">Snapshot of the current audit run</span></div>
+          <div id="dimension-grid" class="dimension-grid"></div>
+        </section>
+
+        <section class="two-column-section">
+          <article class="panel severity-panel">
+            <div class="panel-heading"><div><p class="eyebrow">02 / RISK MIX</p><h2>Findings by severity</h2></div><span class="panel-badge">CURRENT RUN</span></div>
+            <div class="severity-layout"><div class="severity-chart" id="severity-chart" aria-label="Findings by severity chart"></div><div class="severity-legend" id="severity-legend"></div></div>
+            <div class="risk-callout"><span class="callout-icon">!</span><p><strong id="risk-callout-title">High-severity attention required</strong><br /><span id="risk-callout-copy">Loading risk summary…</span></p></div>
+          </article>
+          <article class="panel quality-panel">
+            <div class="panel-heading"><div><p class="eyebrow">03 / MODEL SIGNAL</p><h2>Holdout quality</h2></div><span class="panel-badge">BASELINE</span></div>
+            <div class="model-score-row"><div><span class="metric-label">Balanced accuracy</span><strong id="model-score">—</strong></div><div class="delta-pill" id="model-delta">— vs baseline</div></div>
+            <div class="metric-bars" id="metric-bars"></div>
+            <p class="panel-note">Transparent decision-stump baseline on a deterministic, time-ordered holdout. This signal does not establish business readiness.</p>
+          </article>
+        </section>
+
+        <section id="findings" class="section-block findings-block">
+          <div class="section-heading"><div><p class="eyebrow">04 / CONTROL FINDINGS</p><h2>Audit findings</h2></div><span class="section-caption" id="finding-count-label">— findings</span></div>
+          <div class="filter-bar">
+            <label class="search-field"><span aria-hidden="true">⌕</span><input id="finding-search" type="search" placeholder="Search checks or evidence" autocomplete="off" /></label>
+            <label class="select-field"><span>Status</span><select id="status-filter"><option value="all">All statuses</option><option value="FAIL">Failures</option><option value="INCONCLUSIVE">Inconclusive</option><option value="WARN">Warnings</option><option value="PASS">Passed</option></select></label>
+            <label class="select-field"><span>Severity</span><select id="severity-filter"><option value="all">All severities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+            <label class="select-field"><span>Category</span><select id="category-filter"><option value="all">All categories</option><option value="schema">Schema</option><option value="completeness">Completeness</option><option value="data_integrity">Data integrity</option><option value="domain">Domain</option><option value="governance">Governance</option><option value="model_quality">Model quality</option></select></label>
+            <button class="clear-filter" id="clear-filters" type="button">Clear</button>
+          </div>
+          <div class="table-wrap"><table class="findings-table"><caption class="sr-only">Finding-level release controls. Open a row to inspect structured evidence and decision context.</caption><thead><tr><th scope="col">Control</th><th scope="col">Status</th><th scope="col">Severity</th><th scope="col">Evidence</th><th scope="col"><span class="sr-only">Open</span></th></tr></thead><tbody id="findings-body"></tbody></table><div class="empty-state" id="empty-state" hidden>No findings match the current filters.</div></div>
+        </section>
+
+        <section id="evidence" class="evidence-grid">
+          <article class="panel detail-panel" id="schema-panel"><div class="panel-heading"><div><p class="eyebrow">05 / DATA CONTRACT</p><h2>Schema integrity</h2></div><span class="mini-status" id="schema-status">—</span></div><div class="detail-content" id="schema-detail"></div></article>
+          <article class="panel detail-panel" id="leakage-panel"><div class="panel-heading"><div><p class="eyebrow">06 / GOVERNANCE RISK</p><h2>Leakage &amp; contract flags</h2></div><span class="mini-status" id="leakage-status">—</span></div><div class="detail-content" id="leakage-detail"></div></article>
+          <article class="panel detail-panel" id="missingness-panel"><div class="panel-heading"><div><p class="eyebrow">07 / COMPLETENESS</p><h2>Missingness profile</h2></div><span class="mini-status" id="missingness-status">—</span></div><div class="detail-content" id="missingness-detail"></div></article>
+          <article class="panel detail-panel" id="repro-panel"><div class="panel-heading"><div><p class="eyebrow">08 / EVIDENCE CHAIN</p><h2>Reproducibility</h2></div><span class="mini-status" id="repro-status">—</span></div><div class="detail-content" id="repro-detail"></div></article>
+          <p class="section-caption evidence-caption" id="evidence-caption">Finding-level evidence is available from each control row.</p>
+        </section>
+
+        <aside id="finding-drawer" class="finding-drawer" role="dialog" aria-modal="true" aria-labelledby="finding-drawer-title" aria-hidden="true" hidden>
+          <div class="finding-drawer-card"><div class="drawer-heading"><div><p class="eyebrow">FINDING EVIDENCE</p><h2 id="finding-drawer-title">Control detail</h2><div id="finding-drawer-meta" class="drawer-meta"></div></div><button id="finding-drawer-close" class="drawer-close" type="button" aria-label="Close finding detail">×</button></div>
+            <p id="finding-drawer-detail" class="drawer-detail"></p><section><h3>Structured evidence</h3><div id="finding-drawer-evidence" class="drawer-evidence"></div></section><section><h3>Release decision context</h3><div id="finding-drawer-decision"></div></section>
+          </div>
+        </aside>
+
+        <section class="run-card">
+          <div class="run-mark">⌘</div><div><p class="eyebrow">RE-RUN THE AUDIT</p><h2>Keep the evidence current</h2><p>Regenerate the deterministic fixture and both reports, then refresh this dashboard.</p></div>
+          <div class="command-stack"><code>python3 run_audit.py</code><code>python3 -m unittest discover -s tests -v</code></div>
+          <a class="text-link" href="README.md" target="_blank" rel="noreferrer">Read runbook <span>→</span></a>
+        </section>
+
+        <footer class="footer"><span>Northstar governance console</span><span>Project 11 · Synthetic data only</span><span>Report source: <code>reports/audit_results.json</code></span></footer>
+      </main>
+    </div>
+    <script src="app.js" defer></script>
+  </body>
+</html>

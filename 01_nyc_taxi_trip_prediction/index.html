@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111a2e" />
+    <title>NYC Taxi Trip Duration · Experiment 01</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-noise" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="NYC Taxi experiment home">
+        <span class="brand-mark">01</span>
+        <span><strong>NYC TAXI</strong><small>TRIP DURATION LAB</small></span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#snapshot">Snapshot</a>
+        <a href="#explorer">Explore</a>
+        <a href="#estimator">Estimator</a>
+        <a href="#method">Method</a>
+      </nav>
+      <span class="status-pill"><i></i> <span id="run-status">preview / fallback</span></span>
+    </header>
+
+    <main id="top">
+      <section class="hero section-wrap">
+        <div class="hero-copy">
+          <p class="eyebrow">CMPE 255 · reproducible experiment 01</p>
+          <h1>A clearer read on<br /><em>taxi trip time.</em></h1>
+          <p class="hero-lede">A compact, evidence-led view of a chronological NYC trip-duration experiment—what the model learned, where it helps, and how the workflow connects end to end.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#estimator">Try the estimator <span>↗</span></a>
+            <a class="text-link" href="#method">See the workflow <span>↓</span></a>
+          </div>
+        </div>
+        <div class="hero-orbit" aria-label="Experiment result: model MAE 84.592 seconds">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="orbit-dot dot-a"></div><div class="orbit-dot dot-b"></div><div class="orbit-dot dot-c"></div>
+          <div class="hero-stat"><span>MODEL MAE</span><strong><b data-metric="model-mae">84.592</b><small> sec</small></strong><p><b data-metric="improvement">43.0</b>% below baseline</p></div>
+        </div>
+      </section>
+
+      <section id="snapshot" class="section-wrap section-block">
+        <div class="section-heading">
+          <div><p class="eyebrow">01 / model snapshot</p><h2>The headline is simple.</h2></div>
+          <p class="section-note">The linear model on a log-transformed target is the strongest checked-in result. All figures below are loaded from <code>outputs/metrics.json</code>.</p>
+        </div>
+        <div class="metric-grid">
+          <article class="metric-card accent-card"><span class="card-label">MODEL MAE</span><strong><span data-metric="model-mae">84.592</span><small> sec</small></strong><p>average absolute error</p><span class="card-index">01</span></article>
+          <article class="metric-card"><span class="card-label">BASELINE MAE</span><strong><span data-metric="baseline-mae">148.243</span><small> sec</small></strong><p>median-duration baseline</p><span class="card-index">02</span></article>
+          <article class="metric-card"><span class="card-label">IMPROVEMENT</span><strong><span data-metric="improvement">43.1</span><small>%</small></strong><p>lower MAE vs baseline</p><span class="card-index">03</span></article>
+          <article class="metric-card"><span class="card-label">MODEL R²</span><strong data-metric="r2">0.6630</strong><p>variance explained</p><span class="card-index">04</span></article>
+        </div>
+        <div class="insight-strip"><span class="signal-icon">↗</span><p><strong>What changed?</strong> The model uses pickup time, passenger count, coordinates, and engineered distance features to move from a single median guess to a trip-specific estimate.</p><span class="dataset-meta"><b data-metric="rows">5,996</b> structurally eligible rows <i></i> <b data-metric="split">4,749 / 1,199</b> fit / holdout</span></div>
+      </section>
+
+      <section class="section-wrap section-block split-section">
+        <article class="comparison-panel panel">
+          <div class="panel-heading"><div><p class="eyebrow">02 / performance</p><h2>Less error, more signal.</h2></div><span class="panel-tag">MAE · seconds</span></div>
+          <div class="comparison-chart" aria-label="Comparison of baseline and model mean absolute error">
+            <div class="comparison-row"><div class="compare-label"><span>Median baseline</span><strong data-metric="baseline-mae">148.243</strong></div><div class="bar-track"><span class="bar bar-baseline" style="width: 100%"></span></div></div>
+            <div class="comparison-row"><div class="compare-label"><span>Log-target linear model</span><strong data-metric="model-mae">84.592</strong></div><div class="bar-track"><span class="bar bar-model" style="width: 57.07%"></span></div></div>
+          </div>
+          <div class="comparison-callout"><strong><b data-metric="improvement">43.1</b>%</strong><span>MAE reduction</span><p>The model reduces MAE by <b data-metric="mae-delta">61.995</b> seconds against the global median baseline in this run.</p></div>
+          <div class="legend"><span><i class="legend-dot baseline"></i> baseline</span><span><i class="legend-dot model"></i> model</span></div>
+        </article>
+
+        <article class="evidence-panel panel">
+          <div class="panel-heading"><div><p class="eyebrow">03 / checked-in evidence</p><h2>Prediction shape</h2></div><span class="panel-tag">SVG artifact</span></div>
+          <div class="artifact-frame"><img src="outputs/predicted_vs_actual.svg" alt="Predicted versus actual trip duration scatter plot" /></div>
+          <div class="artifact-caption"><span class="caption-marker">↗</span><p><strong>Predicted vs actual</strong><br />The diagonal reference line represents perfect agreement. Dispersion is expected: this is a compact, synthetic experiment. <a class="artifact-link" href="outputs/duration_distribution.svg">View duration distribution ↗</a></p></div>
+        </article>
+      </section>
+
+      <section id="explorer" class="section-wrap section-block explorer-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">04 / analytical explorer</p><h2>Interrogate the holdout.</h2></div>
+          <p class="section-note">These controls recompute metrics from <code>outputs/predictions.csv</code> and join them to the fold and cleaning metadata in <code>metrics.json</code>.</p>
+        </div>
+        <div class="explorer-toolbar panel">
+          <label>Metric<select id="explorer-metric"><option value="mae_seconds">MAE · seconds</option><option value="rmse_seconds">RMSE · seconds</option><option value="r2">R²</option></select></label>
+          <label>Comparator<select id="explorer-comparison"><option value="global_median">Global median</option><option value="recent_median_baseline">Recent median</option><option value="hour_median_baseline">Hour-conditioned median</option></select></label>
+          <label>Population<select id="explorer-population"><option value="primary">All eligible holdout rows</option><option value="robust">Training-threshold inliers · sensitivity</option></select></label>
+          <label>Slice<select id="explorer-slice"><option value="all">All rows</option><option value="rush">Rush hour</option><option value="off_peak">Off-peak</option><option value="short">Short route · below median distance</option><option value="long">Long route · at/above median distance</option><option value="weekend">Weekend</option><option value="weekday">Weekday</option></select></label>
+        </div>
+        <div class="explorer-grid">
+          <article class="panel explorer-result-panel">
+            <div class="panel-heading"><div><p class="eyebrow">holdout slice</p><h3 id="explorer-slice-title">All eligible holdout rows</h3></div><span class="panel-tag" id="explorer-count">— rows</span></div>
+            <div class="explorer-metric-row"><div><span class="card-label">MODEL</span><strong id="explorer-model-value">—</strong></div><div><span class="card-label" id="explorer-comparator-label">GLOBAL MEDIAN</span><strong id="explorer-baseline-value">—</strong></div></div>
+            <p class="explorer-note" id="explorer-note">Load the checked-in predictions artifact to explore segment performance.</p>
+            <div class="residual-frame"><svg id="residual-chart" viewBox="0 0 620 190" role="img" aria-label="Residual distribution for the selected holdout slice"></svg></div>
+          </article>
+          <article class="panel audit-panel">
+            <div class="panel-heading"><div><p class="eyebrow">audit trail</p><h3>What was scored?</h3></div><span class="panel-tag">JSON metadata</span></div>
+            <div id="audit-summary" class="audit-summary"><p>Reading metrics.json…</p></div>
+          </article>
+        </div>
+        <div class="explorer-grid explorer-lower-grid">
+          <article class="panel fold-panel">
+            <div class="panel-heading"><div><p class="eyebrow">temporal stability</p><h3>Fold comparison</h3></div><span class="panel-tag">expanding time folds</span></div>
+            <div class="table-wrap"><table><thead><tr><th>Fold</th><th>Train / test</th><th>Cutoff</th><th>Model</th><th>Comparator</th></tr></thead><tbody id="fold-table-body"><tr><td colspan="5">Reading fold artifacts…</td></tr></tbody></table></div>
+          </article>
+          <article class="panel importance-panel">
+            <div class="panel-heading"><div><p class="eyebrow">model lens</p><h3>Standardized coefficients</h3></div><span class="panel-tag">descriptive only</span></div>
+            <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Abs. coefficient</th></tr></thead><tbody id="importance-table-body"><tr><td colspan="2">Reading feature_importance.csv…</td></tr></tbody></table></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="estimator" class="section-wrap section-block estimator-section">
+        <div class="section-heading light-heading"><div><p class="eyebrow">05 / interactive what-if</p><h2>Sketch a trip.</h2></div><p class="section-note">Explore how distance, pickup time, and passenger count influence a client-side estimate. It is a visual teaching aid—not a live model prediction.</p></div>
+        <div class="estimator-grid">
+          <form id="estimator-form" class="trip-form">
+            <div class="form-section-title"><span>01</span><strong>Route</strong><small>decimal degrees</small></div>
+            <div class="field-grid">
+              <label>Pickup longitude<input name="pickupLongitude" type="number" step="0.001" min="-74.3" max="-73.65" required value="-73.985" /></label>
+              <label>Pickup latitude<input name="pickupLatitude" type="number" step="0.001" min="40.45" max="40.95" required value="40.748" /></label>
+              <label>Drop-off longitude<input name="dropoffLongitude" type="number" step="0.001" min="-74.3" max="-73.65" required value="-73.955" /></label>
+              <label>Drop-off latitude<input name="dropoffLatitude" type="number" step="0.001" min="40.45" max="40.95" required value="40.765" /></label>
+            </div>
+            <div class="form-section-title second"><span>02</span><strong>Context</strong><small>request attributes</small></div>
+            <div class="field-grid context-grid">
+              <label>Pickup date & time<input name="pickupTime" type="datetime-local" min="2010-01-01T00:00" max="2029-12-31T23:59" required value="2016-03-18T17:30" /></label>
+              <label>Passengers<select name="passengers"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label>
+            </div>
+            <button class="button button-light" type="submit">Update estimate <span>↗</span></button>
+            <p class="form-help">Tip: move the pickup time into a rush hour window to see the estimate respond.</p>
+            <p id="estimator-error" class="form-error" role="alert" aria-live="polite"></p>
+          </form>
+          <div class="estimate-result">
+            <div class="result-topline"><span class="result-label">ILLUSTRATIVE ESTIMATE</span><span id="rush-status" class="rush-badge">rush hour</span></div>
+            <div class="result-time"><strong id="estimate-value">09:32</strong><span>min : sec</span></div>
+            <p id="estimate-summary">A 2.1 mi trip with 2 passengers, leaving during the evening commute.</p>
+            <div class="estimate-visual">
+              <svg id="estimate-chart" viewBox="0 0 520 132" role="img" aria-label="Illustrative duration estimate chart"></svg>
+            </div>
+            <div class="result-foot"><span><b id="distance-value">2.1</b> mi route</span><span><b id="context-value">rush-hour</b> context</span></div>
+            <div class="disclaimer"><span>i</span><p><strong>Illustrative by design.</strong> This browser calculation is a deterministic, no-noise visualization of the synthetic generator’s directional relationships; it does not load model weights or make a production prediction.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="method" class="section-wrap section-block method-section">
+        <div class="section-heading"><div><p class="eyebrow">06 / CRISP-DM loop</p><h2>From question to evidence.</h2></div><p class="section-note">The experiment follows a compact, inspectable path from business framing through reproducible delivery.</p></div>
+        <div class="timeline">
+          <article class="timeline-step"><span class="step-number">01</span><div class="step-line"></div><h3>Business<br />understanding</h3><p>Estimate taxi trip duration with an interpretable, reproducible workflow.</p></article>
+          <article class="timeline-step"><span class="step-number">02</span><div class="step-line"></div><h3>Data<br />understanding</h3><p>Use NYC-like trip rows with coordinates, timestamps, passengers, and vendor.</p></article>
+          <article class="timeline-step"><span class="step-number">03</span><div class="step-line"></div><h3>Data<br />preparation</h3><p>Clean coordinates and durations; derive time, distance, and delta features.</p></article>
+          <article class="timeline-step active"><span class="step-number">04</span><div class="step-line"></div><h3>Modeling</h3><p>Fit a regularized linear model on <code>log1p</code> duration after a time split.</p></article>
+          <article class="timeline-step"><span class="step-number">05</span><div class="step-line"></div><h3>Evaluation</h3><p>Compare MAE, RMSE, and R² against global, recent, and hour-conditioned baselines across chronological folds.</p></article>
+          <article class="timeline-step"><span class="step-number">06</span><div class="step-line"></div><h3>Deployment</h3><p>Expose artifacts in this static UI and keep the Python run path intact.</p></article>
+        </div>
+      </section>
+
+      <section class="section-wrap section-block run-section">
+        <div class="run-card"><div><p class="eyebrow">07 / reproduce locally</p><h2>One command in.<br /><em>Evidence out.</em></h2><p>Serve this folder to let the browser load the checked-in JSON and SVG artifacts.</p></div><div class="command-stack"><div class="command"><span>$</span><code>python3 run_experiment.py</code><button class="copy-button" data-copy="python3 run_experiment.py" aria-label="Copy experiment command">copy</button></div><div class="command"><span>$</span><code>python3 validate.py</code><button class="copy-button" data-copy="python3 validate.py" aria-label="Copy validation command">copy</button></div><div class="command muted-command"><span>$</span><code>python3 -m http.server 8000</code><button class="copy-button" data-copy="python3 -m http.server 8000" aria-label="Copy web server command">copy</button></div><p class="command-note">Then open <strong>http://localhost:8000</strong></p></div></div>
+        <div class="footer-meta"><span>source · <b data-source>deterministic synthetic NYC-like fallback</b></span><span>artifacts · metrics.json / predictions.csv / SVG plots</span><span>static UI · no build step</span></div>
+      </section>
+    </main>
+    <footer class="site-footer section-wrap"><span>NYC TAXI / EXPERIMENT 01</span><span>Made for inspection, not illusion.</span><span id="data-status">reading checked-in outputs…</span></footer>
+    <script src="app.js"></script>
+  </body>
+</html>

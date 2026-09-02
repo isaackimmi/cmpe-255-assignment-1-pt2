@@ -1,0 +1,16 @@
+# Local environments and generated Python state
+**/.venv/
+.demo-venv/
+**/venv/
+**/__pycache__/
+**/.pytest_cache/
+*.py[cod]
+
+# Frontend install/build output
+**/node_modules/
+**/client/dist/
+
+# Local OS/editor state
+.DS_Store
+.idea/
+.vscode/

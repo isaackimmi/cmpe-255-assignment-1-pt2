@@ -1,0 +1,817 @@
+{
+  "evaluation_type": "synthetic_smoke_test",
+  "data_source": "deterministic in-memory NYC-like generator",
+  "run_id": "fee9e45c293a106f",
+  "raw_rows": 1200,
+  "retained_rows": 1194,
+  "excluded_target_rows": 6,
+  "excluded_duplicate_rows": 0,
+  "excluded_rows": 6,
+  "train_rows": 955,
+  "test_rows": 239,
+  "test_fraction": 0.2002,
+  "mae_minutes": 2.79,
+  "rmse_minutes": 3.624,
+  "r2": 0.892,
+  "within_5_minutes_rate": 0.841,
+  "split": "chronological 80/20; preprocessing fitted on training rows only",
+  "time_ranges": {
+    "train_start": "2024-01-01T01:12:00",
+    "train_end": "2024-02-18T17:56:00",
+    "holdout_start": "2024-02-18T18:28:00",
+    "holdout_end": "2024-02-29T23:50:00"
+  },
+  "baselines": {
+    "global_mean": {
+      "rows": 239,
+      "mae_minutes": 8.658,
+      "rmse_minutes": 11.011,
+      "r2": -0.001,
+      "within_5_minutes_rate": 0.339
+    },
+    "distance_only_linear": {
+      "rows": 239,
+      "mae_minutes": 3.486,
+      "rmse_minutes": 4.53,
+      "r2": 0.831,
+      "within_5_minutes_rate": 0.762
+    }
+  },
+  "error_slices_artifact": "prediction_errors.json",
+  "error_slices": [
+    {
+      "dimension": "pickup_hour",
+      "value": "0",
+      "rows": 14,
+      "mae_minutes": 2.301,
+      "rmse_minutes": 3.214,
+      "r2": 0.801,
+      "within_5_minutes_rate": 0.857
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "1",
+      "rows": 6,
+      "mae_minutes": 2.384,
+      "rmse_minutes": 2.906,
+      "r2": 0.787,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "10",
+      "rows": 7,
+      "mae_minutes": 2.061,
+      "rmse_minutes": 2.761,
+      "r2": 0.857,
+      "within_5_minutes_rate": 0.857
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "11",
+      "rows": 13,
+      "mae_minutes": 2.117,
+      "rmse_minutes": 2.541,
+      "r2": 0.962,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "12",
+      "rows": 10,
+      "mae_minutes": 1.485,
+      "rmse_minutes": 2.132,
+      "r2": 0.938,
+      "within_5_minutes_rate": 0.9
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "13",
+      "rows": 8,
+      "mae_minutes": 2.253,
+      "rmse_minutes": 2.828,
+      "r2": 0.94,
+      "within_5_minutes_rate": 0.875
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "14",
+      "rows": 12,
+      "mae_minutes": 3.757,
+      "rmse_minutes": 4.631,
+      "r2": 0.005,
+      "within_5_minutes_rate": 0.667
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "15",
+      "rows": 9,
+      "mae_minutes": 3.548,
+      "rmse_minutes": 5.45,
+      "r2": 0.667,
+      "within_5_minutes_rate": 0.778
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "16",
+      "rows": 10,
+      "mae_minutes": 4.078,
+      "rmse_minutes": 5.135,
+      "r2": 0.833,
+      "within_5_minutes_rate": 0.6
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "17",
+      "rows": 5,
+      "mae_minutes": 3.213,
+      "rmse_minutes": 3.495,
+      "r2": 0.26,
+      "within_5_minutes_rate": 0.8
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "18",
+      "rows": 11,
+      "mae_minutes": 2.742,
+      "rmse_minutes": 3.171,
+      "r2": 0.948,
+      "within_5_minutes_rate": 0.909
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "19",
+      "rows": 7,
+      "mae_minutes": 4.464,
+      "rmse_minutes": 5.238,
+      "r2": 0.737,
+      "within_5_minutes_rate": 0.571
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "2",
+      "rows": 13,
+      "mae_minutes": 2.754,
+      "rmse_minutes": 3.665,
+      "r2": 0.846,
+      "within_5_minutes_rate": 0.846
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "20",
+      "rows": 10,
+      "mae_minutes": 1.619,
+      "rmse_minutes": 2.076,
+      "r2": 0.911,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "21",
+      "rows": 14,
+      "mae_minutes": 2.661,
+      "rmse_minutes": 3.209,
+      "r2": 0.886,
+      "within_5_minutes_rate": 0.929
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "22",
+      "rows": 13,
+      "mae_minutes": 2.562,
+      "rmse_minutes": 3.028,
+      "r2": 0.89,
+      "within_5_minutes_rate": 0.846
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "23",
+      "rows": 8,
+      "mae_minutes": 3.246,
+      "rmse_minutes": 3.627,
+      "r2": 0.918,
+      "within_5_minutes_rate": 0.75
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "3",
+      "rows": 14,
+      "mae_minutes": 3.482,
+      "rmse_minutes": 4.792,
+      "r2": 0.61,
+      "within_5_minutes_rate": 0.714
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "4",
+      "rows": 8,
+      "mae_minutes": 2.532,
+      "rmse_minutes": 2.844,
+      "r2": 0.752,
+      "within_5_minutes_rate": 0.875
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "5",
+      "rows": 7,
+      "mae_minutes": 2.798,
+      "rmse_minutes": 2.989,
+      "r2": 0.908,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "6",
+      "rows": 13,
+      "mae_minutes": 3.27,
+      "rmse_minutes": 4.285,
+      "r2": 0.889,
+      "within_5_minutes_rate": 0.769
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "7",
+      "rows": 6,
+      "mae_minutes": 2.926,
+      "rmse_minutes": 3.299,
+      "r2": 0.722,
+      "within_5_minutes_rate": 0.833
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "8",
+      "rows": 12,
+      "mae_minutes": 2.241,
+      "rmse_minutes": 2.996,
+      "r2": 0.924,
+      "within_5_minutes_rate": 0.917
+    },
+    {
+      "dimension": "pickup_hour",
+      "value": "9",
+      "rows": 9,
+      "mae_minutes": 2.909,
+      "rmse_minutes": 3.3,
+      "r2": 0.94,
+      "within_5_minutes_rate": 0.889
+    },
+    {
+      "dimension": "weekday",
+      "value": "0",
+      "rows": 30,
+      "mae_minutes": 2.917,
+      "rmse_minutes": 3.847,
+      "r2": 0.853,
+      "within_5_minutes_rate": 0.833
+    },
+    {
+      "dimension": "weekday",
+      "value": "1",
+      "rows": 45,
+      "mae_minutes": 2.777,
+      "rmse_minutes": 3.634,
+      "r2": 0.893,
+      "within_5_minutes_rate": 0.889
+    },
+    {
+      "dimension": "weekday",
+      "value": "2",
+      "rows": 54,
+      "mae_minutes": 3.186,
+      "rmse_minutes": 3.981,
+      "r2": 0.863,
+      "within_5_minutes_rate": 0.815
+    },
+    {
+      "dimension": "weekday",
+      "value": "3",
+      "rows": 47,
+      "mae_minutes": 2.927,
+      "rmse_minutes": 3.751,
+      "r2": 0.839,
+      "within_5_minutes_rate": 0.766
+    },
+    {
+      "dimension": "weekday",
+      "value": "4",
+      "rows": 27,
+      "mae_minutes": 2.228,
+      "rmse_minutes": 3.006,
+      "r2": 0.953,
+      "within_5_minutes_rate": 0.889
+    },
+    {
+      "dimension": "weekday",
+      "value": "5",
+      "rows": 18,
+      "mae_minutes": 2.664,
+      "rmse_minutes": 3.309,
+      "r2": 0.899,
+      "within_5_minutes_rate": 0.833
+    },
+    {
+      "dimension": "weekday",
+      "value": "6",
+      "rows": 18,
+      "mae_minutes": 2.037,
+      "rmse_minutes": 2.811,
+      "r2": 0.947,
+      "within_5_minutes_rate": 0.944
+    },
+    {
+      "dimension": "duration_band",
+      "value": "10_to_20",
+      "rows": 86,
+      "mae_minutes": 2.218,
+      "rmse_minutes": 2.943,
+      "r2": -0.21,
+      "within_5_minutes_rate": 0.895
+    },
+    {
+      "dimension": "duration_band",
+      "value": "20_to_40",
+      "rows": 102,
+      "mae_minutes": 2.675,
+      "rmse_minutes": 3.372,
+      "r2": 0.564,
+      "within_5_minutes_rate": 0.873
+    },
+    {
+      "dimension": "duration_band",
+      "value": "over_40",
+      "rows": 20,
+      "mae_minutes": 4.088,
+      "rmse_minutes": 5.111,
+      "r2": 0.272,
+      "within_5_minutes_rate": 0.75
+    },
+    {
+      "dimension": "duration_band",
+      "value": "under_10",
+      "rows": 31,
+      "mae_minutes": 3.92,
+      "rmse_minutes": 4.793,
+      "r2": -11.167,
+      "within_5_minutes_rate": 0.645
+    },
+    {
+      "dimension": "route",
+      "value": "1 \u2192 1",
+      "rows": 3,
+      "mae_minutes": 2.452,
+      "rmse_minutes": 2.525,
+      "r2": 0.156,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "1 \u2192 2",
+      "rows": 10,
+      "mae_minutes": 3.11,
+      "rmse_minutes": 4.087,
+      "r2": 0.736,
+      "within_5_minutes_rate": 0.7
+    },
+    {
+      "dimension": "route",
+      "value": "1 \u2192 3",
+      "rows": 4,
+      "mae_minutes": 1.743,
+      "rmse_minutes": 1.96,
+      "r2": 0.92,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "1 \u2192 4",
+      "rows": 2,
+      "mae_minutes": 2.533,
+      "rmse_minutes": 2.702,
+      "r2": 0.609,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "1 \u2192 5",
+      "rows": 6,
+      "mae_minutes": 2.964,
+      "rmse_minutes": 3.422,
+      "r2": 0.959,
+      "within_5_minutes_rate": 0.667
+    },
+    {
+      "dimension": "route",
+      "value": "1 \u2192 6",
+      "rows": 7,
+      "mae_minutes": 3.269,
+      "rmse_minutes": 3.746,
+      "r2": 0.689,
+      "within_5_minutes_rate": 0.857
+    },
+    {
+      "dimension": "route",
+      "value": "1 \u2192 7",
+      "rows": 5,
+      "mae_minutes": 4.405,
+      "rmse_minutes": 5.094,
+      "r2": 0.231,
+      "within_5_minutes_rate": 0.6
+    },
+    {
+      "dimension": "route",
+      "value": "2 \u2192 1",
+      "rows": 4,
+      "mae_minutes": 2.029,
+      "rmse_minutes": 2.445,
+      "r2": 0.876,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "2 \u2192 2",
+      "rows": 8,
+      "mae_minutes": 1.763,
+      "rmse_minutes": 2.739,
+      "r2": 0.785,
+      "within_5_minutes_rate": 0.875
+    },
+    {
+      "dimension": "route",
+      "value": "2 \u2192 3",
+      "rows": 4,
+      "mae_minutes": 1.814,
+      "rmse_minutes": 2.093,
+      "r2": 0.962,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "2 \u2192 4",
+      "rows": 4,
+      "mae_minutes": 1.894,
+      "rmse_minutes": 1.997,
+      "r2": 0.747,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "2 \u2192 5",
+      "rows": 5,
+      "mae_minutes": 2.235,
+      "rmse_minutes": 2.291,
+      "r2": 0.948,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "2 \u2192 6",
+      "rows": 5,
+      "mae_minutes": 2.601,
+      "rmse_minutes": 3.602,
+      "r2": 0.895,
+      "within_5_minutes_rate": 0.8
+    },
+    {
+      "dimension": "route",
+      "value": "3 \u2192 1",
+      "rows": 10,
+      "mae_minutes": 4.077,
+      "rmse_minutes": 5.183,
+      "r2": 0.691,
+      "within_5_minutes_rate": 0.6
+    },
+    {
+      "dimension": "route",
+      "value": "3 \u2192 2",
+      "rows": 8,
+      "mae_minutes": 3.764,
+      "rmse_minutes": 4.303,
+      "r2": 0.886,
+      "within_5_minutes_rate": 0.625
+    },
+    {
+      "dimension": "route",
+      "value": "3 \u2192 3",
+      "rows": 3,
+      "mae_minutes": 5.128,
+      "rmse_minutes": 7.331,
+      "r2": -0.706,
+      "within_5_minutes_rate": 0.667
+    },
+    {
+      "dimension": "route",
+      "value": "3 \u2192 4",
+      "rows": 1,
+      "mae_minutes": 4.823,
+      "rmse_minutes": 4.823,
+      "r2": null,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "3 \u2192 5",
+      "rows": 5,
+      "mae_minutes": 1.757,
+      "rmse_minutes": 2.073,
+      "r2": 0.489,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "3 \u2192 6",
+      "rows": 3,
+      "mae_minutes": 3.201,
+      "rmse_minutes": 3.232,
+      "r2": 0.942,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "3 \u2192 7",
+      "rows": 1,
+      "mae_minutes": 1.927,
+      "rmse_minutes": 1.927,
+      "r2": null,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "4 \u2192 1",
+      "rows": 8,
+      "mae_minutes": 3.392,
+      "rmse_minutes": 4.674,
+      "r2": 0.85,
+      "within_5_minutes_rate": 0.75
+    },
+    {
+      "dimension": "route",
+      "value": "4 \u2192 2",
+      "rows": 8,
+      "mae_minutes": 3.316,
+      "rmse_minutes": 3.694,
+      "r2": 0.883,
+      "within_5_minutes_rate": 0.75
+    },
+    {
+      "dimension": "route",
+      "value": "4 \u2192 3",
+      "rows": 4,
+      "mae_minutes": 2.137,
+      "rmse_minutes": 2.372,
+      "r2": 0.622,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "4 \u2192 4",
+      "rows": 3,
+      "mae_minutes": 2.854,
+      "rmse_minutes": 3.115,
+      "r2": -0.665,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "4 \u2192 5",
+      "rows": 2,
+      "mae_minutes": 3.296,
+      "rmse_minutes": 3.37,
+      "r2": -3.048,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "4 \u2192 6",
+      "rows": 1,
+      "mae_minutes": 4.115,
+      "rmse_minutes": 4.115,
+      "r2": null,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "4 \u2192 7",
+      "rows": 5,
+      "mae_minutes": 1.562,
+      "rmse_minutes": 1.723,
+      "r2": 0.975,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "5 \u2192 1",
+      "rows": 7,
+      "mae_minutes": 2.006,
+      "rmse_minutes": 2.294,
+      "r2": 0.955,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "5 \u2192 2",
+      "rows": 7,
+      "mae_minutes": 2.467,
+      "rmse_minutes": 3.174,
+      "r2": 0.927,
+      "within_5_minutes_rate": 0.857
+    },
+    {
+      "dimension": "route",
+      "value": "5 \u2192 3",
+      "rows": 6,
+      "mae_minutes": 2.04,
+      "rmse_minutes": 2.617,
+      "r2": -0.377,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "5 \u2192 4",
+      "rows": 6,
+      "mae_minutes": 4.038,
+      "rmse_minutes": 4.787,
+      "r2": -0.074,
+      "within_5_minutes_rate": 0.667
+    },
+    {
+      "dimension": "route",
+      "value": "5 \u2192 5",
+      "rows": 5,
+      "mae_minutes": 3.306,
+      "rmse_minutes": 3.71,
+      "r2": 0.949,
+      "within_5_minutes_rate": 0.8
+    },
+    {
+      "dimension": "route",
+      "value": "5 \u2192 6",
+      "rows": 6,
+      "mae_minutes": 1.502,
+      "rmse_minutes": 1.682,
+      "r2": 0.968,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "5 \u2192 7",
+      "rows": 9,
+      "mae_minutes": 3.764,
+      "rmse_minutes": 4.814,
+      "r2": 0.822,
+      "within_5_minutes_rate": 0.778
+    },
+    {
+      "dimension": "route",
+      "value": "6 \u2192 1",
+      "rows": 4,
+      "mae_minutes": 3.205,
+      "rmse_minutes": 3.533,
+      "r2": 0.859,
+      "within_5_minutes_rate": 0.75
+    },
+    {
+      "dimension": "route",
+      "value": "6 \u2192 2",
+      "rows": 4,
+      "mae_minutes": 3.463,
+      "rmse_minutes": 4.482,
+      "r2": 0.931,
+      "within_5_minutes_rate": 0.75
+    },
+    {
+      "dimension": "route",
+      "value": "6 \u2192 3",
+      "rows": 6,
+      "mae_minutes": 1.263,
+      "rmse_minutes": 1.556,
+      "r2": 0.92,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "6 \u2192 4",
+      "rows": 5,
+      "mae_minutes": 2.178,
+      "rmse_minutes": 2.489,
+      "r2": 0.954,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "6 \u2192 5",
+      "rows": 8,
+      "mae_minutes": 3.999,
+      "rmse_minutes": 5.229,
+      "r2": 0.56,
+      "within_5_minutes_rate": 0.625
+    },
+    {
+      "dimension": "route",
+      "value": "6 \u2192 6",
+      "rows": 3,
+      "mae_minutes": 2.966,
+      "rmse_minutes": 3.1,
+      "r2": 0.976,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "6 \u2192 7",
+      "rows": 4,
+      "mae_minutes": 2.128,
+      "rmse_minutes": 2.319,
+      "r2": 0.968,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "7 \u2192 1",
+      "rows": 9,
+      "mae_minutes": 2.799,
+      "rmse_minutes": 4.078,
+      "r2": 0.867,
+      "within_5_minutes_rate": 0.778
+    },
+    {
+      "dimension": "route",
+      "value": "7 \u2192 2",
+      "rows": 1,
+      "mae_minutes": 0.533,
+      "rmse_minutes": 0.533,
+      "r2": null,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "7 \u2192 3",
+      "rows": 3,
+      "mae_minutes": 2.074,
+      "rmse_minutes": 2.45,
+      "r2": 0.41,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "7 \u2192 4",
+      "rows": 7,
+      "mae_minutes": 2.219,
+      "rmse_minutes": 3.675,
+      "r2": 0.754,
+      "within_5_minutes_rate": 0.714
+    },
+    {
+      "dimension": "route",
+      "value": "7 \u2192 5",
+      "rows": 4,
+      "mae_minutes": 2.416,
+      "rmse_minutes": 2.791,
+      "r2": -0.317,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "7 \u2192 6",
+      "rows": 2,
+      "mae_minutes": 0.629,
+      "rmse_minutes": 0.647,
+      "r2": 0.846,
+      "within_5_minutes_rate": 1.0
+    },
+    {
+      "dimension": "route",
+      "value": "7 \u2192 7",
+      "rows": 4,
+      "mae_minutes": 2.902,
+      "rmse_minutes": 3.482,
+      "r2": 0.601,
+      "within_5_minutes_rate": 0.75
+    },
+    {
+      "dimension": "missing_feature",
+      "value": "no",
+      "rows": 238,
+      "mae_minutes": 2.768,
+      "rmse_minutes": 3.594,
+      "r2": 0.894,
+      "within_5_minutes_rate": 0.845
+    },
+    {
+      "dimension": "missing_feature",
+      "value": "yes",
+      "rows": 1,
+      "mae_minutes": 8.007,
+      "rmse_minutes": 8.007,
+      "r2": null,
+      "within_5_minutes_rate": 0.0
+    }
+  ],
+  "target_policy": {
+    "field": "trip_duration_minutes",
+    "missing": "exclude",
+    "non_numeric": "exclude",
+    "non_finite": "exclude",
+    "non_positive": "exclude",
+    "maximum_minutes": 180.0,
+    "above_maximum": "exclude"
+  }
+}

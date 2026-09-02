@@ -1,0 +1,792 @@
+{
+  "report_schema_version": "2.0",
+  "runtime": {
+    "python": "3.14.7",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.2",
+    "scikit_learn": "1.9.0",
+    "joblib": "1.5.3"
+  },
+  "random_state": 42,
+  "business_understanding": {
+    "scope": "Bounded Iris supervised-classification walkthrough",
+    "objective": "Classify an Iris flower from four measured attributes.",
+    "decision": "A student analyst uses the predicted species to demonstrate an auditable classification workflow; no production or clinical decision is implied.",
+    "success_criteria": "Beat the majority-class baseline in training-only repeated stratified CV, then report the fixed holdout result with uncertainty and class-level support.",
+    "stakeholders": [
+      "student analyst",
+      "course reviewer"
+    ],
+    "operational_constraints": [
+      "Four numeric measurements in centimeters",
+      "Local, deterministic execution with no network dependency",
+      "Reject malformed or out-of-domain inputs before inference"
+    ],
+    "error_costs": "All class errors are treated as educationally important; no real-world cost matrix has been validated.",
+    "assumptions": [
+      "The bundled Iris sample is representative only of this classroom exercise.",
+      "The fixed holdout is selected before model fitting and is used once for final reporting."
+    ]
+  },
+  "data_understanding": {
+    "dataset": "sklearn.datasets.load_iris",
+    "provenance": "Bundled with the installed scikit-learn package; no network download.",
+    "dataset_version": "1.9.0",
+    "license_note": "Review scikit-learn and the upstream UCI Iris terms before redistribution.",
+    "content_sha256": "8c47bf68259b17207146cca6a2ccf6a01a88323ac3eea1e4e8ec5908190b44e9",
+    "rows": 150,
+    "features": [
+      "sepal length (cm)",
+      "sepal width (cm)",
+      "petal length (cm)",
+      "petal width (cm)"
+    ],
+    "classes": [
+      "setosa",
+      "versicolor",
+      "virginica"
+    ],
+    "missing_values": 0,
+    "class_counts": {
+      "setosa": 50,
+      "versicolor": 50,
+      "virginica": 50
+    },
+    "quality_checks": {
+      "schema_valid": true,
+      "finite_values": true,
+      "invalid_labels": 0,
+      "duplicate_feature_rows": 1,
+      "duplicate_row_instances": 1,
+      "feature_min": [
+        4.3,
+        2.0,
+        1.0,
+        0.1
+      ],
+      "feature_max": [
+        7.9,
+        4.4,
+        6.9,
+        2.5
+      ],
+      "feature_units": "cm",
+      "label_values": [
+        0,
+        1,
+        2
+      ]
+    }
+  },
+  "data_preparation": {
+    "train_rows": 120,
+    "test_rows": 30,
+    "split": "Fixed 80/20 stratified holdout; selected before fitting and used once for final evaluation.",
+    "train_test_overlap_rows": 0,
+    "preprocessing": "StandardScaler is fit inside each candidate pipeline on each training fold only.",
+    "input_contract": {
+      "feature_names": [
+        "sepal length (cm)",
+        "sepal width (cm)",
+        "petal length (cm)",
+        "petal width (cm)"
+      ],
+      "units": "cm",
+      "dtype": "finite real number",
+      "required_count": 4,
+      "allowed_range_per_feature": [
+        0.0,
+        10.0
+      ],
+      "invalid_input_policy": "Reject with ValueError; do not impute or reorder caller-provided values."
+    }
+  },
+  "modeling": {
+    "selection_protocol": "3 repeats of 5-fold stratified CV on training rows only",
+    "selection_metric": "accuracy",
+    "available_metrics": [
+      "accuracy"
+    ],
+    "tie_breaking": "Candidate declaration order after mean CV accuracy",
+    "candidates": [
+      {
+        "name": "majority_class",
+        "algorithm": "DummyClassifier",
+        "cv_scores": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "cv_accuracy_mean": 0.33333333333333326,
+        "cv_accuracy_std": 5.551115123125783e-17,
+        "cv_accuracy_min": 0.3333333333333333,
+        "cv_accuracy_max": 0.3333333333333333
+      },
+      {
+        "name": "logistic_regression",
+        "algorithm": "StandardScaler + LogisticRegression",
+        "cv_scores": [
+          0.9583333333333334,
+          1.0,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          1.0,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          1.0,
+          1.0,
+          0.9166666666666666
+        ],
+        "cv_accuracy_mean": 0.9583333333333334,
+        "cv_accuracy_std": 0.030429030972509243,
+        "cv_accuracy_min": 0.9166666666666666,
+        "cv_accuracy_max": 1.0
+      },
+      {
+        "name": "knn",
+        "algorithm": "Pipeline",
+        "cv_scores": [
+          0.9583333333333334,
+          1.0,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9583333333333334,
+          1.0,
+          0.9583333333333334,
+          0.9166666666666666
+        ],
+        "cv_accuracy_mean": 0.9555555555555557,
+        "cv_accuracy_std": 0.023895347964007312,
+        "cv_accuracy_min": 0.9166666666666666,
+        "cv_accuracy_max": 1.0
+      },
+      {
+        "name": "decision_tree",
+        "algorithm": "DecisionTreeClassifier",
+        "cv_scores": [
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9166666666666666,
+          1.0,
+          0.9583333333333334,
+          0.9583333333333334,
+          0.9166666666666666,
+          0.9583333333333334,
+          0.875,
+          0.9583333333333334,
+          1.0,
+          1.0,
+          0.875
+        ],
+        "cv_accuracy_mean": 0.9472222222222223,
+        "cv_accuracy_std": 0.03868996743662257,
+        "cv_accuracy_min": 0.875,
+        "cv_accuracy_max": 1.0
+      }
+    ],
+    "selected_model": "logistic_regression",
+    "algorithm": "StandardScaler + multinomial LogisticRegression",
+    "model_fingerprint": "fb356e7bc4958c8b044d417fab0be1a2aba7757e73923d5731dd71065f1f3ef3",
+    "model_configuration_fingerprint": "2e4b9b0ed7070cd3f1588db690bd74fcdefa9f361419d5c3b622a2e042323a32",
+    "fitted_model_fingerprint": "fb356e7bc4958c8b044d417fab0be1a2aba7757e73923d5731dd71065f1f3ef3",
+    "baseline_cv_accuracy": 0.33333333333333326,
+    "selected_cv_accuracy": 0.9583333333333334,
+    "beats_baseline_in_cv": true
+  },
+  "evaluation": {
+    "accuracy": 0.9333333333333333,
+    "correct": 28,
+    "total": 30,
+    "accuracy_95_wilson_interval": [
+      0.7867618227892791,
+      0.9815233646723066
+    ],
+    "confusion_matrix": [
+      [
+        10,
+        0,
+        0
+      ],
+      [
+        0,
+        9,
+        1
+      ],
+      [
+        0,
+        1,
+        9
+      ]
+    ],
+    "classification_report": {
+      "setosa": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 10.0
+      },
+      "versicolor": {
+        "precision": 0.9,
+        "recall": 0.9,
+        "f1-score": 0.9,
+        "support": 10.0
+      },
+      "virginica": {
+        "precision": 0.9,
+        "recall": 0.9,
+        "f1-score": 0.9,
+        "support": 10.0
+      },
+      "accuracy": 0.9333333333333333,
+      "macro avg": {
+        "precision": 0.9333333333333332,
+        "recall": 0.9333333333333332,
+        "f1-score": 0.9333333333333332,
+        "support": 30.0
+      },
+      "weighted avg": {
+        "precision": 0.9333333333333333,
+        "recall": 0.9333333333333333,
+        "f1-score": 0.9333333333333333,
+        "support": 30.0
+      }
+    },
+    "holdout_cases": [
+      {
+        "row_number_in_holdout": 0,
+        "dataset_row_index": 38,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 4.4,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 1.3,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9788180050826788
+      },
+      {
+        "row_number_in_holdout": 1,
+        "dataset_row_index": 127,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.1,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 4.9,
+          "petal width (cm)": 1.8
+        },
+        "predicted_probability": 0.6269814626174596
+      },
+      {
+        "row_number_in_holdout": 2,
+        "dataset_row_index": 57,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 4.9,
+          "sepal width (cm)": 2.4,
+          "petal length (cm)": 3.3,
+          "petal width (cm)": 1.0
+        },
+        "predicted_probability": 0.842474895173398
+      },
+      {
+        "row_number_in_holdout": 3,
+        "dataset_row_index": 93,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.0,
+          "sepal width (cm)": 2.3,
+          "petal length (cm)": 3.3,
+          "petal width (cm)": 1.0
+        },
+        "predicted_probability": 0.8946186342261561
+      },
+      {
+        "row_number_in_holdout": 4,
+        "dataset_row_index": 42,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 4.4,
+          "sepal width (cm)": 3.2,
+          "petal length (cm)": 1.3,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9884930507485834
+      },
+      {
+        "row_number_in_holdout": 5,
+        "dataset_row_index": 56,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.3,
+          "sepal width (cm)": 3.3,
+          "petal length (cm)": 4.7,
+          "petal width (cm)": 1.6
+        },
+        "predicted_probability": 0.6755234755033757
+      },
+      {
+        "row_number_in_holdout": 6,
+        "dataset_row_index": 22,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 4.6,
+          "sepal width (cm)": 3.6,
+          "petal length (cm)": 1.0,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9962297478399278
+      },
+      {
+        "row_number_in_holdout": 7,
+        "dataset_row_index": 20,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.4,
+          "sepal width (cm)": 3.4,
+          "petal length (cm)": 1.7,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9410420803033149
+      },
+      {
+        "row_number_in_holdout": 8,
+        "dataset_row_index": 147,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.5,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 5.2,
+          "petal width (cm)": 2.0
+        },
+        "predicted_probability": 0.8556974043054636
+      },
+      {
+        "row_number_in_holdout": 9,
+        "dataset_row_index": 84,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.4,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 4.5,
+          "petal width (cm)": 1.5
+        },
+        "predicted_probability": 0.7370928313649617
+      },
+      {
+        "row_number_in_holdout": 10,
+        "dataset_row_index": 107,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 7.3,
+          "sepal width (cm)": 2.9,
+          "petal length (cm)": 6.3,
+          "petal width (cm)": 1.8
+        },
+        "predicted_probability": 0.9149105423518709
+      },
+      {
+        "row_number_in_holdout": 11,
+        "dataset_row_index": 141,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.9,
+          "sepal width (cm)": 3.1,
+          "petal length (cm)": 5.1,
+          "petal width (cm)": 2.3
+        },
+        "predicted_probability": 0.9478661527189529
+      },
+      {
+        "row_number_in_holdout": 12,
+        "dataset_row_index": 104,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.5,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 5.8,
+          "petal width (cm)": 2.2
+        },
+        "predicted_probability": 0.9678011522687314
+      },
+      {
+        "row_number_in_holdout": 13,
+        "dataset_row_index": 51,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.4,
+          "sepal width (cm)": 3.2,
+          "petal length (cm)": 4.5,
+          "petal width (cm)": 1.5
+        },
+        "predicted_probability": 0.7893862520771446
+      },
+      {
+        "row_number_in_holdout": 14,
+        "dataset_row_index": 7,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.0,
+          "sepal width (cm)": 3.4,
+          "petal length (cm)": 1.5,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9765151004748854
+      },
+      {
+        "row_number_in_holdout": 15,
+        "dataset_row_index": 49,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.0,
+          "sepal width (cm)": 3.3,
+          "petal length (cm)": 1.4,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9709196772481333
+      },
+      {
+        "row_number_in_holdout": 16,
+        "dataset_row_index": 14,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.8,
+          "sepal width (cm)": 4.0,
+          "petal length (cm)": 1.2,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9867022735205958
+      },
+      {
+        "row_number_in_holdout": 17,
+        "dataset_row_index": 69,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.6,
+          "sepal width (cm)": 2.5,
+          "petal length (cm)": 3.9,
+          "petal width (cm)": 1.1
+        },
+        "predicted_probability": 0.9397042073452226
+      },
+      {
+        "row_number_in_holdout": 18,
+        "dataset_row_index": 63,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.1,
+          "sepal width (cm)": 2.9,
+          "petal length (cm)": 4.7,
+          "petal width (cm)": 1.4
+        },
+        "predicted_probability": 0.7918662469652024
+      },
+      {
+        "row_number_in_holdout": 19,
+        "dataset_row_index": 138,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.0,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 4.8,
+          "petal width (cm)": 1.8
+        },
+        "predicted_probability": 0.5959624325052375
+      },
+      {
+        "row_number_in_holdout": 20,
+        "dataset_row_index": 10,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.4,
+          "sepal width (cm)": 3.7,
+          "petal length (cm)": 1.5,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9797938288935459
+      },
+      {
+        "row_number_in_holdout": 21,
+        "dataset_row_index": 140,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.7,
+          "sepal width (cm)": 3.1,
+          "petal length (cm)": 5.6,
+          "petal width (cm)": 2.4
+        },
+        "predicted_probability": 0.9812599482244235
+      },
+      {
+        "row_number_in_holdout": 22,
+        "dataset_row_index": 58,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.6,
+          "sepal width (cm)": 2.9,
+          "petal length (cm)": 4.6,
+          "petal width (cm)": 1.3
+        },
+        "predicted_probability": 0.8695730681663567
+      },
+      {
+        "row_number_in_holdout": 23,
+        "dataset_row_index": 134,
+        "actual_class": "virginica",
+        "predicted_class": "versicolor",
+        "correct": false,
+        "features": {
+          "sepal length (cm)": 6.1,
+          "sepal width (cm)": 2.6,
+          "petal length (cm)": 5.6,
+          "petal width (cm)": 1.4
+        },
+        "predicted_probability": 0.5145247403053993
+      },
+      {
+        "row_number_in_holdout": 24,
+        "dataset_row_index": 132,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.4,
+          "sepal width (cm)": 2.8,
+          "petal length (cm)": 5.6,
+          "petal width (cm)": 2.2
+        },
+        "predicted_probability": 0.9639649575119
+      },
+      {
+        "row_number_in_holdout": 25,
+        "dataset_row_index": 77,
+        "actual_class": "versicolor",
+        "predicted_class": "virginica",
+        "correct": false,
+        "features": {
+          "sepal length (cm)": 6.7,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 5.0,
+          "petal width (cm)": 1.7
+        },
+        "predicted_probability": 0.556861408278909
+      },
+      {
+        "row_number_in_holdout": 26,
+        "dataset_row_index": 75,
+        "actual_class": "versicolor",
+        "predicted_class": "versicolor",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.6,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 4.4,
+          "petal width (cm)": 1.4
+        },
+        "predicted_probability": 0.8541880787491314
+      },
+      {
+        "row_number_in_holdout": 27,
+        "dataset_row_index": 18,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.7,
+          "sepal width (cm)": 3.8,
+          "petal length (cm)": 1.7,
+          "petal width (cm)": 0.3
+        },
+        "predicted_probability": 0.964849635360283
+      },
+      {
+        "row_number_in_holdout": 28,
+        "dataset_row_index": 116,
+        "actual_class": "virginica",
+        "predicted_class": "virginica",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 6.5,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 5.5,
+          "petal width (cm)": 1.8
+        },
+        "predicted_probability": 0.7835578904422017
+      },
+      {
+        "row_number_in_holdout": 29,
+        "dataset_row_index": 28,
+        "actual_class": "setosa",
+        "predicted_class": "setosa",
+        "correct": true,
+        "features": {
+          "sepal length (cm)": 5.2,
+          "sepal width (cm)": 3.4,
+          "petal length (cm)": 1.4,
+          "petal width (cm)": 0.2
+        },
+        "predicted_probability": 0.9686300923987361
+      }
+    ],
+    "failure_cases": [
+      {
+        "row_number_in_holdout": 23,
+        "dataset_row_index": 134,
+        "actual_class": "virginica",
+        "predicted_class": "versicolor",
+        "correct": false,
+        "features": {
+          "sepal length (cm)": 6.1,
+          "sepal width (cm)": 2.6,
+          "petal length (cm)": 5.6,
+          "petal width (cm)": 1.4
+        },
+        "predicted_probability": 0.5145247403053993
+      },
+      {
+        "row_number_in_holdout": 25,
+        "dataset_row_index": 77,
+        "actual_class": "versicolor",
+        "predicted_class": "virginica",
+        "correct": false,
+        "features": {
+          "sepal length (cm)": 6.7,
+          "sepal width (cm)": 3.0,
+          "petal length (cm)": 5.0,
+          "petal width (cm)": 1.7
+        },
+        "predicted_probability": 0.556861408278909
+      }
+    ],
+    "majority_baseline": {
+      "accuracy": 0.3333333333333333,
+      "correct": 10,
+      "accuracy_delta": 0.6000000000000001
+    }
+  },
+  "deployment": {
+    "status": "Local inference artifact produced; not production approved.",
+    "model_artifact": "model.joblib",
+    "bundle_schema_version": "1.1",
+    "inference_command": "python3 src/inference.py --model-path artifacts/model.joblib --features 5.1 3.5 1.4 0.2",
+    "input_contract": {
+      "feature_names": [
+        "sepal length (cm)",
+        "sepal width (cm)",
+        "petal length (cm)",
+        "petal width (cm)"
+      ],
+      "units": "cm",
+      "dtype": "finite real number",
+      "required_count": 4,
+      "allowed_range_per_feature": [
+        0.0,
+        10.0
+      ],
+      "invalid_input_policy": "Reject with ValueError; do not impute or reorder caller-provided values."
+    },
+    "monitoring_plan": [
+      {
+        "signal": "input validation failures",
+        "window": "daily",
+        "action": "inspect caller/schema changes before accepting traffic"
+      },
+      {
+        "signal": "feature range and class distribution drift",
+        "window": "weekly",
+        "action": "compare with the checked-in training snapshot"
+      },
+      {
+        "signal": "accuracy on reviewed labels",
+        "window": "monthly or every 100 reviewed rows",
+        "action": "retrain and re-run the locked evaluation if it falls below the CV-informed expectation"
+      }
+    ],
+    "rollback": "Keep the previous model bundle and restore it if a reviewed evaluation or contract check fails.",
+    "claim_boundary": "This artifact supports local, schema-validated inference on Iris-like measurements only; it does not establish external or production performance.",
+    "validation_semantics": {
+      "success_gate": "Pass only when modeling.beats_baseline_in_cv is true: the selected candidate's mean repeated-CV accuracy on training rows is strictly greater than the majority baseline.",
+      "holdout_readout": "The fixed stratified 30-row holdout is locked before fitting and used once for a descriptive readout; its accuracy and baseline delta do not decide the curriculum pass badge.",
+      "production_readiness": "No production or external-generalization claim is supported without representative external validation, a validated cost matrix, and operational monitoring."
+    }
+  },
+  "artifacts": {
+    "iris_snapshot.csv": {
+      "sha256": "76188fc8f820b97004a4635c0bd8d01f7dbb7f6756058d07bb56a34a135d1e85"
+    },
+    "model.joblib": {
+      "sha256": "2af6924659dc3e7aa19f98edb2071f09a2a4545ec85552f443422cfbe9250168"
+    }
+  }
+}

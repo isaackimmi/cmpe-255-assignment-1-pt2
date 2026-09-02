@@ -1,0 +1,170 @@
+{
+  "seed": 255,
+  "n_customers": 120,
+  "selected_k": 3,
+  "selected_preprocessing": "standard",
+  "silhouette": 0.6930526705991197,
+  "calinski_harabasz": 460.4326146785254,
+  "davies_bouldin": 0.4656126014594455,
+  "fit_metrics": {
+    "silhouette": 0.6930526705991197,
+    "calinski_harabasz": 460.4326146785254,
+    "davies_bouldin": 0.4656126014594455
+  },
+  "validation": {
+    "preprocessing": "standard",
+    "k": 3,
+    "validation_repeats": 12,
+    "train_fraction": 0.8,
+    "silhouette_mean": 0.6909703153644138,
+    "silhouette_std": 0.028974879752958288,
+    "calinski_harabasz_mean": 91.96269164649537,
+    "calinski_harabasz_std": 15.501466429895297,
+    "davies_bouldin_mean": 0.44561446179406355,
+    "davies_bouldin_std": 0.03793870373094456,
+    "stability_ari_mean": 1.0,
+    "stability_ari_std": 0.0,
+    "stability_ari_min": 1.0
+  },
+  "features": [
+    "annual_income_k",
+    "spend_score",
+    "purchase_frequency",
+    "avg_order_value"
+  ],
+  "preprocessing": "selected by repeated held-out validation; compare standard and log1p variants",
+  "selection": {
+    "candidate_k": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "criterion": "highest mean held-out silhouette; stability ARI and lower k are tie-breakers",
+    "repeats": 12,
+    "train_fraction": 0.8,
+    "note": "Exploratory internal validation on synthetic data; not evidence of future customer performance."
+  },
+  "data_quality": {
+    "valid": true,
+    "errors": [],
+    "n_rows": 120,
+    "feature_schema": [
+      "annual_income_k",
+      "spend_score",
+      "purchase_frequency",
+      "avg_order_value"
+    ],
+    "missing_values": 0,
+    "duplicate_rows": 0,
+    "range_violations": {
+      "annual_income_k": 0,
+      "spend_score": 0,
+      "purchase_frequency": 0,
+      "avg_order_value": 0
+    },
+    "feature_audit": {
+      "features": {
+        "annual_income_k": {
+          "min": 20.835,
+          "max": 128.172,
+          "mean": 71.26641666666667,
+          "std": 29.868564681689303,
+          "skew": 0.047381461459140205,
+          "iqr_outliers": 0
+        },
+        "spend_score": {
+          "min": 10.13,
+          "max": 99.0,
+          "mean": 51.92796666666666,
+          "std": 23.268099560525854,
+          "skew": 0.14645397769863666,
+          "iqr_outliers": 0
+        },
+        "purchase_frequency": {
+          "min": 0.755,
+          "max": 9.126,
+          "mean": 4.182075,
+          "std": 2.1475342873481984,
+          "skew": 0.5340256869416428,
+          "iqr_outliers": 0
+        },
+        "avg_order_value": {
+          "min": 13.996,
+          "max": 147.201,
+          "mean": 68.83851666666666,
+          "std": 39.371205646387565,
+          "skew": 0.2073683809411592,
+          "iqr_outliers": 0
+        }
+      },
+      "correlation": {
+        "annual_income_k": {
+          "annual_income_k": 1.0,
+          "spend_score": 0.3909,
+          "purchase_frequency": 0.2677,
+          "avg_order_value": 0.9072
+        },
+        "spend_score": {
+          "annual_income_k": 0.3909,
+          "spend_score": 1.0,
+          "purchase_frequency": 0.837,
+          "avg_order_value": 0.3542
+        },
+        "purchase_frequency": {
+          "annual_income_k": 0.2677,
+          "spend_score": 0.837,
+          "purchase_frequency": 1.0,
+          "avg_order_value": 0.201
+        },
+        "avg_order_value": {
+          "annual_income_k": 0.9072,
+          "spend_score": 0.3542,
+          "purchase_frequency": 0.201,
+          "avg_order_value": 1.0
+        }
+      }
+    }
+  },
+  "generator": {
+    "name": "three Gaussian prototype chunks",
+    "n_per_segment": 40,
+    "seed": 255,
+    "interpretation": "prototype recovery teaching sample; not observed customer behavior"
+  },
+  "projection": {
+    "method": "PCA",
+    "components": [
+      "pca_x",
+      "pca_y"
+    ],
+    "explained_variance_ratio": [
+      0.6212309581247449,
+      0.31837690622129633
+    ],
+    "use": "visualization-only projection of the four fitted feature dimensions"
+  },
+  "assignment_diagnostics": {
+    "distance": "nearest centroid distance in fitted StandardScaler/log1p + StandardScaler space",
+    "margin": "runner-up centroid distance minus nearest centroid distance",
+    "confidence": "1 - nearest distance / runner-up distance; geometry proxy, not a probability",
+    "labels": {
+      "clear": ">= 0.55",
+      "moderate": "0.30 to < 0.55",
+      "ambiguous": "< 0.30"
+    }
+  },
+  "provenance": {
+    "source_sha256": "18bf23d1d0c8490f38767a38bb5464328283ed4dc2d6e88c0fb3fbb342fa6af5",
+    "python": "3.12.13",
+    "packages": {
+      "numpy": "1.26.4",
+      "pandas": "2.2.2",
+      "scikit-learn": "1.5.1",
+      "matplotlib": "3.9.2"
+    },
+    "scoring_path": "src.experiment.fit_segmenter + score_customers"
+  }
+}

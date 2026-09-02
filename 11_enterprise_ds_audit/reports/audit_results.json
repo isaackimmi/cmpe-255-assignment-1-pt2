@@ -1,0 +1,520 @@
+{
+  "dataset": "11_enterprise_ds_audit/artifacts/sample_customers.csv",
+  "generated_at_utc": "2026-08-31T07:16:03Z",
+  "policy_version": "2026.08.2",
+  "config": {
+    "policy_version": "2026.08.2",
+    "required": {
+      "customer_id": "str",
+      "snapshot_date": "date",
+      "tenure_months": "int",
+      "monthly_spend": "float",
+      "support_tickets_90d": "int",
+      "plan": "category",
+      "churned": "bool",
+      "churn_confirmed_at": "date_or_null",
+      "internal_note": "str_or_null"
+    },
+    "safe_features": [
+      "tenure_months",
+      "monthly_spend",
+      "support_tickets_90d",
+      "plan"
+    ],
+    "prediction_time_column": "snapshot_date",
+    "label_column": "churned",
+    "feature_manifest": [
+      "tenure_months",
+      "monthly_spend",
+      "support_tickets_90d",
+      "plan"
+    ],
+    "as_of_date": "2025-12-31",
+    "missingness_policy": {
+      "customer_id": {
+        "allow_null": false,
+        "max_rate": 0.0
+      },
+      "snapshot_date": {
+        "allow_null": false,
+        "max_rate": 0.0
+      },
+      "tenure_months": {
+        "allow_null": false,
+        "max_rate": 0.0
+      },
+      "monthly_spend": {
+        "allow_null": false,
+        "max_rate": 0.0
+      },
+      "support_tickets_90d": {
+        "allow_null": false,
+        "max_rate": 0.0
+      },
+      "plan": {
+        "allow_null": false,
+        "max_rate": 0.0
+      },
+      "churned": {
+        "allow_null": false,
+        "max_rate": 0.0
+      },
+      "churn_confirmed_at": {
+        "allow_null": true,
+        "max_rate": 1.0
+      },
+      "internal_note": {
+        "allow_null": true,
+        "max_rate": 1.0
+      }
+    },
+    "grain": "customer_snapshot",
+    "duplicate_key": [
+      "customer_id",
+      "snapshot_date"
+    ],
+    "minimum_train_rows": 12,
+    "minimum_test_rows": 10,
+    "minimum_class_support": 2
+  },
+  "checks": [
+    {
+      "name": "schema",
+      "category": "schema",
+      "status": "FAIL",
+      "severity": "high",
+      "detail": "41 rows; missing=[]; extra=[]; row_errors=1",
+      "evidence": {
+        "rows_inspected": 41,
+        "header": [
+          "customer_id",
+          "snapshot_date",
+          "tenure_months",
+          "monthly_spend",
+          "support_tickets_90d",
+          "plan",
+          "churned",
+          "churn_confirmed_at",
+          "internal_note"
+        ],
+        "required_columns": [
+          "churn_confirmed_at",
+          "churned",
+          "customer_id",
+          "internal_note",
+          "monthly_spend",
+          "plan",
+          "snapshot_date",
+          "support_tickets_90d",
+          "tenure_months"
+        ],
+        "missing_columns": [],
+        "extra_columns": [],
+        "duplicate_headers": [],
+        "row_errors": [
+          {
+            "row": 8,
+            "reason": "parse",
+            "fields": [
+              "monthly_spend: missing value"
+            ]
+          }
+        ],
+        "row_error_count": 1,
+        "control": "schema",
+        "rule": "41 rows; missing=[]; extra=[]; row_errors=1",
+        "status": "FAIL",
+        "severity": "high"
+      },
+      "rule_version": "2026.08.2"
+    },
+    {
+      "name": "missingness",
+      "category": "completeness",
+      "status": "FAIL",
+      "severity": "medium",
+      "detail": "null_rates={'customer_id': 0.0, 'snapshot_date': 0.0, 'tenure_months': 0.0, 'monthly_spend': 0.0244, 'support_tickets_90d': 0.0, 'plan': 0.0, 'churned': 0.0, 'churn_confirmed_at': 0.7561, 'internal_note': 0.9756}; violations=['monthly_spend']",
+      "evidence": {
+        "null_rates": {
+          "customer_id": 0.0,
+          "snapshot_date": 0.0,
+          "tenure_months": 0.0,
+          "monthly_spend": 0.0244,
+          "support_tickets_90d": 0.0,
+          "plan": 0.0,
+          "churned": 0.0,
+          "churn_confirmed_at": 0.7561,
+          "internal_note": 0.9756
+        },
+        "null_counts": {
+          "customer_id": 0,
+          "snapshot_date": 0,
+          "tenure_months": 0,
+          "monthly_spend": 1,
+          "support_tickets_90d": 0,
+          "plan": 0,
+          "churned": 0,
+          "churn_confirmed_at": 31,
+          "internal_note": 40
+        },
+        "denominator": 41,
+        "policy": {
+          "customer_id": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "snapshot_date": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "tenure_months": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "monthly_spend": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "support_tickets_90d": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "plan": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "churned": {
+            "allow_null": false,
+            "max_rate": 0.0
+          },
+          "churn_confirmed_at": {
+            "allow_null": true,
+            "max_rate": 1.0
+          },
+          "internal_note": {
+            "allow_null": true,
+            "max_rate": 1.0
+          }
+        },
+        "violations": {
+          "monthly_spend": {
+            "count": 1,
+            "rate": 0.0244,
+            "allow_null": false,
+            "max_rate": 0.0
+          }
+        },
+        "control": "missingness",
+        "rule": "null_rates={'customer_id': 0.0, 'snapshot_date': 0.0, 'tenure_months': 0.0, 'monthly_spend': 0.0244, 'support_tickets_90d': 0.0, 'plan': 0.0, 'churned': 0.0, 'churn_confirmed_at': 0.7561, 'internal_note': 0.9756}; violations=['monthly_spend']",
+        "status": "FAIL",
+        "severity": "medium"
+      },
+      "rule_version": "2026.08.2"
+    },
+    {
+      "name": "duplicate_identifiers",
+      "category": "data_integrity",
+      "status": "FAIL",
+      "severity": "high",
+      "detail": "duplicate_key_values=[['C0001', '2025-01-02']]; exact_duplicate_rows=1; conflicting_keys=0; excluded=1",
+      "evidence": {
+        "grain": "customer_snapshot",
+        "duplicate_key": [
+          "customer_id",
+          "snapshot_date"
+        ],
+        "duplicate_key_values": [
+          [
+            "C0001",
+            "2025-01-02"
+          ]
+        ],
+        "exact_duplicate_key_values": [
+          [
+            "C0001",
+            "2025-01-02"
+          ]
+        ],
+        "conflicting_duplicate_keys": [],
+        "conflicting_duplicate_key_count": 0,
+        "conflicting_duplicate_rows": 0,
+        "exact_duplicate_rows": 1,
+        "exact_duplicate_samples": [
+          {
+            "churn_confirmed_at": "2025-01-07",
+            "churned": "1",
+            "customer_id": "C0001",
+            "internal_note": null,
+            "monthly_spend": "62.06",
+            "plan": "pro",
+            "snapshot_date": "2025-01-02",
+            "support_tickets_90d": "5",
+            "tenure_months": "10"
+          }
+        ],
+        "valid_multi_snapshot_customer_ids": [],
+        "excluded_row_count": 1,
+        "duplicate_gate": "FAIL and block model evaluation when a customer_id/snapshot_date key has conflicting payloads; exact duplicates are deterministically excluded",
+        "control": "duplicate_identifiers",
+        "rule": "duplicate_key_values=[['C0001', '2025-01-02']]; exact_duplicate_rows=1; conflicting_keys=0; excluded=1",
+        "status": "FAIL",
+        "severity": "high"
+      },
+      "rule_version": "2026.08.2"
+    },
+    {
+      "name": "domain_validity",
+      "category": "domain",
+      "status": "INCONCLUSIVE",
+      "severity": "high",
+      "detail": "0 domain violation(s) across 41 raw rows; as_of_date=2025-12-31",
+      "evidence": {
+        "violation_count": 0,
+        "violations": [],
+        "rows_checked": 41,
+        "as_of_date": "2025-12-31",
+        "control": "domain_validity",
+        "rule": "0 domain violation(s) across 41 raw rows; as_of_date=2025-12-31",
+        "status": "INCONCLUSIVE",
+        "severity": "high"
+      },
+      "rule_version": "2026.08.2"
+    },
+    {
+      "name": "leakage_risk",
+      "category": "governance",
+      "status": "PASS",
+      "severity": "low",
+      "detail": "features=['tenure_months', 'monthly_spend', 'support_tickets_90d', 'plan']; offending=0; excluded_suspicious=['customer_id', 'churned', 'churn_confirmed_at']",
+      "evidence": {
+        "prediction_time_column": "snapshot_date",
+        "label_column": "churned",
+        "feature_manifest": [
+          "tenure_months",
+          "monthly_spend",
+          "support_tickets_90d",
+          "plan"
+        ],
+        "safe_feature_allowlist": [
+          "tenure_months",
+          "monthly_spend",
+          "support_tickets_90d",
+          "plan"
+        ],
+        "invalid_contract": [],
+        "offending_features": [],
+        "excluded_suspicious_columns": [
+          "customer_id",
+          "churned",
+          "churn_confirmed_at"
+        ],
+        "control": "leakage_risk",
+        "rule": "features=['tenure_months', 'monthly_spend', 'support_tickets_90d', 'plan']; offending=0; excluded_suspicious=['customer_id', 'churned', 'churn_confirmed_at']",
+        "status": "PASS",
+        "severity": "low"
+      },
+      "rule_version": "2026.08.2"
+    },
+    {
+      "name": "model_quality",
+      "category": "model_quality",
+      "status": "INCONCLUSIVE",
+      "severity": "high",
+      "detail": "status=INCONCLUSIVE; reason=model evaluation blocked until schema and domain validation pass; test_rows=0",
+      "evidence": {
+        "status": "INCONCLUSIVE",
+        "reason": "model evaluation blocked until schema and domain validation pass",
+        "excluded_rows": {
+          "invalid_input": 1
+        },
+        "feature_manifest": [
+          "tenure_months",
+          "monthly_spend",
+          "support_tickets_90d",
+          "plan"
+        ],
+        "model_feature_manifest": [
+          "support_tickets_90d"
+        ],
+        "model_configuration": {
+          "name": "ticket_threshold_decision_stump",
+          "feature_manifest": [
+            "support_tickets_90d"
+          ],
+          "threshold_rule": "minimum positive training ticket count",
+          "baseline": "majority_class",
+          "declared_feature_manifest": [
+            "tenure_months",
+            "monthly_spend",
+            "support_tickets_90d",
+            "plan"
+          ]
+        },
+        "model_configuration_sha256": "b667d1dbce555892e572af564f07c6d0d1e669b988fcdb75247d50ff2e8cc961",
+        "control": "model_quality",
+        "rule": "status=INCONCLUSIVE; reason=model evaluation blocked until schema and domain validation pass; test_rows=0",
+        "severity": "high"
+      },
+      "rule_version": "2026.08.2"
+    },
+    {
+      "name": "reproducibility",
+      "category": "governance",
+      "status": "PASS",
+      "severity": "low",
+      "detail": "canonical_hash=723c75df5915fabd92d0de1fdd7257a5fb91f449ea1071dff4f95bf57ffda4af; rerun_match=True; source_hash=a2cf5ace8a8b\u2026",
+      "evidence": {
+        "policy_version": "2026.08.2",
+        "seed": 255,
+        "input_sha256": "7372a7fd43364c9e5d2b6120b3cf2d42da5de65918e2128ad18e226dbd951a04",
+        "source_sha256": "a2cf5ace8a8bf0196b4ed481a4970dee9499f9b48e03450114d6db4425ad85eb",
+        "runner_sha256": "f290200a5e5e3a6f9d6185b2cd769a3a8cfe472a1edb411d99185a333bec43d5",
+        "configuration_sha256": "63c7476a32edf913a95c34fd0eed0e8fbf9bda7c0b4b5086e849c27f4a8b419b",
+        "model_configuration_sha256": "b667d1dbce555892e572af564f07c6d0d1e669b988fcdb75247d50ff2e8cc961",
+        "dependency_lock_sha256": "none",
+        "repository_revision": "08697d2ff0b5757e60f2682deba38c2001e8beec",
+        "python": "3.14.7",
+        "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+        "split": "time-ordered temporal holdouts",
+        "split_manifest": {
+          "grain": "customer_snapshot",
+          "primary_window": "final_holdout",
+          "train_date_bounds": [],
+          "test_date_bounds": [],
+          "train_row_ids": [],
+          "test_row_ids": []
+        },
+        "canonical_result_sha256": "723c75df5915fabd92d0de1fdd7257a5fb91f449ea1071dff4f95bf57ffda4af",
+        "rerun_canonical_result_sha256": "723c75df5915fabd92d0de1fdd7257a5fb91f449ea1071dff4f95bf57ffda4af",
+        "rerun_match": true,
+        "control": "reproducibility",
+        "rule": "canonical_hash=723c75df5915fabd92d0de1fdd7257a5fb91f449ea1071dff4f95bf57ffda4af; rerun_match=True; source_hash=a2cf5ace8a8b\u2026",
+        "status": "PASS",
+        "severity": "low"
+      },
+      "rule_version": "2026.08.2"
+    }
+  ],
+  "reproducibility": {
+    "policy_version": "2026.08.2",
+    "seed": 255,
+    "input_sha256": "7372a7fd43364c9e5d2b6120b3cf2d42da5de65918e2128ad18e226dbd951a04",
+    "source_sha256": "a2cf5ace8a8bf0196b4ed481a4970dee9499f9b48e03450114d6db4425ad85eb",
+    "runner_sha256": "f290200a5e5e3a6f9d6185b2cd769a3a8cfe472a1edb411d99185a333bec43d5",
+    "configuration_sha256": "63c7476a32edf913a95c34fd0eed0e8fbf9bda7c0b4b5086e849c27f4a8b419b",
+    "model_configuration_sha256": "b667d1dbce555892e572af564f07c6d0d1e669b988fcdb75247d50ff2e8cc961",
+    "dependency_lock_sha256": "none",
+    "repository_revision": "08697d2ff0b5757e60f2682deba38c2001e8beec",
+    "python": "3.14.7",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "split": "time-ordered temporal holdouts",
+    "split_manifest": {
+      "grain": "customer_snapshot",
+      "primary_window": "final_holdout",
+      "train_date_bounds": [],
+      "test_date_bounds": [],
+      "train_row_ids": [],
+      "test_row_ids": []
+    },
+    "canonical_result_sha256": "723c75df5915fabd92d0de1fdd7257a5fb91f449ea1071dff4f95bf57ffda4af",
+    "rerun_canonical_result_sha256": "723c75df5915fabd92d0de1fdd7257a5fb91f449ea1071dff4f95bf57ffda4af",
+    "rerun_match": true
+  },
+  "model_quality": {
+    "status": "INCONCLUSIVE",
+    "reason": "model evaluation blocked until schema and domain validation pass",
+    "excluded_rows": {
+      "invalid_input": 1
+    },
+    "feature_manifest": [
+      "tenure_months",
+      "monthly_spend",
+      "support_tickets_90d",
+      "plan"
+    ],
+    "model_feature_manifest": [
+      "support_tickets_90d"
+    ],
+    "model_configuration": {
+      "name": "ticket_threshold_decision_stump",
+      "feature_manifest": [
+        "support_tickets_90d"
+      ],
+      "threshold_rule": "minimum positive training ticket count",
+      "baseline": "majority_class",
+      "declared_feature_manifest": [
+        "tenure_months",
+        "monthly_spend",
+        "support_tickets_90d",
+        "plan"
+      ]
+    },
+    "model_configuration_sha256": "b667d1dbce555892e572af564f07c6d0d1e669b988fcdb75247d50ff2e8cc961"
+  },
+  "release_recommendation": "CONDITIONAL",
+  "decision_state": "BLOCKED",
+  "decision": {
+    "policy_version": "2026.08.2",
+    "blocking_findings": [
+      {
+        "name": "schema",
+        "severity": "high",
+        "status": "FAIL",
+        "detail": "41 rows; missing=[]; extra=[]; row_errors=1"
+      },
+      {
+        "name": "duplicate_identifiers",
+        "severity": "high",
+        "status": "FAIL",
+        "detail": "duplicate_key_values=[['C0001', '2025-01-02']]; exact_duplicate_rows=1; conflicting_keys=0; excluded=1"
+      },
+      {
+        "name": "domain_validity",
+        "severity": "high",
+        "status": "INCONCLUSIVE",
+        "detail": "0 domain violation(s) across 41 raw rows; as_of_date=2025-12-31"
+      },
+      {
+        "name": "model_quality",
+        "severity": "high",
+        "status": "INCONCLUSIVE",
+        "detail": "status=INCONCLUSIVE; reason=model evaluation blocked until schema and domain validation pass; test_rows=0"
+      }
+    ],
+    "advisory_findings": [
+      {
+        "name": "missingness",
+        "severity": "medium",
+        "status": "FAIL",
+        "detail": "null_rates={'customer_id': 0.0, 'snapshot_date': 0.0, 'tenure_months': 0.0, 'monthly_spend': 0.0244, 'support_tickets_90d': 0.0, 'plan': 0.0, 'churned': 0.0, 'churn_confirmed_at': 0.7561, 'internal_note': 0.9756}; violations=['monthly_spend']"
+      }
+    ],
+    "warning_findings": [
+      {
+        "name": "missingness",
+        "severity": "medium",
+        "status": "FAIL",
+        "detail": "null_rates={'customer_id': 0.0, 'snapshot_date': 0.0, 'tenure_months': 0.0, 'monthly_spend': 0.0244, 'support_tickets_90d': 0.0, 'plan': 0.0, 'churned': 0.0, 'churn_confirmed_at': 0.7561, 'internal_note': 0.9756}; violations=['monthly_spend']"
+      }
+    ],
+    "policy": {
+      "blocking": [
+        "INCONCLUSIVE",
+        "high FAIL"
+      ],
+      "conditional": [
+        "WARN",
+        "medium FAIL",
+        "low FAIL",
+        "high WARN"
+      ],
+      "approved": [
+        "all controls PASS",
+        "model_quality PASS",
+        "no blocking or advisory findings"
+      ]
+    },
+    "text": "Release is blocked by: schema, duplicate_identifiers, domain_validity, model_quality."
+  },
+  "summary": "3 fail(s), 2 inconclusive, 1 advisory finding(s); release recommendation: CONDITIONAL"
+}

@@ -1,0 +1,329 @@
+{
+  "run_timestamp_utc": "2026-08-31T07:16:06.227981+00:00",
+  "source": "deterministic synthetic NYC-like fallback",
+  "source_sha256": null,
+  "input_rows": 6000,
+  "rows_after_structural_cleaning": 5996,
+  "rows_after_cleaning": 5996,
+  "drop_rate": 0.000667,
+  "dropped_by_reason": {
+    "ambiguous_local_timestamp": 4
+  },
+  "target_policy": {
+    "quantile": 0.99,
+    "upper_bound_seconds": 1058.04,
+    "train_rows_before_trim": 4797,
+    "train_rows_used_for_fit": 4749,
+    "train_duration_outlier_rows": 48,
+    "test_duration_outlier_rows": 13,
+    "primary_test_rows_scored": 1199,
+    "robust_inlier_test_rows_scored": 1186,
+    "robust_inlier_exclusion_is_sensitivity_only": true
+  },
+  "duration_upper_bound_seconds": 1058.04,
+  "duration_quantile": 0.99,
+  "train_rows": 4749,
+  "test_rows": 1199,
+  "test_rows_robust_inlier": 1186,
+  "split_cutoff": {
+    "train_max_pickup_datetime": "2016-03-12 23:37:00",
+    "test_min_pickup_datetime": "2016-03-12 23:46:00"
+  },
+  "observed_timestamp_range": {
+    "min_pickup_datetime": "2016-01-01 05:47:00",
+    "max_pickup_datetime": "2016-03-31 03:16:00"
+  },
+  "baseline_median_seconds": 576.0,
+  "baseline": {
+    "mae_seconds": 148.243,
+    "rmse_seconds": 184.684,
+    "r2": -0.0083
+  },
+  "recent_median_baseline": {
+    "mae_seconds": 148.259,
+    "rmse_seconds": 184.73,
+    "r2": -0.0088
+  },
+  "hour_median_baseline": {
+    "mae_seconds": 146.071,
+    "rmse_seconds": 182.907,
+    "r2": 0.011
+  },
+  "linear_log_target": {
+    "mae_seconds": 84.592,
+    "rmse_seconds": 106.976,
+    "r2": 0.6617
+  },
+  "robust_inlier_sensitivity": {
+    "baseline": {
+      "mae_seconds": 144.019,
+      "rmse_seconds": 176.998,
+      "r2": -0.0039
+    },
+    "recent_median_baseline": {
+      "mae_seconds": 144.03,
+      "rmse_seconds": 177.03,
+      "r2": -0.0043
+    },
+    "hour_median_baseline": {
+      "mae_seconds": 141.797,
+      "rmse_seconds": 174.969,
+      "r2": 0.019
+    },
+    "linear_log_target": {
+      "mae_seconds": 83.643,
+      "rmse_seconds": 105.594,
+      "r2": 0.6427
+    },
+    "test_rows": 1186
+  },
+  "temporal_validation": {
+    "folds": [
+      {
+        "global_median": {
+          "mae_seconds": 149.204,
+          "rmse_seconds": 188.719,
+          "r2": -0.0035
+        },
+        "recent_median": {
+          "mae_seconds": 149.156,
+          "rmse_seconds": 188.565,
+          "r2": -0.0019
+        },
+        "hour_median": {
+          "mae_seconds": 145.037,
+          "rmse_seconds": 183.351,
+          "r2": 0.0528
+        },
+        "linear_log_target": {
+          "mae_seconds": 92.149,
+          "rmse_seconds": 115.695,
+          "r2": 0.6228
+        },
+        "robust_inlier": {
+          "global_median": {
+            "mae_seconds": 140.007,
+            "rmse_seconds": 172.951,
+            "r2": -0.0001
+          },
+          "recent_median": {
+            "mae_seconds": 140.037,
+            "rmse_seconds": 173.006,
+            "r2": -0.0007
+          },
+          "hour_median": {
+            "mae_seconds": 135.756,
+            "rmse_seconds": 166.976,
+            "r2": 0.0678
+          },
+          "linear_log_target": {
+            "mae_seconds": 89.216,
+            "rmse_seconds": 110.178,
+            "r2": 0.5941
+          }
+        },
+        "test_rows": 899,
+        "robust_test_rows": 876,
+        "train_rows": 2968,
+        "fold": 1,
+        "split_cutoff": {
+          "train_max_pickup_datetime": "2016-02-15 07:49:00",
+          "test_min_pickup_datetime": "2016-02-15 07:59:00"
+        }
+      },
+      {
+        "global_median": {
+          "mae_seconds": 145.614,
+          "rmse_seconds": 184.934,
+          "r2": -0.0073
+        },
+        "recent_median": {
+          "mae_seconds": 145.621,
+          "rmse_seconds": 185.115,
+          "r2": -0.0092
+        },
+        "hour_median": {
+          "mae_seconds": 141.064,
+          "rmse_seconds": 179.505,
+          "r2": 0.051
+        },
+        "linear_log_target": {
+          "mae_seconds": 88.853,
+          "rmse_seconds": 111.436,
+          "r2": 0.6343
+        },
+        "robust_inlier": {
+          "global_median": {
+            "mae_seconds": 136.699,
+            "rmse_seconds": 167.808,
+            "r2": -0.0005
+          },
+          "recent_median": {
+            "mae_seconds": 136.66,
+            "rmse_seconds": 167.866,
+            "r2": -0.0012
+          },
+          "hour_median": {
+            "mae_seconds": 132.501,
+            "rmse_seconds": 163.18,
+            "r2": 0.0539
+          },
+          "linear_log_target": {
+            "mae_seconds": 87.75,
+            "rmse_seconds": 110.172,
+            "r2": 0.5687
+          }
+        },
+        "test_rows": 900,
+        "robust_test_rows": 880,
+        "train_rows": 3858,
+        "fold": 2,
+        "split_cutoff": {
+          "train_max_pickup_datetime": "2016-02-28 00:58:00",
+          "test_min_pickup_datetime": "2016-02-28 01:02:00"
+        }
+      },
+      {
+        "global_median": {
+          "mae_seconds": 148.243,
+          "rmse_seconds": 184.684,
+          "r2": -0.0083
+        },
+        "recent_median": {
+          "mae_seconds": 148.259,
+          "rmse_seconds": 184.73,
+          "r2": -0.0088
+        },
+        "hour_median": {
+          "mae_seconds": 146.071,
+          "rmse_seconds": 182.907,
+          "r2": 0.011
+        },
+        "linear_log_target": {
+          "mae_seconds": 84.592,
+          "rmse_seconds": 106.976,
+          "r2": 0.6617
+        },
+        "robust_inlier": {
+          "global_median": {
+            "mae_seconds": 140.675,
+            "rmse_seconds": 171.668,
+            "r2": -0.0013
+          },
+          "recent_median": {
+            "mae_seconds": 140.681,
+            "rmse_seconds": 171.687,
+            "r2": -0.0016
+          },
+          "hour_median": {
+            "mae_seconds": 138.61,
+            "rmse_seconds": 169.925,
+            "r2": 0.0189
+          },
+          "linear_log_target": {
+            "mae_seconds": 83.366,
+            "rmse_seconds": 105.319,
+            "r2": 0.6231
+          }
+        },
+        "test_rows": 1199,
+        "robust_test_rows": 1173,
+        "train_rows": 4749,
+        "fold": 3,
+        "split_cutoff": {
+          "train_max_pickup_datetime": "2016-03-12 23:37:00",
+          "test_min_pickup_datetime": "2016-03-12 23:46:00"
+        }
+      }
+    ],
+    "fold_summary": {
+      "global_median": {
+        "mean_mae_seconds": 147.687,
+        "stdev_mae_seconds": 1.517,
+        "min_mae_seconds": 145.614,
+        "max_mae_seconds": 149.204
+      },
+      "recent_median": {
+        "mean_mae_seconds": 147.679,
+        "stdev_mae_seconds": 1.5,
+        "min_mae_seconds": 145.621,
+        "max_mae_seconds": 149.156
+      },
+      "hour_median": {
+        "mean_mae_seconds": 144.057,
+        "stdev_mae_seconds": 2.158,
+        "min_mae_seconds": 141.064,
+        "max_mae_seconds": 146.071
+      },
+      "linear_log_target": {
+        "mean_mae_seconds": 88.531,
+        "stdev_mae_seconds": 3.094,
+        "min_mae_seconds": 84.592,
+        "max_mae_seconds": 92.149
+      }
+    }
+  },
+  "run_config": {
+    "seed": 255,
+    "sample_size": 6000,
+    "features": [
+      "vendor_id",
+      "passenger_count",
+      "pickup_longitude",
+      "pickup_latitude",
+      "dropoff_longitude",
+      "dropoff_latitude",
+      "hour",
+      "weekday",
+      "month",
+      "is_weekend",
+      "is_rush_hour",
+      "distance_miles",
+      "delta_longitude",
+      "delta_latitude"
+    ],
+    "model": {
+      "type": "regularized_linear_regression",
+      "target_transform": "log1p",
+      "learning_rate": 0.04,
+      "iterations": 1800,
+      "l2": 0.002
+    },
+    "cleaning": {
+      "coordinate_ranges": "latitude [-90, 90], longitude [-180, 180]",
+      "service_area": {
+        "longitude": [
+          -74.3,
+          -73.65
+        ],
+        "latitude": [
+          40.45,
+          40.95
+        ]
+      },
+      "passenger_count_range": "integer [1, 10]",
+      "allowed_vendor_ids": [
+        1,
+        2
+      ],
+      "maximum_route_distance_miles": 100,
+      "duration": "positive values; upper bound is fit on training only and used for sensitivity scoring",
+      "duplicate_handling": "duplicate non-empty ids are dropped after the first occurrence",
+      "timestamp_coverage": {
+        "min": "2010-01-01 00:00:00",
+        "max": "2030-01-01 00:00:00"
+      },
+      "maximum_allowed_drop_rate": 0.25
+    },
+    "timestamp_policy": {
+      "naive_input_timezone": "America/New_York",
+      "aware_input_normalization": "UTC",
+      "mixed_awareness": "rejected",
+      "ambiguous_local_times": "rejected",
+      "split_tie_handling": "pickup timestamp groups stay wholly in train or test",
+      "strict_forward_invariant": "train_max_pickup_datetime < test_min_pickup_datetime"
+    },
+    "python_version": "3.14.7",
+    "platform": "darwin"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "naive_bayes.svg": "artifacts/naive_bayes.svg",
+  "evaluation.svg": "artifacts/evaluation.svg",
+  "gradient_descent.svg": "artifacts/gradient_descent.svg",
+  "backpropagation.svg": "artifacts/backpropagation.svg"
+}

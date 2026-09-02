@@ -1,0 +1,3 @@
+# Optional Transformer backend. The default experiment needs no packages.
+# The upper bound keeps the teaching artifact reproducible across major releases.
+torch>=2.0,<3.0

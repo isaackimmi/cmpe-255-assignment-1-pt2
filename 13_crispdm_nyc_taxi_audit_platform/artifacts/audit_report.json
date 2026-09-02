@@ -1,0 +1,2090 @@
+{
+  "rows": 1200,
+  "columns": [
+    "trip_id",
+    "pickup_datetime",
+    "passenger_count",
+    "distance_miles",
+    "pickup_zone",
+    "dropoff_zone",
+    "trip_duration_minutes"
+  ],
+  "missing_columns": [],
+  "null_counts": {
+    "trip_id": 0,
+    "pickup_datetime": 0,
+    "passenger_count": 0,
+    "distance_miles": 7,
+    "pickup_zone": 0,
+    "dropoff_zone": 0,
+    "trip_duration_minutes": 0
+  },
+  "duplicate_trip_ids": 0,
+  "invalid_duration_count": 6,
+  "non_positive_duration_count": 6,
+  "invalid_distance_count": 0,
+  "distance_quality": {
+    "missing_count": 7,
+    "non_numeric_count": 0,
+    "non_finite_count": 0,
+    "non_positive_count": 0,
+    "above_maximum_count": 0
+  },
+  "target_quality": {
+    "policy": {
+      "field": "trip_duration_minutes",
+      "missing": "exclude",
+      "non_numeric": "exclude",
+      "non_finite": "exclude",
+      "non_positive": "exclude",
+      "maximum_minutes": 180.0,
+      "above_maximum": "exclude"
+    },
+    "missing_count": 0,
+    "non_numeric_count": 0,
+    "non_finite_count": 0,
+    "non_positive_count": 6,
+    "above_maximum_count": 0,
+    "invalid_count": 6,
+    "excluded_trip_ids": [
+      1,
+      212,
+      423,
+      634,
+      845,
+      1056
+    ]
+  },
+  "invalid_pickup_datetime_count": 0,
+  "iqr_outlier_counts": {
+    "passenger_count": 94,
+    "distance_miles": 43,
+    "trip_duration_minutes": 37
+  },
+  "finding_counts": [
+    {
+      "category": "missing_required_column",
+      "label": "Missing required columns",
+      "count": 0
+    },
+    {
+      "category": "missing_trip_id",
+      "label": "Missing values \u00b7 trip ID",
+      "count": 0
+    },
+    {
+      "category": "missing_pickup_datetime",
+      "label": "Missing values \u00b7 pickup time",
+      "count": 0
+    },
+    {
+      "category": "missing_passenger_count",
+      "label": "Missing values \u00b7 passengers",
+      "count": 0
+    },
+    {
+      "category": "missing_distance_miles",
+      "label": "Missing values \u00b7 distance",
+      "count": 7
+    },
+    {
+      "category": "missing_pickup_zone",
+      "label": "Missing values \u00b7 pickup zone",
+      "count": 0
+    },
+    {
+      "category": "missing_dropoff_zone",
+      "label": "Missing values \u00b7 dropoff zone",
+      "count": 0
+    },
+    {
+      "category": "missing_trip_duration_minutes",
+      "label": "Missing values \u00b7 target",
+      "count": 0
+    },
+    {
+      "category": "invalid_pickup_datetime",
+      "label": "Invalid pickup timestamps",
+      "count": 0
+    },
+    {
+      "category": "duplicate_trip_id",
+      "label": "Duplicate trip IDs",
+      "count": 0
+    },
+    {
+      "category": "invalid_passenger_count",
+      "label": "Invalid passenger counts",
+      "count": 0
+    },
+    {
+      "category": "invalid_distance_non_numeric",
+      "label": "Non-numeric distances",
+      "count": 0
+    },
+    {
+      "category": "invalid_distance_non_finite",
+      "label": "Non-finite distances",
+      "count": 0
+    },
+    {
+      "category": "invalid_distance_non_positive",
+      "label": "Non-positive distances",
+      "count": 0
+    },
+    {
+      "category": "invalid_distance_above_maximum",
+      "label": "Implausible distances",
+      "count": 0
+    },
+    {
+      "category": "target_non_numeric",
+      "label": "Non-numeric targets",
+      "count": 0
+    },
+    {
+      "category": "target_non_finite",
+      "label": "Non-finite targets",
+      "count": 0
+    },
+    {
+      "category": "target_non_positive",
+      "label": "Non-positive targets",
+      "count": 6
+    },
+    {
+      "category": "target_above_maximum",
+      "label": "Targets above policy maximum",
+      "count": 0
+    },
+    {
+      "category": "iqr_outlier_passenger_count",
+      "label": "IQR passenger outliers",
+      "count": 94
+    },
+    {
+      "category": "iqr_outlier_distance_miles",
+      "label": "IQR distance outliers",
+      "count": 43
+    },
+    {
+      "category": "iqr_outlier_trip_duration_minutes",
+      "label": "IQR duration outliers",
+      "count": 37
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "missing_distance_miles:0",
+      "category": "missing_distance_miles",
+      "field": "distance_miles",
+      "row_index": 0,
+      "trip_id": 1,
+      "severity": "warning",
+      "action": "impute_in_train_pipeline",
+      "status": "retained"
+    },
+    {
+      "finding_id": "missing_distance_miles:173",
+      "category": "missing_distance_miles",
+      "field": "distance_miles",
+      "row_index": 173,
+      "trip_id": 174,
+      "severity": "warning",
+      "action": "impute_in_train_pipeline",
+      "status": "retained"
+    },
+    {
+      "finding_id": "missing_distance_miles:346",
+      "category": "missing_distance_miles",
+      "field": "distance_miles",
+      "row_index": 346,
+      "trip_id": 347,
+      "severity": "warning",
+      "action": "impute_in_train_pipeline",
+      "status": "retained"
+    },
+    {
+      "finding_id": "missing_distance_miles:519",
+      "category": "missing_distance_miles",
+      "field": "distance_miles",
+      "row_index": 519,
+      "trip_id": 520,
+      "severity": "warning",
+      "action": "impute_in_train_pipeline",
+      "status": "retained"
+    },
+    {
+      "finding_id": "missing_distance_miles:692",
+      "category": "missing_distance_miles",
+      "field": "distance_miles",
+      "row_index": 692,
+      "trip_id": 693,
+      "severity": "warning",
+      "action": "impute_in_train_pipeline",
+      "status": "retained"
+    },
+    {
+      "finding_id": "missing_distance_miles:865",
+      "category": "missing_distance_miles",
+      "field": "distance_miles",
+      "row_index": 865,
+      "trip_id": 866,
+      "severity": "warning",
+      "action": "impute_in_train_pipeline",
+      "status": "retained"
+    },
+    {
+      "finding_id": "missing_distance_miles:1038",
+      "category": "missing_distance_miles",
+      "field": "distance_miles",
+      "row_index": 1038,
+      "trip_id": 1039,
+      "severity": "warning",
+      "action": "impute_in_train_pipeline",
+      "status": "retained"
+    },
+    {
+      "finding_id": "target_non_positive:0",
+      "category": "target_non_positive",
+      "field": "trip_duration_minutes",
+      "row_index": 0,
+      "trip_id": 1,
+      "severity": "critical",
+      "action": "exclude_from_model",
+      "status": "excluded"
+    },
+    {
+      "finding_id": "target_non_positive:211",
+      "category": "target_non_positive",
+      "field": "trip_duration_minutes",
+      "row_index": 211,
+      "trip_id": 212,
+      "severity": "critical",
+      "action": "exclude_from_model",
+      "status": "excluded"
+    },
+    {
+      "finding_id": "target_non_positive:422",
+      "category": "target_non_positive",
+      "field": "trip_duration_minutes",
+      "row_index": 422,
+      "trip_id": 423,
+      "severity": "critical",
+      "action": "exclude_from_model",
+      "status": "excluded"
+    },
+    {
+      "finding_id": "target_non_positive:633",
+      "category": "target_non_positive",
+      "field": "trip_duration_minutes",
+      "row_index": 633,
+      "trip_id": 634,
+      "severity": "critical",
+      "action": "exclude_from_model",
+      "status": "excluded"
+    },
+    {
+      "finding_id": "target_non_positive:844",
+      "category": "target_non_positive",
+      "field": "trip_duration_minutes",
+      "row_index": 844,
+      "trip_id": 845,
+      "severity": "critical",
+      "action": "exclude_from_model",
+      "status": "excluded"
+    },
+    {
+      "finding_id": "target_non_positive:1055",
+      "category": "target_non_positive",
+      "field": "trip_duration_minutes",
+      "row_index": 1055,
+      "trip_id": 1056,
+      "severity": "critical",
+      "action": "exclude_from_model",
+      "status": "excluded"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:7",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 7,
+      "trip_id": 8,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:15",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 15,
+      "trip_id": 16,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:21",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 21,
+      "trip_id": 22,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:54",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 54,
+      "trip_id": 55,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:70",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 70,
+      "trip_id": 71,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:75",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 75,
+      "trip_id": 76,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:96",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 96,
+      "trip_id": 97,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:101",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 101,
+      "trip_id": 102,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:111",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 111,
+      "trip_id": 112,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:117",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 117,
+      "trip_id": 118,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:118",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 118,
+      "trip_id": 119,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:125",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 125,
+      "trip_id": 126,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:151",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 151,
+      "trip_id": 152,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:153",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 153,
+      "trip_id": 154,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:162",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 162,
+      "trip_id": 163,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:171",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 171,
+      "trip_id": 172,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:187",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 187,
+      "trip_id": 188,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:193",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 193,
+      "trip_id": 194,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:200",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 200,
+      "trip_id": 201,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:201",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 201,
+      "trip_id": 202,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:238",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 238,
+      "trip_id": 239,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:244",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 244,
+      "trip_id": 245,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:249",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 249,
+      "trip_id": 250,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:254",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 254,
+      "trip_id": 255,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:288",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 288,
+      "trip_id": 289,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:293",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 293,
+      "trip_id": 294,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:297",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 297,
+      "trip_id": 298,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:311",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 311,
+      "trip_id": 312,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:325",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 325,
+      "trip_id": 326,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:366",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 366,
+      "trip_id": 367,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:369",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 369,
+      "trip_id": 370,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:372",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 372,
+      "trip_id": 373,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:373",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 373,
+      "trip_id": 374,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:378",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 378,
+      "trip_id": 379,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:405",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 405,
+      "trip_id": 406,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:419",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 419,
+      "trip_id": 420,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:450",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 450,
+      "trip_id": 451,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:458",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 458,
+      "trip_id": 459,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:461",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 461,
+      "trip_id": 462,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:462",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 462,
+      "trip_id": 463,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:466",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 466,
+      "trip_id": 467,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:475",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 475,
+      "trip_id": 476,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:481",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 481,
+      "trip_id": 482,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:496",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 496,
+      "trip_id": 497,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:517",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 517,
+      "trip_id": 518,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:531",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 531,
+      "trip_id": 532,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:547",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 547,
+      "trip_id": 548,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:555",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 555,
+      "trip_id": 556,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:559",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 559,
+      "trip_id": 560,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:562",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 562,
+      "trip_id": 563,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:588",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 588,
+      "trip_id": 589,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:601",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 601,
+      "trip_id": 602,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:616",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 616,
+      "trip_id": 617,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:630",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 630,
+      "trip_id": 631,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:635",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 635,
+      "trip_id": 636,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:645",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 645,
+      "trip_id": 646,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:663",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 663,
+      "trip_id": 664,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:674",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 674,
+      "trip_id": 675,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:682",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 682,
+      "trip_id": 683,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:693",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 693,
+      "trip_id": 694,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:705",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 705,
+      "trip_id": 706,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:708",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 708,
+      "trip_id": 709,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:731",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 731,
+      "trip_id": 732,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:733",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 733,
+      "trip_id": 734,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:760",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 760,
+      "trip_id": 761,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:783",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 783,
+      "trip_id": 784,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:790",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 790,
+      "trip_id": 791,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:807",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 807,
+      "trip_id": 808,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:818",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 818,
+      "trip_id": 819,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:840",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 840,
+      "trip_id": 841,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:869",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 869,
+      "trip_id": 870,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:913",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 913,
+      "trip_id": 914,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:917",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 917,
+      "trip_id": 918,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:920",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 920,
+      "trip_id": 921,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:934",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 934,
+      "trip_id": 935,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:936",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 936,
+      "trip_id": 937,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:938",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 938,
+      "trip_id": 939,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:962",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 962,
+      "trip_id": 963,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:979",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 979,
+      "trip_id": 980,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:994",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 994,
+      "trip_id": 995,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1000",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1000,
+      "trip_id": 1001,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1002",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1002,
+      "trip_id": 1003,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1032",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1032,
+      "trip_id": 1033,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1066",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1066,
+      "trip_id": 1067,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1068",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1068,
+      "trip_id": 1069,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1087",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1087,
+      "trip_id": 1088,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1094",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1094,
+      "trip_id": 1095,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1110",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1110,
+      "trip_id": 1111,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1141",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1141,
+      "trip_id": 1142,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1144",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1144,
+      "trip_id": 1145,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1158",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1158,
+      "trip_id": 1159,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1170",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1170,
+      "trip_id": 1171,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1192",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1192,
+      "trip_id": 1193,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_passenger_count:1193",
+      "category": "iqr_outlier_passenger_count",
+      "field": "passenger_count",
+      "row_index": 1193,
+      "trip_id": 1194,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:39",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 39,
+      "trip_id": 40,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:50",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 50,
+      "trip_id": 51,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:59",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 59,
+      "trip_id": 60,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:83",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 83,
+      "trip_id": 84,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:88",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 88,
+      "trip_id": 89,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:123",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 123,
+      "trip_id": 124,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:127",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 127,
+      "trip_id": 128,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:156",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 156,
+      "trip_id": 157,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:199",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 199,
+      "trip_id": 200,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:201",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 201,
+      "trip_id": 202,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:216",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 216,
+      "trip_id": 217,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:274",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 274,
+      "trip_id": 275,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:293",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 293,
+      "trip_id": 294,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:311",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 311,
+      "trip_id": 312,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:325",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 325,
+      "trip_id": 326,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:363",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 363,
+      "trip_id": 364,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:413",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 413,
+      "trip_id": 414,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:443",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 443,
+      "trip_id": 444,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:471",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 471,
+      "trip_id": 472,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:475",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 475,
+      "trip_id": 476,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:488",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 488,
+      "trip_id": 489,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:516",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 516,
+      "trip_id": 517,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:520",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 520,
+      "trip_id": 521,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:587",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 587,
+      "trip_id": 588,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:622",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 622,
+      "trip_id": 623,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:632",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 632,
+      "trip_id": 633,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:634",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 634,
+      "trip_id": 635,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:655",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 655,
+      "trip_id": 656,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:662",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 662,
+      "trip_id": 663,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:664",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 664,
+      "trip_id": 665,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:690",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 690,
+      "trip_id": 691,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:718",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 718,
+      "trip_id": 719,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:719",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 719,
+      "trip_id": 720,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:724",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 724,
+      "trip_id": 725,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:756",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 756,
+      "trip_id": 757,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:789",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 789,
+      "trip_id": 790,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:829",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 829,
+      "trip_id": 830,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:847",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 847,
+      "trip_id": 848,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:855",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 855,
+      "trip_id": 856,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:916",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 916,
+      "trip_id": 917,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:949",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 949,
+      "trip_id": 950,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:1043",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 1043,
+      "trip_id": 1044,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_distance_miles:1163",
+      "category": "iqr_outlier_distance_miles",
+      "field": "distance_miles",
+      "row_index": 1163,
+      "trip_id": 1164,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:59",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 59,
+      "trip_id": 60,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:83",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 83,
+      "trip_id": 84,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:88",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 88,
+      "trip_id": 89,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:123",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 123,
+      "trip_id": 124,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:199",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 199,
+      "trip_id": 200,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:201",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 201,
+      "trip_id": 202,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:274",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 274,
+      "trip_id": 275,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:293",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 293,
+      "trip_id": 294,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:311",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 311,
+      "trip_id": 312,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:322",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 322,
+      "trip_id": 323,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:325",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 325,
+      "trip_id": 326,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:413",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 413,
+      "trip_id": 414,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:443",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 443,
+      "trip_id": 444,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:471",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 471,
+      "trip_id": 472,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:475",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 475,
+      "trip_id": 476,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:507",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 507,
+      "trip_id": 508,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:516",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 516,
+      "trip_id": 517,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:520",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 520,
+      "trip_id": 521,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:587",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 587,
+      "trip_id": 588,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:593",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 593,
+      "trip_id": 594,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:622",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 622,
+      "trip_id": 623,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:623",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 623,
+      "trip_id": 624,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:632",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 632,
+      "trip_id": 633,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:655",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 655,
+      "trip_id": 656,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:662",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 662,
+      "trip_id": 663,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:664",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 664,
+      "trip_id": 665,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:690",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 690,
+      "trip_id": 691,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:719",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 719,
+      "trip_id": 720,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:724",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 724,
+      "trip_id": 725,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:756",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 756,
+      "trip_id": 757,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:758",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 758,
+      "trip_id": 759,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:789",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 789,
+      "trip_id": 790,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:829",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 829,
+      "trip_id": 830,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:847",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 847,
+      "trip_id": 848,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:916",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 916,
+      "trip_id": 917,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:1132",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 1132,
+      "trip_id": 1133,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    },
+    {
+      "finding_id": "iqr_outlier_trip_duration_minutes:1163",
+      "category": "iqr_outlier_trip_duration_minutes",
+      "field": "trip_duration_minutes",
+      "row_index": 1163,
+      "trip_id": 1164,
+      "severity": "info",
+      "action": "review_domain_validity",
+      "status": "retained"
+    }
+  ],
+  "feature_policies": {
+    "pickup_datetime": {
+      "invalid": "fail_before_modeling_or_inference"
+    },
+    "passenger_count": {
+      "missing": "impute_in_train_pipeline",
+      "invalid": "coerce_to_missing_and_impute",
+      "range": [
+        1,
+        6
+      ],
+      "integer_only": true
+    },
+    "distance_miles": {
+      "missing": "impute_in_train_pipeline",
+      "invalid": "coerce_to_missing_and_impute",
+      "range": [
+        0,
+        100.0
+      ]
+    },
+    "pickup_zone": {
+      "missing": "impute_in_train_pipeline",
+      "invalid": "reject_before_inference",
+      "range": [
+        1,
+        7
+      ],
+      "integer_only": true
+    },
+    "dropoff_zone": {
+      "missing": "impute_in_train_pipeline",
+      "invalid": "reject_before_inference",
+      "range": [
+        1,
+        7
+      ],
+      "integer_only": true
+    }
+  },
+  "duplicate_policy": "keep_first_exclude_later_rows",
+  "blocking_finding_count": 0
+}

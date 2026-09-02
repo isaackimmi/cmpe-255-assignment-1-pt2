@@ -1,0 +1,455 @@
+{
+  "rows": [
+    {
+      "customer_id": "C001",
+      "plan": "basic",
+      "tenure_months": 3.0,
+      "monthly_usage": 18.0,
+      "support_tickets": 5.0,
+      "renewed": 0
+    },
+    {
+      "customer_id": "C002",
+      "plan": "basic",
+      "tenure_months": 6.0,
+      "monthly_usage": 24.0,
+      "support_tickets": 4.0,
+      "renewed": 0
+    },
+    {
+      "customer_id": "C003",
+      "plan": "basic",
+      "tenure_months": 8.0,
+      "monthly_usage": 31.0,
+      "support_tickets": 3.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C004",
+      "plan": "pro",
+      "tenure_months": 12.0,
+      "monthly_usage": 40.0,
+      "support_tickets": 2.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C005",
+      "plan": "pro",
+      "tenure_months": 15.0,
+      "monthly_usage": 44.0,
+      "support_tickets": 1.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C006",
+      "plan": "pro",
+      "tenure_months": 18.0,
+      "monthly_usage": 52.0,
+      "support_tickets": 1.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C007",
+      "plan": "pro",
+      "tenure_months": 21.0,
+      "monthly_usage": 58.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C008",
+      "plan": "pro",
+      "tenure_months": 24.0,
+      "monthly_usage": 61.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C009",
+      "plan": "pro",
+      "tenure_months": 27.0,
+      "monthly_usage": 65.0,
+      "support_tickets": 1.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C010",
+      "plan": "pro",
+      "tenure_months": 30.0,
+      "monthly_usage": 70.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C011",
+      "plan": "enterprise",
+      "tenure_months": 33.0,
+      "monthly_usage": 74.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C012",
+      "plan": "enterprise",
+      "tenure_months": 36.0,
+      "monthly_usage": 79.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C013",
+      "plan": "basic",
+      "tenure_months": 4.0,
+      "monthly_usage": 20.0,
+      "support_tickets": 6.0,
+      "renewed": 0
+    },
+    {
+      "customer_id": "C014",
+      "plan": "basic",
+      "tenure_months": 9.0,
+      "monthly_usage": 35.0,
+      "support_tickets": 4.0,
+      "renewed": 0
+    },
+    {
+      "customer_id": "C015",
+      "plan": "pro",
+      "tenure_months": 13.0,
+      "monthly_usage": 42.0,
+      "support_tickets": 2.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C016",
+      "plan": "pro",
+      "tenure_months": 17.0,
+      "monthly_usage": 49.0,
+      "support_tickets": 2.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C017",
+      "plan": "pro",
+      "tenure_months": 20.0,
+      "monthly_usage": 55.0,
+      "support_tickets": 1.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C018",
+      "plan": "pro",
+      "tenure_months": 23.0,
+      "monthly_usage": 60.0,
+      "support_tickets": 1.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C019",
+      "plan": "enterprise",
+      "tenure_months": 26.0,
+      "monthly_usage": 66.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C020",
+      "plan": "enterprise",
+      "tenure_months": 29.0,
+      "monthly_usage": 69.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C021",
+      "plan": "enterprise",
+      "tenure_months": 32.0,
+      "monthly_usage": 73.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C022",
+      "plan": "enterprise",
+      "tenure_months": 35.0,
+      "monthly_usage": 78.0,
+      "support_tickets": 0.0,
+      "renewed": 1
+    },
+    {
+      "customer_id": "C023",
+      "plan": "basic",
+      "tenure_months": 11.0,
+      "monthly_usage": null,
+      "support_tickets": 3.0,
+      "renewed": 0
+    }
+  ],
+  "analysis_rows": [
+    {
+      "customer_id": "C001",
+      "plan": "basic",
+      "tenure_months": 3.0,
+      "monthly_usage": 18.0,
+      "support_tickets": 5.0,
+      "renewed": 0,
+      "cluster": 0
+    },
+    {
+      "customer_id": "C002",
+      "plan": "basic",
+      "tenure_months": 6.0,
+      "monthly_usage": 24.0,
+      "support_tickets": 4.0,
+      "renewed": 0,
+      "cluster": 0
+    },
+    {
+      "customer_id": "C003",
+      "plan": "basic",
+      "tenure_months": 8.0,
+      "monthly_usage": 31.0,
+      "support_tickets": 3.0,
+      "renewed": 1,
+      "cluster": 0
+    },
+    {
+      "customer_id": "C004",
+      "plan": "pro",
+      "tenure_months": 12.0,
+      "monthly_usage": 40.0,
+      "support_tickets": 2.0,
+      "renewed": 1,
+      "cluster": 0
+    },
+    {
+      "customer_id": "C005",
+      "plan": "pro",
+      "tenure_months": 15.0,
+      "monthly_usage": 44.0,
+      "support_tickets": 1.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C006",
+      "plan": "pro",
+      "tenure_months": 18.0,
+      "monthly_usage": 52.0,
+      "support_tickets": 1.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C007",
+      "plan": "pro",
+      "tenure_months": 21.0,
+      "monthly_usage": 58.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C008",
+      "plan": "pro",
+      "tenure_months": 24.0,
+      "monthly_usage": 61.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C009",
+      "plan": "pro",
+      "tenure_months": 27.0,
+      "monthly_usage": 65.0,
+      "support_tickets": 1.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C010",
+      "plan": "pro",
+      "tenure_months": 30.0,
+      "monthly_usage": 70.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C011",
+      "plan": "enterprise",
+      "tenure_months": 33.0,
+      "monthly_usage": 74.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C012",
+      "plan": "enterprise",
+      "tenure_months": 36.0,
+      "monthly_usage": 79.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C013",
+      "plan": "basic",
+      "tenure_months": 4.0,
+      "monthly_usage": 20.0,
+      "support_tickets": 6.0,
+      "renewed": 0,
+      "cluster": 0
+    },
+    {
+      "customer_id": "C014",
+      "plan": "basic",
+      "tenure_months": 9.0,
+      "monthly_usage": 35.0,
+      "support_tickets": 4.0,
+      "renewed": 0,
+      "cluster": 0
+    },
+    {
+      "customer_id": "C015",
+      "plan": "pro",
+      "tenure_months": 13.0,
+      "monthly_usage": 42.0,
+      "support_tickets": 2.0,
+      "renewed": 1,
+      "cluster": 0
+    },
+    {
+      "customer_id": "C016",
+      "plan": "pro",
+      "tenure_months": 17.0,
+      "monthly_usage": 49.0,
+      "support_tickets": 2.0,
+      "renewed": 1,
+      "cluster": 0
+    },
+    {
+      "customer_id": "C017",
+      "plan": "pro",
+      "tenure_months": 20.0,
+      "monthly_usage": 55.0,
+      "support_tickets": 1.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C018",
+      "plan": "pro",
+      "tenure_months": 23.0,
+      "monthly_usage": 60.0,
+      "support_tickets": 1.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C019",
+      "plan": "enterprise",
+      "tenure_months": 26.0,
+      "monthly_usage": 66.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C020",
+      "plan": "enterprise",
+      "tenure_months": 29.0,
+      "monthly_usage": 69.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C021",
+      "plan": "enterprise",
+      "tenure_months": 32.0,
+      "monthly_usage": 73.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C022",
+      "plan": "enterprise",
+      "tenure_months": 35.0,
+      "monthly_usage": 78.0,
+      "support_tickets": 0.0,
+      "renewed": 1,
+      "cluster": 1
+    },
+    {
+      "customer_id": "C023",
+      "plan": "basic",
+      "tenure_months": 11.0,
+      "monthly_usage": 56.5,
+      "support_tickets": 3.0,
+      "renewed": 0,
+      "cluster": 0
+    }
+  ],
+  "imputation": {
+    "scope": "all clean rows for descriptive outputs",
+    "medians": {
+      "tenure_months": 20.0,
+      "monthly_usage": 56.5,
+      "support_tickets": 1.0
+    },
+    "counts": {
+      "tenure_months": 0,
+      "monthly_usage": 1,
+      "support_tickets": 0
+    }
+  },
+  "regression_predictions": [
+    {
+      "customer_id": "C001",
+      "tenure_months": 3.0,
+      "actual_usage": 18.0,
+      "predicted_usage": 21.75
+    },
+    {
+      "customer_id": "C004",
+      "tenure_months": 12.0,
+      "actual_usage": 40.0,
+      "predicted_usage": 38.1
+    },
+    {
+      "customer_id": "C006",
+      "tenure_months": 18.0,
+      "actual_usage": 52.0,
+      "predicted_usage": 49.0
+    },
+    {
+      "customer_id": "C015",
+      "tenure_months": 13.0,
+      "actual_usage": 42.0,
+      "predicted_usage": 39.92
+    },
+    {
+      "customer_id": "C016",
+      "tenure_months": 17.0,
+      "actual_usage": 49.0,
+      "predicted_usage": 47.19
+    },
+    {
+      "customer_id": "C020",
+      "tenure_months": 29.0,
+      "actual_usage": 69.0,
+      "predicted_usage": 68.99
+    },
+    {
+      "customer_id": "C022",
+      "tenure_months": 35.0,
+      "actual_usage": 78.0,
+      "predicted_usage": 79.89
+    }
+  ],
+  "regression_excluded_test_targets": []
+}

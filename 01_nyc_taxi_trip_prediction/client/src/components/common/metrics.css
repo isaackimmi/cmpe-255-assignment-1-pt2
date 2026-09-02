@@ -1,0 +1,50 @@
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--line);
+}
+
+.metric {
+  min-height: 145px;
+  padding: 28px;
+  border-right: 1px solid var(--line);
+}
+
+.metric:last-child {
+  border-right: 0;
+}
+.metric.accent {
+  border-top: 3px solid var(--coral);
+}
+.metric small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.metric strong {
+  display: block;
+  margin: 20px 0 8px;
+  font-size: 30px;
+  letter-spacing: -0.06em;
+}
+.metric span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.metric.MuiCard-root {
+  background-color: transparent;
+  color: inherit;
+}
+
+@media (max-width: 800px) {
+  .metric-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .metric:nth-child(2) {
+    border-right: 0;
+  }
+  .metric:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+}
